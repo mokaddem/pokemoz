@@ -81,9 +81,13 @@ proc {DrawMap MapFile}
    ColumnLength = {Length {Arity MapFile.1}}
    C
    Canvas = canvas(handle:C width:ColumnLength*SQUARE_LENGTH+200 height:RowLength*SQUARE_LENGTH+SQUARE_LENGTH)
+   Hero
+   PathHero = photo(file:'/home/sami/info/Bac 3/Oz2/projet/beer.gif')
 in
    {{QTk.build td(Canvas)} show}
    {AddMapBlock MapFile C}
+   Hero = {QTk.newImage PathHero}
+   {C create(image 200 200 image:Hero anchor:center)}
 end
 
 
