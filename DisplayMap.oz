@@ -1,9 +1,15 @@
-%% Trying to read the file and convert it into a record
+/*
+   IMPORT AND CONSTANTS
+*/
 declare
+SQUARE_LENGTH = 25 % length of a standard square
+[QTk] = {Module.link ['x-oz://system/wp/QTk.ozf']}
+
 /*
 * pre: a no-nul list starting with the first case of the map.
 * result: return a list of rows lists -> [row1 row2 row3..]
 */
+declare						
 fun {MakeRow List}
    case List
    of nil then nil
@@ -37,27 +43,19 @@ fun {Scan Map}
    end
 end
 
-declare
-MapFile Map
-F={New Open.file init(name:'/home/sami/info/Bac 3/Oz2/projet/pokemoz/map.txt' flags:[read])}
-{F read(list:Map size:all)}
-MapFile={List.toTuple map {Scan Map}}
-{F close}
-
-SQUARE_LENGTH = 50 % length of a standard square
-
-[QTk] = {Module.link ['x-oz://system/wp/QTk.ozf']}
-
+/*
+* pre: a valid MapFile record and a valid Canvas Handler
+* result: Construc square by square the map
+*/
 declare
 proc {AddMapBlock MapFile Canvas}
-   RowLength = {Length {Arity MapFile.1}}
-   ColumnLength = {Length {Arity MapFile}}
+   RowLength = {Length {Arity MapFile}}
+   ColumnLength = {Length {Arity MapFile.1}}
    proc {Recurs CurrRow CurrCol PosX PosY} %construct the map recursively
       GroundType in
-      {Browse CurrCol#CurrRow}
-      if CurrCol>ColumnLength then {Recurs CurrRow+1 1 0 PosY+SQUARE_LENGTH}  %restart a new row
-      else
-	 if CurrRow=<RowLength then % not EOF
+      if CurrRow<RowLength+1 then  % not EOF
+	 if CurrCol>ColumnLength then {Recurs CurrRow+1 1 0 PosY+SQUARE_LENGTH}  %restart a new row
+	 else
 	    GroundType = MapFile.CurrRow.CurrCol
 	    case GroundType
 	    of 1 then {Canvas create(rect PosX PosY PosX+SQUARE_LENGTH PosY+SQUARE_LENGTH fill:green outline:black)}
@@ -73,17 +71,26 @@ in
    {Recurs 1 1 0 0}
 end
 
-
+/*
+* pre: A valid MapFile record
+* result: Draw and display the map
+*/
 declare
-fun {DrawMap MapFile}
-   RowLength = {Length {Arity MapFile.1}}
-   ColumnLength = {Length {Arity MapFile}}
+proc {DrawMap MapFile}
+   RowLength = {Length {Arity MapFile}}
+   ColumnLength = {Length {Arity MapFile.1}}
    C
-   Canvas = canvas(handle:C width:ColumnLength*SQUARE_LENGTH+200 height:RowLength*SQUARE_LENGTH)
+   Canvas = canvas(handle:C width:ColumnLength*SQUARE_LENGTH+200 height:RowLength*SQUARE_LENGTH+SQUARE_LENGTH)
 in
    {{QTk.build td(Canvas)} show}
    {AddMapBlock MapFile C}
-   1
 end
 
-{Browse {DrawMap MapFile}}
+
+declare
+MapFile Map
+F={New Open.file init(name:'/home/sami/info/Bac 3/Oz2/projet/pokemoz/map.txt' flags:[read])}
+{F read(list:Map size:all)}
+MapFile={List.toTuple map {Scan Map}}
+{F close}
+{DrawMap MapFile}
