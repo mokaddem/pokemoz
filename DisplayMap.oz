@@ -2,8 +2,10 @@
    IMPORT AND CONSTANTS
 */
 declare
-SQUARE_LENGTH = 25 % length of a standard square
+SQUARE_LENGTH = 40 % length of a standard square
 [QTk] = {Module.link ['x-oz://system/wp/QTk.ozf']}
+StartX 
+StartY
 
 /*
 * pre: a no-nul list starting with the first case of the map.
@@ -61,7 +63,10 @@ proc {AddMapBlock MapFile Canvas}
 	    of 1 then {Canvas create(rect PosX PosY PosX+SQUARE_LENGTH PosY+SQUARE_LENGTH fill:green outline:black)}
 	    []0 then {Canvas create(rect PosX PosY PosX+SQUARE_LENGTH PosY+SQUARE_LENGTH fill:white outline:black)}
 	    []e then {Canvas create(rect PosX PosY PosX+SQUARE_LENGTH PosY+SQUARE_LENGTH fill:red outline:black)}
-	    []s then {Canvas create(rect PosX PosY PosX+SQUARE_LENGTH PosY+SQUARE_LENGTH fill:blue outline:black)}
+	    []s then 
+	       {Canvas create(rect PosX PosY PosX+SQUARE_LENGTH PosY+SQUARE_LENGTH fill:blue outline:black)}
+	       StartX=PosX+117 %?? pq ??? --> image dimensio problem
+	       StartY=PosY+100 %?? pq ?
 	    end
 	    {Recurs CurrRow CurrCol+1  PosX+SQUARE_LENGTH PosY} %recurse increasing the collumn number
 	 end
@@ -76,18 +81,14 @@ end
 * result: Draw and display the map
 */
 declare
+C
 proc {DrawMap MapFile}
    RowLength = {Length {Arity MapFile}}
    ColumnLength = {Length {Arity MapFile.1}}
-   C
    Canvas = canvas(handle:C width:ColumnLength*SQUARE_LENGTH+200 height:RowLength*SQUARE_LENGTH+SQUARE_LENGTH)
-   Hero
-   PathHero = photo(file:'/home/sami/info/Bac 3/Oz2/projet/beer.gif') %constructor and path to the picture file
 in
    {{QTk.build td(Canvas)} show}
    {AddMapBlock MapFile C}
-   Hero = {QTk.newImage PathHero} %build the image
-   {C create(image 200 200 image:Hero anchor:center)} %add the image to the canvas
 end
 
 
@@ -98,3 +99,13 @@ F={New Open.file init(name:'/home/sami/info/Bac 3/Oz2/projet/pokemoz/map.txt' fl
 MapFile={List.toTuple map {Scan Map}}
 {F close}
 {DrawMap MapFile}
+
+local 
+   Hero HeroHandle
+   PathHero = photo(file:'/home/sami/info/Bac 3/Oz2/projet/pokemoz/Images/hero.gif') %constructor and path to the picture file
+in
+   Hero = {QTk.newImage PathHero} %build the image
+   {C create(image StartX StartY image:Hero anchor:center handle:HeroHandle)} %add the image to the canvas
+   {HeroHandle bind(event:"<Up>" action:proc{$} {Show move} {HeroHandle set(x:StartX+100 y:StartY+100)} end)} %trying to bind to an action
+   {HeroHandle bind(event:"<Down>" action:proc{$} {Show hello_hero} end)}
+end
