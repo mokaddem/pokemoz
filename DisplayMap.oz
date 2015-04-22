@@ -82,12 +82,12 @@ proc {DrawMap MapFile}
    C
    Canvas = canvas(handle:C width:ColumnLength*SQUARE_LENGTH+200 height:RowLength*SQUARE_LENGTH+SQUARE_LENGTH)
    Hero
-   PathHero = photo(file:'/home/sami/info/Bac 3/Oz2/projet/beer.gif')
+   PathHero = photo(file:'/home/sami/info/Bac 3/Oz2/projet/beer.gif') %constructor and path to the picture file
 in
    {{QTk.build td(Canvas)} show}
    {AddMapBlock MapFile C}
-   Hero = {QTk.newImage PathHero}
-   {C create(image 200 200 image:Hero anchor:center)}
+   Hero = {QTk.newImage PathHero} %build the image
+   {C create(image 200 200 image:Hero anchor:center)} %add the image to the canvas
 end
 
 
