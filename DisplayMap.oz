@@ -81,20 +81,21 @@ end
 * result: Draw and display the map
 */
 declare
-C
+C Window
 proc {DrawMap MapFile}
    RowLength = {Length {Arity MapFile}}
    ColumnLength = {Length {Arity MapFile.1}}
    Canvas = canvas(handle:C width:ColumnLength*SQUARE_LENGTH+200 height:RowLength*SQUARE_LENGTH+SQUARE_LENGTH)
 in
-   {{QTk.build td(Canvas)} show}
+   Window = {QTk.build td(Canvas)}
+   {Window show}
    {AddMapBlock MapFile C}
 end
 
 
 declare
 MapFile Map
-F={New Open.file init(name:'/home/sami/info/Bac 3/Oz2/projet/pokemoz/map.txt' flags:[read])}
+F={New Open.file init(name:'map.txt' flags:[read])}
 {F read(list:Map size:all)}
 MapFile={List.toTuple map {Scan Map}}
 {F close}
@@ -102,10 +103,10 @@ MapFile={List.toTuple map {Scan Map}}
 
 local 
    Hero HeroHandle
-   PathHero = photo(file:'/home/sami/info/Bac 3/Oz2/projet/pokemoz/Images/hero.gif') %constructor and path to the picture file
+   PathHero = photo(file:'Images/hero.gif') %constructor and path to the picture file
 in
    Hero = {QTk.newImage PathHero} %build the image
    {C create(image StartX StartY image:Hero anchor:center handle:HeroHandle)} %add the image to the canvas
-   {HeroHandle bind(event:"<Up>" action:proc{$} {Show move} {HeroHandle set(x:StartX+100 y:StartY+100)} end)} %trying to bind to an action
-   {HeroHandle bind(event:"<Down>" action:proc{$} {Show hello_hero} end)}
+   {Window bind(event:"<Up>" action:proc{$} {Show move} end)} %trying to bind to an action
+   {Window bind(event:"<Up>" action:proc{$} {Show hello_hero} end)}
 end
