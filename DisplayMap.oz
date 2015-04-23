@@ -102,11 +102,17 @@ MapFile={List.toTuple map {Scan Map}}
 {DrawMap MapFile}
 
 local 
-   Hero HeroHandle
+   Hero HeroHandle HeroTag={C newTag($)}
+   Beer
    PathHero = photo(file:'Images/hero.gif') %constructor and path to the picture file
+   PathBeer = photo(file:'Images/beer.gif')
 in
    Hero = {QTk.newImage PathHero} %build the image
-   {C create(image StartX StartY image:Hero anchor:center handle:HeroHandle)} %add the image to the canvas
-   {Window bind(event:"<Up>" action:proc{$} {Show move} end)} %trying to bind to an action
-   {Window bind(event:"<Up>" action:proc{$} {Show hello_hero} end)}
+   Beer = {QTk.newImage PathBeer}
+   {C create(image StartX StartY image:Hero anchor:center handle:HeroHandle tags:HeroTag)} %add the image to the canvas
+   {Window bind(event:"<Up>" action:proc{$} {Show move_up} {HeroTag move(0 ~1)} end)} %trying to bind to an action
+   {Window bind(event:"<Down>" action:proc{$} {Show move_down} {HeroTag move(0 1)} end)}
+   {Window bind(event:"<Left>" action:proc{$} {Show move_left} {HeroTag move(~1 0)} end)}
+   {Window bind(event:"<Right>" action:proc{$} {Show move_right} {HeroTag move(1 0)} end)}
+   {Window bind(event:"<Return>" action:proc{$} {Show change_state} {HeroHandle set(image:Beer)} end)}
 end
