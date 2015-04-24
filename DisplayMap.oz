@@ -1,7 +1,13 @@
 /*
    IMPORT AND CONSTANTS
 */
-declare
+functor
+import
+System(show:Show)
+Module
+Open
+
+define
 SQUARE_LENGTH = 34 % length of a standard square
 [QTk] = {Module.link ['x-oz://system/wp/QTk.ozf']}
 StartX 
@@ -10,8 +16,7 @@ StartY
 /*
 * pre: a no-nul list starting with the first case of the map.
 * result: return a list of rows lists -> [row1 row2 row3..]
-*/
-declare						
+*/						
 fun {MakeRow List}
    case List
    of nil then nil
@@ -49,7 +54,6 @@ end
 * pre: a valid MapFile record and a valid Canvas Handler
 * result: Construc square by square the map
 */
-declare
 proc {AddMapBlock MapFile Canvas}
    RowLength = {Length {Arity MapFile}}
    ColumnLength = {Length {Arity MapFile.1}}
@@ -80,7 +84,6 @@ end
 * pre: A valid MapFile record
 * result: Draw and display the map
 */
-declare
 C Window
 proc {DrawMap MapFile}
    RowLength = {Length {Arity MapFile}}
@@ -93,7 +96,6 @@ in
 end
 
 
-declare
 MapFile Map
 F={New Open.file init(name:'map.txt' flags:[read])}
 {F read(list:Map size:all)}
@@ -108,7 +110,7 @@ local
    PathBeer = photo(file:'Images/beer.gif')
 
 %%%%% CREATE MOUVEMENT IMAGES %%%%%   
-   PathHeroTotal = photo(file:'/home/sami/info/Bac3/Oz2/projet/pokemoz/Images/HGSS_143.gif')
+   PathHeroTotal = photo(file:'Images/HGSS_143.gif')
    HeroImage = {QTk.newImage PathHeroTotal}   
 %Down
    Down1 = {QTk.newImage photo()}
@@ -228,5 +230,7 @@ in
    {Window bind(event:"<Up>" action:proc{$} {Show move_up} {MoveHero u} end)}
    {Window bind(event:"<Right>" action:proc{$} {Show move_right} {MoveHero r} end)}
    {Window bind(event:"<Left>" action:proc{$} {Show move_left} {MoveHero l} end)}
+
+end
 
 end
