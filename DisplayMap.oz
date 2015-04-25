@@ -111,7 +111,7 @@ local
    PathBeer = photo(file:'Images/beer.gif')
 
 %%%%% CREATE MOUVEMENT IMAGES %%%%%   
-   PathHeroTotal = photo(file:'Images/HGSS_143.gif')
+   PathHeroTotal = photo(file:'Images/006_0.gif')
    HeroImage = {QTk.newImage PathHeroTotal}   
 %Down
    Down1 = {QTk.newImage photo()}
@@ -184,6 +184,86 @@ local
       {HeroHandle set(image:Frames.1)}
       {HeroHandle Movement}
    end
+   
+   MovementStatusStream
+   MovementStatus = {NewPort MovementStatusStream}
+   fun {F Msg State}
+   	case Msg
+   	of moving() then moving()
+   	[] idle() then idle()
+   	[] get(X) then X=State State
+   	end
+   end
+   proc {Loop S State}
+   	case S of Msg|S2 then
+   		{Loop S2 {F Msg State}}
+   	end
+   end
+   thread {Loop MovementStatusStream idle()} end
+   
+	proc {LeftHandle}
+	   	thread X in
+			{Send MovementStatus get(X)}
+			{Wait X}
+			{Show X}
+		   	case X of idle() then
+		   		{Send MovementStatus moving()}
+			   	{Show move_left}
+		   		{MoveHero l}
+		   		{Send MovementStatus idle()}
+		   	else
+		   		skip
+		   	end
+	   	end
+   	end
+   	
+   	proc {RightHandle}
+	   	thread X in
+			{Send MovementStatus get(X)}
+			{Wait X}
+			{Show X}
+		   	case X of idle() then
+		   		{Send MovementStatus moving()}
+			   	{Show move_right}
+		   		{MoveHero r}
+		   		{Send MovementStatus idle()}
+		   	else
+		   		skip
+		   	end
+	   	end
+   	end
+   	
+   	proc {UpHandle}
+	   	thread X in
+			{Send MovementStatus get(X)}
+			{Wait X}
+			{Show X}
+		   	case X of idle() then
+		   		{Send MovementStatus moving()}
+			   	{Show move_up}
+		   		{MoveHero u}
+		   		{Send MovementStatus idle()}
+		   	else
+		   		skip
+		   	end
+	   	end
+   	end
+   	
+   	proc {DownHandle}
+	   	thread X in
+			{Send MovementStatus get(X)}
+			{Wait X}
+			{Show X}
+		   	case X of idle() then
+		   		{Send MovementStatus moving()}
+			   	{Show move_down}
+		   		{MoveHero d}
+		   		{Send MovementStatus idle()}
+		   	else
+		   		skip
+		   	end
+	   	end
+   	end
 
 %%%%%%%%%%%%%%%
 
@@ -193,17 +273,11 @@ in
 %   {C create(image StartX StartY-14 image:Hero anchor:nw handle:HeroHandle tags:HeroTag)} %add the image to the canvas. -14 to fit the foot with the ground
    {C create(image StartX-12 StartY-25-34*10 image:Down1 anchor:nw handle:HeroHandle tags:HeroTag)}
 
-  {Window bind(event:"<Up>" action:proc{$} {Show move_up} {HeroTag move(0 ~SquareLenghtFloat)} end)} %trying to bind to an action
-   {Window bind(event:"<Down>" action:proc{$} {Show move_down} {HeroHandle move(0 SquareLenghtFloat)} end)}
-   {Window bind(event:"<Left>" action:proc{$} {Show move_left} {HeroHandle move(~SquareLenghtFloat 0)} end)}
-   {Window bind(event:"<Right>" action:proc{$} {Show move_right} {HeroHandle move(SquareLenghtFloat 0)} end)}
+  {Window bind(event:"<Up>" action:UpHandle)} %trying to bind to an action
+   {Window bind(event:"<Down>" action:DownHandle)}
+   {Window bind(event:"<Left>" action:LeftHandle)}
+   {Window bind(event:"<Right>" action:RightHandle)}
    {Window bind(event:"<Return>" action:proc{$} {Show change_state} {HeroHandle set(image:Down2)} end)}
-
-
-   {Window bind(event:"<Down>" action:proc{$} {Show move_down} {MoveHero d} end)}
-   {Window bind(event:"<Up>" action:proc{$} {Show move_up} {MoveHero u} end)}
-   {Window bind(event:"<Right>" action:proc{$} {Show move_right} {MoveHero r} end)}
-   {Window bind(event:"<Left>" action:proc{$} {Show move_left} {MoveHero l} end)}
 
 end
 
