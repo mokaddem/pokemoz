@@ -5,7 +5,8 @@ functor
 import
 	System(show:Show)
 	Open
-	CutImages(moveHero:MoveHero face:Face)
+	CutImages(face:Face)
+	MoveHero(upHandle:UpHandle rightHandle:RightHandle leftHandle:LeftHandle downHandle:DownHandle)
 	QTk at 'x-oz://system/wp/QTk.ozf'
 
 export
@@ -115,87 +116,6 @@ define
 		Window = {QTk.build td(Canvas)}
 		{Window show}
 		{AddMapBlock MapRecord CanvasHandler}
-	end
-
-	   
-	MovementStatusStream
-	MovementStatus = {NewPort MovementStatusStream}
-	fun {F Msg State}
-		case Msg
-		of moving() then moving()
-		[] idle() then idle()
-		[] get(X) then X=State State
-		end
-	end
-	proc {Loop S State}
-		case S of Msg|S2 then
-			{Loop S2 {F Msg State}}
-		end
-	end
-	thread {Loop MovementStatusStream idle()} end
-
-	proc {LeftHandle}
-	   	thread X in
-			{Send MovementStatus get(X)}
-			{Wait X}
-			{Show X}
-		   	case X of idle() then
-		   		{Send MovementStatus moving()}
-			   	{Show move_left}
-		   		{MoveHero l}
-		   		{Send MovementStatus idle()}
-		   	else
-		   		skip
-		   	end
-	   	end
-	end
-
-	proc {RightHandle}
-	   	thread X in
-			{Send MovementStatus get(X)}
-			{Wait X}
-			{Show X}
-		   	case X of idle() then
-		   		{Send MovementStatus moving()}
-			   	{Show move_right}
-		   		{MoveHero r}
-		   		{Send MovementStatus idle()}
-		   	else
-		   		skip
-		   	end
-	   	end
-	end
-
-	proc {UpHandle}
-	   	thread X in
-			{Send MovementStatus get(X)}
-			{Wait X}
-			{Show X}
-		   	case X of idle() then
-		   		{Send MovementStatus moving()}
-			   	{Show move_up}
-		   		{MoveHero u}
-		   		{Send MovementStatus idle()}
-		   	else
-		   		skip
-		   	end
-	   	end
-	end
-
-	proc {DownHandle}
-	   	thread X in
-			{Send MovementStatus get(X)}
-			{Wait X}
-			{Show X}
-		   	case X of idle() then
-		   		{Send MovementStatus moving()}
-			   	{Show move_down}
-		   		{MoveHero d}
-		   		{Send MovementStatus idle()}
-		   	else
-		   		skip
-		   	end
-	   	end
 	end
 
 	MapFile={New Open.file init(name:'map.txt' flags:[read])}
