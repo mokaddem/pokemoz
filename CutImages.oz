@@ -2,7 +2,7 @@ functor
 import
 	System(show:Show)
 	QTk at 'x-oz://system/wp/QTk.ozf'
-	DisplayMap(heroHandle:HeroHandle)
+	DisplayMap(heroHandle:HeroHandle squareLengthFloat:SquareLengthFloat)
 export 
 	MoveHero
 	Face
@@ -21,6 +21,7 @@ define
    {Down2 copy(HeroImage 'from':o(64 0 128 64))}
    {Down3 copy(HeroImage 'from':o(128 0 192 64))}
    {Down4 copy(HeroImage 'from':o(192 0 256 64))}
+   DownFrame = frame(Down1 Down2 Down3 Down4)
 %Right
    Right1 = {QTk.newImage photo()}
    Right2 = {QTk.newImage photo()}
@@ -30,6 +31,7 @@ define
    {Right2 copy(HeroImage 'from':o(64 128 128 192))}
    {Right3 copy(HeroImage 'from':o(128 128 192 192))}
    {Right4 copy(HeroImage 'from':o(192 128 256 192))}
+   RightFrame = frame(Right1 Right2 Right3 Right4)
 %Left
    Left1 = {QTk.newImage photo()}
    Left2 = {QTk.newImage photo()}
@@ -39,6 +41,7 @@ define
    {Left2 copy(HeroImage 'from':o(64 64 128 128))}
    {Left3 copy(HeroImage 'from':o(128 64 192 128))}
    {Left4 copy(HeroImage 'from':o(192 64 256 128))}
+   LeftFrame = frame(Left1 Left2 Left3 Left4)
 %Up
    Up1 = {QTk.newImage photo()}
    Up2 = {QTk.newImage photo()}
@@ -48,67 +51,37 @@ define
    {Up2 copy(HeroImage 'from':o(64 192 128 256))}
    {Up3 copy(HeroImage 'from':o(128 192 192 256))}
    {Up4 copy(HeroImage 'from':o(192 192 256 256))}
+   UpFrame = frame(Up1 Up2 Up3 Up4)
 %PROCEDURE THAT ANIMATE AND MOVE THE HERO
    proc {MoveHero Dir}
-      D=75 in
+      D=75 MovementValue=SquareLengthFloat/4.0 Movement Frames in
       case Dir
       of r then
-	 {HeroHandle set(image:Right1)}
-	 {Delay D}
-	 {HeroHandle set(image:Right2)}
-	 {HeroHandle move(8.5 0)}
-	 {Delay D}
-	 {HeroHandle set(image:Right3)}
-	 {HeroHandle move(8.5 0)}
-	 {Delay D}
-	 {HeroHandle set(image:Right4)}
-	 {HeroHandle move(8.5 0)}
-	 {Delay D}
-	 {HeroHandle set(image:Right1)}
-	 {HeroHandle move(8.5 0)}
+	 Frames = RightFrame
+	 Movement = move(MovementValue 0)
       []l then
-	 {HeroHandle set(image:Left1)}
-	 {Delay D}
-	 {HeroHandle set(image:Left2)}
-	 {HeroHandle move(~8.5 0)}
-	 {Delay D}
-	 {HeroHandle set(image:Left3)}
-	 {HeroHandle move(~8.5 0)}
-	 {Delay D}
-	 {HeroHandle set(image:Left4)}
-	 {HeroHandle move(~8.5 0)}
-	 {Delay D}
-	 {HeroHandle set(image:Left1)}
-	 {HeroHandle move(~8.5 0)}
-       []d then
-         {HeroHandle set(image:Down1)}
-	 {Delay D}
-	 {HeroHandle set(image:Down2)}
-	 {HeroHandle move(0 8.5)}
-	 {Delay D}
-	 {HeroHandle set(image:Down3)}
-	 {HeroHandle move(0 8.5)}
-	 {Delay D}
-	 {HeroHandle set(image:Down4)}
-	 {HeroHandle move(0 8.5)}
-	 {Delay D}
-	 {HeroHandle set(image:Down1)}
-	 {HeroHandle move(0 8.5)}
+	 Frames = LeftFrame
+	 Movement = move(~MovementValue 0)
+      []d then
+         Frames = DownFrame
+	 Movement = move(0 MovementValue)
       []u then
-         {HeroHandle set(image:Up1)}
-	 {Delay D}
-	 {HeroHandle set(image:Up2)}
-	 {HeroHandle move(0 ~8.5)}
-	 {Delay D}
-	 {HeroHandle set(image:Up3)}
-	 {HeroHandle move(0 ~8.5)}
-	 {Delay D}
-	 {HeroHandle set(image:Up4)}
-	 {HeroHandle move(0 ~8.5)}
-	 {Delay D}
-	 {HeroHandle set(image:Up1)}
-	 {HeroHandle move(0 ~8.5)}
+         Frames = UpFrame
+	 Movement = move(0 ~MovementValue)
       end
+      {HeroHandle set(image:Frames.1)}
+      {Delay D}
+      {HeroHandle set(image:Frames.2)}
+      {HeroHandle Movement}
+      {Delay D}
+      {HeroHandle set(image:Frames.3)}
+      {HeroHandle Movement}
+      {Delay D}
+      {HeroHandle set(image:Frames.4)}
+      {HeroHandle Movement}
+      {Delay D}
+      {HeroHandle set(image:Frames.1)}
+      {HeroHandle Movement}
    end
 
 end

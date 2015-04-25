@@ -11,13 +11,14 @@ CutImages(moveHero:MoveHero face:Face)
 QTk at 'x-oz://system/wp/QTk.ozf'
 
 export
-HeroHandle
+HeroHandle SquareLengthFloat
 
 define
-																				/* CONSTANTS */
+																/* CONSTANTS */
 SQUARE_LENGTH = 34 % length of a standard square
+SquareLenghtFloat = {IntToFloat SQUARE_LENGTH}
 
-																				/* GLOBAL_VARIABLES */
+																/* GLOBAL_VARIABLES */
 %Key_positions
 StartX 
 StartY
@@ -35,7 +36,7 @@ MapParsed	%List readed from map.txt
 HeroHandle	%The Hero handler
 HeroTag		%The Hero Canvas Tag
 
-																				/* FUNCTIONS */
+																/* FUNCTIONS */
 
 /*
 * pre: a no-nul list starting with the first case of the map.

@@ -11,11 +11,12 @@ CutImages(moveHero:MoveHero face:Face)
 QTk at 'x-oz://system/wp/QTk.ozf'
 
 export
-HeroHandle
+HeroHandle SquareLengthFloat
 
 define
 																/* CONSTANTS */
 SQUARE_LENGTH = 34 % length of a standard square
+SquareLengthFloat = {IntToFloat SQUARE_LENGTH}
 
 																/* GLOBAL_VARIABLES */
 %Key_positions
