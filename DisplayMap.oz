@@ -5,13 +5,17 @@ functor
 import
 	System(show:Show)
 	Open
-	CutImages(face:Face grass_Tile:Grass_Tile road_Tile:Road_Tile)
+	CutImages(heroFace:HeroFace pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile)
 	MoveHero(upHandle:UpHandle rightHandle:RightHandle leftHandle:LeftHandle downHandle:DownHandle)
+	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	QTk at 'x-oz://system/wp/QTk.ozf'
 
 export
-	HeroHandle SquareLengthFloat
-
+	HeroHandle 
+	HeroPosition
+	PokeHandle 
+	SquareLengthFloat
+	
 define
 																/* CONSTANTS */
 	SQUARE_LENGTH = 16 % length of a standard square
@@ -34,7 +38,11 @@ define
 	%Hero_variables
 	HeroHandle	%The Hero handler
 	HeroTag		%The Hero Canvas Tag
-
+	HeroPosition	%The Hero's position cell
+	
+	%Poke_variables
+	PokeHandle
+	PokeTag
 																	/* FUNCTIONS */
 
 	/*
@@ -106,6 +114,9 @@ define
 		{Recurs 1 1 0 0}
 	end
 
+	
+
+	
 	/*
 	* pre: A valid MapRecord record
 	* result: Draw and display the map
@@ -127,8 +138,11 @@ define
 	{DrawMap MapRecord}
 
 	HeroTag={CanvasHandler newTag($)}
-%	{CanvasHandler create(image StartX-12 StartY-25-34*10 image:Face anchor:nw handle:HeroHandle tags:HeroTag)}
-	{CanvasHandler create(image StartX-7 StartY-16 image:Face anchor:nw handle:HeroHandle tags:HeroTag)}
+	HeroPosition={CustomNewCell StartX#StartY}
+	{CanvasHandler create(image StartX-7 StartY-16 image:HeroFace anchor:nw handle:HeroHandle tags:HeroTag)}
+
+	PokeTag={CanvasHandler newTag($)}
+	{CanvasHandler create(image StartX-7 StartY-16-SQUARE_LENGTH image:PokeFace anchor:nw handle:PokeHandle tags:PokeTag)}
 
 	{Window bind(event:"<Up>" action:UpHandle)} %trying to bind to an action
 	{Window bind(event:"<Down>" action:DownHandle)}

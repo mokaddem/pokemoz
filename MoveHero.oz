@@ -4,9 +4,10 @@ import
 	System(show:Show)
 	Open
 	QTk at 'x-oz://system/wp/QTk.ozf'
-	CutImages(allHeroFrames:AllHeroFrames)
-	DisplayMap(heroHandle:HeroHandle squareLengthFloat:SquareLengthFloat)
-
+	CutImages(allHeroFrames:AllHeroFrames allPokeFrames:AllPokeFrames)
+	DisplayMap(heroHandle:HeroHandle heroPosition:HeroPosition pokeHandle:PokeHandle squareLengthFloat:SquareLengthFloat)
+	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
+	
 export
 	UpHandle
 	DownHandle
@@ -18,61 +19,52 @@ define
 	
 %PROCEDURE THAT ANIMATE AND MOVE THE HERO
 	proc {MoveHero Dir}
-		D1=500
-		D2=100
 		MovementValue=SquareLengthFloat/5.0 
 		Movement 
-		Frames 
+		HeroFrames 
+		PokeFrames
 	in
 		case Dir
 		of r then
-		Frames = AllHeroFrames.rightFrame
+		HeroFrames = AllHeroFrames.rightFrame
+		PokeFrames = AllPokeFrames.rightFrame
 		Movement = move(MovementValue 0)
 		[]l then
-			Frames = AllHeroFrames.leftFrame
+			HeroFrames = AllHeroFrames.leftFrame
+			PokeFrames = AllPokeFrames.leftFrame
 			Movement = move(~MovementValue 0)
 		[]d then
-			Frames = AllHeroFrames.downFrame
+			HeroFrames = AllHeroFrames.downFrame
+			PokeFrames = AllPokeFrames.downFrame
 			Movement = move(0 MovementValue)
 		[]u then
-			Frames = AllHeroFrames.upFrame
+			HeroFrames = AllHeroFrames.upFrame
+			PokeFrames = AllPokeFrames.upFrame
 			Movement = move(0 ~MovementValue)
-		end/*
-%		{HeroHandle set(image:Frames.1)}
-%		{Delay D2}
-		{HeroHandle set(image:Frames.2)}
-		{HeroHandle Movement}
-		{Delay D1}
-		{HeroHandle set(image:Frames.3)}
-		{HeroHandle Movement}
-		{Delay D1}
-		{HeroHandle set(image:Frames.4)}
-		{HeroHandle Movement}
-		{Delay D1} 
-		{HeroHandle set(image:Frames.1)}
-		{HeroHandle Movement}
-		end*/
-
-		{HeroHandle set(image:Frames.2)}
-		{HeroHandle Movement}
-		{Delay D2}
-		{HeroHandle Movement}
-		{Delay D2}
-		{HeroHandle set(image:Frames.4)}
-		{HeroHandle Movement}
-		{Delay D2}
-		{HeroHandle Movement}
-		{Delay D2}
-		{HeroHandle set(image:Frames.1)}
-		{HeroHandle Movement}
-		{Delay D2}
 		end
+		thread {Delay 150} {MakeTheMove PokeHandle PokeFrames Movement} end % thread to not wit the end of poke move
+		{MakeTheMove HeroHandle HeroFrames Movement}
+	end
+	
+	proc {MakeTheMove Handler FramesDirection Movement}
+		D=75 in
+		{Handler set(image:FramesDirection.2)}
+		{Handler Movement}
+		{Delay D}
+		{Handler Movement}
+		{Delay D}
+		{Handler set(image:FramesDirection.4)}
+		{Handler Movement}
+		{Delay D}
+		{Handler Movement}
+		{Delay D}
+		{Handler set(image:FramesDirection.1)}
+		{Handler Movement}
+		{Delay D}
+	end
 
-
-
-
-
-
+/* ************** Hero Position Cell ************** */
+	
 		
 /* ******************************** */
 	MovementStatusStream
@@ -154,7 +146,5 @@ define
 		   	end
 	   	end
 	end		
-		
-		
-		
+
 end

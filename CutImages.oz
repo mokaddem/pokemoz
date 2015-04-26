@@ -6,20 +6,27 @@ import
 export 
 	Grass_Tile
 	Road_Tile
-	Face
+	HeroFace
+	PokeFace
 	AllHeroFrames
+	AllPokeFrames
+	
 define
 
+PathHeroTotal = 'Images/HGSS_143.gif'
+PathPokeTotal = 'Images/001_0.gif'
 
-%%%%% CREATE MOUVEMENT IMAGES %%%%%   
-	PathHeroTotal = photo(file:'Images/HGSS_143.gif')
-	HeroImage = {QTk.newImage PathHeroTotal}   
+%%%%% CREATE MOVEMENT IMAGES %%%%%   
+fun {CreateMovementImages Path}
+	PathHeroTotal = photo(file:Path)
+	HeroImage = {QTk.newImage PathHeroTotal}
+	AllFrames
 %Down
 	Down1 = {QTk.newImage photo()}
 	Down2 = {QTk.newImage photo()}
 	Down3 = {QTk.newImage photo()}
 	Down4 = {QTk.newImage photo()}
-	{Down1 copy(HeroImage 'from':o(0 0 64 64) subsample:o(2))} Face=Down1
+	{Down1 copy(HeroImage 'from':o(0 0 64 64) subsample:o(2))}
 	{Down2 copy(HeroImage 'from':o(64 0 128 64) subsample:o(2))}
 	{Down3 copy(HeroImage 'from':o(128 0 192 64) subsample:o(2))}
 	{Down4 copy(HeroImage 'from':o(192 0 256 64) subsample:o(2))}
@@ -54,8 +61,14 @@ define
 	{Up3 copy(HeroImage 'from':o(128 192 192 256) subsample:o(2))}
 	{Up4 copy(HeroImage 'from':o(192 192 256 256) subsample:o(2))}
 	UpFrame = frame(Up1 Up2 Up3 Up4)
-%
-AllHeroFrames = heroFrames(upFrame:UpFrame rightFrame:RightFrame leftFrame:LeftFrame downFrame:DownFrame)
+in
+	AllFrames = allFrames(upFrame:UpFrame rightFrame:RightFrame leftFrame:LeftFrame downFrame:DownFrame)
+end
+
+AllHeroFrames = {CreateMovementImages PathHeroTotal}
+HeroFace = AllHeroFrames.downFrame.1
+AllPokeFrames = {CreateMovementImages PathPokeTotal}
+PokeFace = AllPokeFrames.downFrame.1
 
 %%%% Create Ground Tile %%%%%
 %Grass_Tile_old = {QTk.newImage photo(file:'Images/Ground/grass-modif.gif')} %In the case if we need to adapt ground size
