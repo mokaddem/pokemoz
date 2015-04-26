@@ -119,10 +119,10 @@ define
 	
 	fun {FieldType X Y}
 		if X > {Length {Arity MapRecord}} then null
-		else if X < 0 then null
+		else if X < 1 then null
 		else if Y > {Length {Arity MapRecord}} then null
-		else if Y < 0  then null
-		else MapRecord.X.Y end end end end
+		else if Y < 1  then null
+		else MapRecord.Y.X end end end end
 	end
 
 	MapFile={New Open.file init(name:'map.txt' flags:[read])}
@@ -134,7 +134,7 @@ define
 	HeroTag={CanvasHandler newTag($)}
 	{CanvasHandler create(image StartX-12 StartY-25-34*10 image:Face anchor:nw handle:HeroHandle tags:HeroTag)}
 	
-	Tr = {NewTrainer state(x:StartX-12 y:StartY-25-34*10 pokemoz:0 speed:5 movement:proc{$ P} {Show move_compute} end handler:HeroHandle)}
+	Tr = {NewTrainer state(x:11 y:3 pokemoz:0 speed:5 movement:proc{$ P} 1=1 end handler:HeroHandle)}
 
 
 	{Window bind(event:"<Up>" action:proc{$} {MovementHandle u Tr} end)} %trying to bind to an action

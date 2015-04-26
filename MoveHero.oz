@@ -69,17 +69,27 @@ define
 		thread S X Y H in
 			{Send MovementStatus get(S)}
 			{Wait S}
-			{Show S}
+			%{Show S}
 			{Send TrainerPort getPosition(x:X y:Y)}
-			{Show 'Trainer is on'#{FieldType X Y}}
+			{Wait X}
+			{Show 'Trainer was on'#{FieldType X Y}#'at'#X#' '#Y}
 			{Send TrainerPort getHandler(H)}
+			{Wait H}
 			case S of idle() then
 				{Send MovementStatus moving()}
 			   	case M
-			   	of l then {Show move_left}
-			   	[] r then {Show move_right}
-			   	[] u then {Show move_up}
-			   	[] d then {Show move_down}
+			   	of l then 
+			   		%{Show move_left}
+			   		{Send TrainerPort moveX(~1)}
+			   	[] r then
+			   		%{Show move_right}
+			   		{Send TrainerPort moveX(1)}
+			   	[] u then
+			   		%{Show move_up}
+			   		{Send TrainerPort moveY(~1)}
+			   	[] d then
+			   		%{Show move_down}
+			   		{Send TrainerPort moveY(1)}
 			   	end
 				{MoveHero M H}
 				{Send MovementStatus idle()}
