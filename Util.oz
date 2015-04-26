@@ -21,14 +21,16 @@ define
 				[]assign(Val) then Val
 			end
 		end
-		in
+	in
 		P = {NewPort S}
 		thread {Loop S Init} end
 		P
 	end
 	
-	proc {CellGet Cell Val}
+	fun {CellGet Cell}
+		Val in
 		{Send Cell access(Val)}
+		Val
 	end
 
 	proc {CellSet Cell Val}

@@ -14,13 +14,13 @@ export
 	HeroHandle 
 	HeroPosition
 	PokeHandle 
+	PokePosition
 	SquareLengthFloat
 	
 define
 																/* CONSTANTS */
 	SQUARE_LENGTH = 16 % length of a standard square
 	SquareLengthFloat = {IntToFloat SQUARE_LENGTH}
-
 																	/* GLOBAL_VARIABLES */
 	%Key_positions
 	StartX 
@@ -43,6 +43,7 @@ define
 	%Poke_variables
 	PokeHandle
 	PokeTag
+	PokePosition
 																	/* FUNCTIONS */
 
 	/*
@@ -137,12 +138,13 @@ define
 	{MapFile close}
 	{DrawMap MapRecord}
 
-	HeroTag={CanvasHandler newTag($)}
-	HeroPosition={CustomNewCell StartX#StartY}
-	{CanvasHandler create(image StartX-7 StartY-16 image:HeroFace anchor:nw handle:HeroHandle tags:HeroTag)}
-
 	PokeTag={CanvasHandler newTag($)}
+	PokePosition={CustomNewCell pos(x:{IntToFloat StartX} y:({IntToFloat StartY}-SquareLengthFloat/5.0))}
 	{CanvasHandler create(image StartX-7 StartY-16-SQUARE_LENGTH image:PokeFace anchor:nw handle:PokeHandle tags:PokeTag)}
+
+	HeroTag={CanvasHandler newTag($)}
+	HeroPosition={CustomNewCell pos(x:{IntToFloat StartX} y:{IntToFloat StartY})}
+	{CanvasHandler create(image StartX-7 StartY-16 image:HeroFace anchor:nw handle:HeroHandle tags:HeroTag)}
 
 	{Window bind(event:"<Up>" action:UpHandle)} %trying to bind to an action
 	{Window bind(event:"<Down>" action:DownHandle)}

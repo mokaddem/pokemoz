@@ -5,7 +5,7 @@ import
 	Open
 	QTk at 'x-oz://system/wp/QTk.ozf'
 	CutImages(allHeroFrames:AllHeroFrames allPokeFrames:AllPokeFrames)
-	DisplayMap(heroHandle:HeroHandle heroPosition:HeroPosition pokeHandle:PokeHandle squareLengthFloat:SquareLengthFloat)
+	DisplayMap(heroHandle:HeroHandle heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	
 export
@@ -17,35 +17,92 @@ export
 define	
 	
 	
-%PROCEDURE THAT ANIMATE AND MOVE THE HERO
+
 	proc {MoveHero Dir}
-		MovementValue=SquareLengthFloat/5.0 
+		MovementValue=SquareLengthFloat/5.0
 		Movement 
-		HeroFrames 
-		PokeFrames
+		HeroFrames
+		NewHeroPosition
+		HeroPos
 	in
+		HeroPos={CellGet HeroPosition}
+		{Wait HeroPos}
 		case Dir
 		of r then
 		HeroFrames = AllHeroFrames.rightFrame
-		PokeFrames = AllPokeFrames.rightFrame
 		Movement = move(MovementValue 0)
+		NewHeroPosition=pos(x:HeroPos.x+MovementValue y:HeroPos.y)
 		[]l then
 			HeroFrames = AllHeroFrames.leftFrame
-			PokeFrames = AllPokeFrames.leftFrame
 			Movement = move(~MovementValue 0)
+			NewHeroPosition=pos(x:HeroPos.x-MovementValue y:HeroPos.y)
 		[]d then
 			HeroFrames = AllHeroFrames.downFrame
-			PokeFrames = AllPokeFrames.downFrame
 			Movement = move(0 MovementValue)
+			NewHeroPosition=pos(x:HeroPos.x y:HeroPos.y+MovementValue)
 		[]u then
 			HeroFrames = AllHeroFrames.upFrame
-			PokeFrames = AllPokeFrames.upFrame
 			Movement = move(0 ~MovementValue)
+			NewHeroPosition=pos(x:HeroPos.x y:HeroPos.y-MovementValue)
 		end
-		thread {Delay 150} {MakeTheMove PokeHandle PokeFrames Movement} end % thread to not wit the end of poke move
+		thread {Delay 50} {MakeTheFollowMove PokeHandle AllPokeFrames Movement} end % thread to not wit the end of poke move
 		{MakeTheMove HeroHandle HeroFrames Movement}
+%		{MakeTheFollowMove PokeHandle AllPokeFrames Movement}
+		{CellSet HeroPosition NewHeroPosition}
 	end
+
+/* Start - Make the follow */
+	proc {MakeTheFollowMove Handler FramesDirection HeroMovement}
+		MovementValue=SquareLengthFloat/5.0
+		NewPokePosition
+		HeroPos
+		PokePos
+		DirectionToTake
+		DirectionToFace
+		Movement
+		in
 	
+		HeroPos = {CellGet HeroPosition}		
+		PokePos = {CellGet PokePosition}
+	
+		case HeroPos#PokePos 
+			of pos(x:Hx y:Hy)#pos(x:Px y:Py) then
+			if (Hx-Px)>0.0 then DirectionToTake=rightFrame
+			elseif (Hx-Px)<0.0 then DirectionToTake=leftFrame
+			else
+				if (Hy-Py)>0.0 then DirectionToTake=downFrame
+				else DirectionToTake=upFrame
+				end
+			end
+		end
+		case DirectionToTake
+			of downFrame then Movement=move(0 MovementValue) NewPokePosition=pos(x:PokePos.x y:PokePos.y+MovementValue)
+			[]upFrame then Movement=move(0 ~MovementValue) NewPokePosition=pos(x:PokePos.x y:PokePos.y-MovementValue)
+			[]rightFrame then Movement=move(MovementValue 0) NewPokePosition=pos(x:PokePos.x+MovementValue y:PokePos.y)
+			[]leftFrame then Movement=move(~MovementValue 0) NewPokePosition=pos(x:PokePos.x-MovementValue y:PokePos.y)
+		end
+	
+		{CellSet PokePosition NewPokePosition}
+		{MakeTheMove Handler FramesDirection.DirectionToTake Movement}
+		
+		case HeroMovement
+		of move(X Y) then
+			if X==0 then
+				if Y>0.0 then DirectionToFace=downFrame
+				else DirectionToFace=upFrame
+				end
+			else 
+				if X>0.0 then DirectionToFace=rightFrame
+				else DirectionToFace=leftFrame
+				end
+			end
+		end
+		{Delay 75}
+		{Handler set(image:AllPokeFrames.DirectionToFace.1)}
+	end
+
+/*  END - Make the follow */
+
 	proc {MakeTheMove Handler FramesDirection Movement}
 		D=75 in
 		{Handler set(image:FramesDirection.2)}
@@ -63,8 +120,6 @@ define
 		{Delay D}
 	end
 
-/* ************** Hero Position Cell ************** */
-	
 		
 /* ******************************** */
 	MovementStatusStream
@@ -73,7 +128,7 @@ define
 		case Msg
 		of moving() then moving()
 		[] idle() then idle()
-		[] get(X) then X=State State
+		[] get(StateVal) then StateVal=State State
 		end
 	end
 	proc {Loop S State}
@@ -84,13 +139,13 @@ define
 	thread {Loop MovementStatusStream idle()} end
 
 	proc {LeftHandle}
-	   	thread X in
-			{Send MovementStatus get(X)}
-			{Wait X}
-			{Show X}
-		   	case X of idle() then
+	   	thread StateVal in
+			{Send MovementStatus get(StateVal)}
+			{Wait StateVal}
+%			{Show StateVal}
+		   	case StateVal of idle() then
 		   		{Send MovementStatus moving()}
-			   	{Show move_left}
+%			   	{Show move_left}
 		   		{MoveHero l}
 		   		{Send MovementStatus idle()}
 		   	else
@@ -100,13 +155,13 @@ define
 	end
 
 	proc {RightHandle}
-	   	thread X in
-			{Send MovementStatus get(X)}
-			{Wait X}
-			{Show X}
-		   	case X of idle() then
+	   	thread StateVal in
+			{Send MovementStatus get(StateVal)}
+			{Wait StateVal}
+%			{Show StateVal}
+		   	case StateVal of idle() then
 		   		{Send MovementStatus moving()}
-			   	{Show move_right}
+%			   	{Show move_right}
 		   		{MoveHero r}
 		   		{Send MovementStatus idle()}
 		   	else
@@ -116,13 +171,13 @@ define
 	end
 
 	proc {UpHandle}
-	   	thread X in
-			{Send MovementStatus get(X)}
-			{Wait X}
-			{Show X}
-		   	case X of idle() then
+	   	thread StateVal in
+			{Send MovementStatus get(StateVal)}
+			{Wait StateVal}
+%			{Show StateVal}
+		   	case StateVal of idle() then
 		   		{Send MovementStatus moving()}
-			   	{Show move_up}
+%			   	{Show move_up}
 		   		{MoveHero u}
 		   		{Send MovementStatus idle()}
 		   	else
@@ -132,13 +187,13 @@ define
 	end
 
 	proc {DownHandle}
-	   	thread X in
-			{Send MovementStatus get(X)}
-			{Wait X}
-			{Show X}
-		   	case X of idle() then
+	   	thread StateVal in
+			{Send MovementStatus get(StateVal)}
+			{Wait StateVal}
+%			{Show StateVal}
+		   	case StateVal of idle() then
 		   		{Send MovementStatus moving()}
-			   	{Show move_down}
+%			   	{Show move_down}
 		   		{MoveHero d}
 		   		{Send MovementStatus idle()}
 		   	else
