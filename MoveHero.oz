@@ -18,8 +18,9 @@ define
 	
 %PROCEDURE THAT ANIMATE AND MOVE THE HERO
 	proc {MoveHero Dir}
-		D=75 
-		MovementValue=SquareLengthFloat/4.0 
+		D1=500
+		D2=100
+		MovementValue=SquareLengthFloat/5.0 
 		Movement 
 		Frames 
 	in
@@ -36,21 +37,42 @@ define
 		[]u then
 			Frames = AllHeroFrames.upFrame
 			Movement = move(0 ~MovementValue)
-		end
-		{HeroHandle set(image:Frames.1)}
-		{Delay D}
+		end/*
+%		{HeroHandle set(image:Frames.1)}
+%		{Delay D2}
 		{HeroHandle set(image:Frames.2)}
 		{HeroHandle Movement}
-		{Delay D}
+		{Delay D1}
 		{HeroHandle set(image:Frames.3)}
 		{HeroHandle Movement}
-		{Delay D}
+		{Delay D1}
 		{HeroHandle set(image:Frames.4)}
 		{HeroHandle Movement}
-		{Delay D}
+		{Delay D1} 
 		{HeroHandle set(image:Frames.1)}
 		{HeroHandle Movement}
+		end*/
+
+		{HeroHandle set(image:Frames.2)}
+		{HeroHandle Movement}
+		{Delay D2}
+		{HeroHandle Movement}
+		{Delay D2}
+		{HeroHandle set(image:Frames.4)}
+		{HeroHandle Movement}
+		{Delay D2}
+		{HeroHandle Movement}
+		{Delay D2}
+		{HeroHandle set(image:Frames.1)}
+		{HeroHandle Movement}
+		{Delay D2}
 		end
+
+
+
+
+
+
 		
 /* ******************************** */
 	MovementStatusStream

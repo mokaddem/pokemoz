@@ -5,7 +5,7 @@ functor
 import
 	System(show:Show)
 	Open
-	CutImages(face:Face)
+	CutImages(face:Face grass_Tile:Grass_Tile road_Tile:Road_Tile)
 	MoveHero(upHandle:UpHandle rightHandle:RightHandle leftHandle:LeftHandle downHandle:DownHandle)
 	QTk at 'x-oz://system/wp/QTk.ozf'
 
@@ -14,7 +14,7 @@ export
 
 define
 																/* CONSTANTS */
-	SQUARE_LENGTH = 34 % length of a standard square
+	SQUARE_LENGTH = 16 % length of a standard square
 	SquareLengthFloat = {IntToFloat SQUARE_LENGTH}
 
 																	/* GLOBAL_VARIABLES */
@@ -88,8 +88,10 @@ define
 				else
 					GroundType = MapRecord.CurrRow.CurrCol
 					case GroundType
-					of 1 then {Canvas create(rect PosX PosY PosX+SQUARE_LENGTH PosY+SQUARE_LENGTH fill:green outline:nil)}
-					[]0 then {Canvas create(rect PosX PosY PosX+SQUARE_LENGTH PosY+SQUARE_LENGTH fill:white outline:nil)}
+					of 1 then %{Canvas create(rect PosX PosY PosX+SQUARE_LENGTH PosY+SQUARE_LENGTH fill:green outline:nil)}
+								{Canvas create(image PosX PosY image:Grass_Tile anchor:nw)}
+					[]0 then %{Canvas create(rect PosX PosY PosX+SQUARE_LENGTH PosY+SQUARE_LENGTH fill:white outline:nil)}
+								{Canvas create(image PosX PosY image:Road_Tile anchor:nw)}
 					[]e then {Canvas create(rect PosX PosY PosX+SQUARE_LENGTH PosY+SQUARE_LENGTH fill:red outline:nil)}
 					[]s then 
 						{Canvas create(rect PosX PosY PosX+SQUARE_LENGTH PosY+SQUARE_LENGTH fill:blue outline:nil)}
@@ -125,8 +127,8 @@ define
 	{DrawMap MapRecord}
 
 	HeroTag={CanvasHandler newTag($)}
-	{CanvasHandler create(image StartX-12 StartY-25-34*10 image:Face anchor:nw handle:HeroHandle tags:HeroTag)}
-
+%	{CanvasHandler create(image StartX-12 StartY-25-34*10 image:Face anchor:nw handle:HeroHandle tags:HeroTag)}
+	{CanvasHandler create(image StartX-7 StartY-16 image:Face anchor:nw handle:HeroHandle tags:HeroTag)}
 
 	{Window bind(event:"<Up>" action:UpHandle)} %trying to bind to an action
 	{Window bind(event:"<Down>" action:DownHandle)}
