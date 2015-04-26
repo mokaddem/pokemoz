@@ -3,7 +3,7 @@ functor
 import
 	System(show:Show)
 	CutImages(allHeroFrames:AllHeroFrames)
-	DisplayMap(heroHandle:HeroHandle)
+	DisplayMap(heroHandle:HeroHandle fieldType:FieldType)
 	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH)
 
 export
@@ -13,7 +13,7 @@ define
 	
 	
 %PROCEDURE THAT ANIMATE AND MOVE THE HERO
-	proc {MoveHero Dir}
+	proc {MoveHero Dir HeroHandle}
 		D=75 
 		MovementValue={IntToFloat SQUARE_LENGTH}/4.0 
 		Movement 
@@ -65,24 +65,27 @@ define
 	end
 	thread {Loop MovementStatusStream idle()} end
 
-	proc {MovementHandle M}
-		thread X in
-			{Send MovementStatus get(X)}
-			{Wait X}
-			{Show X}
-		   	case X of idle() then
-		   		{Send MovementStatus moving()}
+	proc {MovementHandle M TrainerPort}
+		thread S X Y H in
+			{Send MovementStatus get(S)}
+			{Wait S}
+			{Show S}
+			{Send TrainerPort getPosition(x:X y:Y)}
+			{Show 'Trainer is on'#{FieldType X Y}}
+			{Send TrainerPort getHandler(H)}
+			case S of idle() then
+				{Send MovementStatus moving()}
 			   	case M
 			   	of l then {Show move_left}
 			   	[] r then {Show move_right}
 			   	[] u then {Show move_up}
 			   	[] d then {Show move_down}
 			   	end
-		   		{MoveHero M}
-		   		{Send MovementStatus idle()}
-		   	else
-		   		skip
-		   	end
+				{MoveHero M H}
+				{Send MovementStatus idle()}
+			else
+				skip
+			end
 	   	end
 	end
 end

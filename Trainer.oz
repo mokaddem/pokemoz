@@ -1,15 +1,14 @@
 functor
 import
-	System
 	PokeConfig(dELAY:DELAY)
 export
 	NewTrainer
 define
 	
-	% State = state(x:X y:Y pokemoz:P speed:S movement:M)
+	% State = state(x:X y:Y pokemoz:P speed:S movement:M handler:H)
 	fun {NewTrainer Init}
 		proc {Loop S State}
-			case S of Msg|S2 then {Loop S2 {HandleMessage Msg State} end
+			case S of Msg|S2 then {Loop S2 {HandleMessage Msg State}} end
 		end
 		proc {LoopMovement P}
 			S M in
@@ -17,18 +16,19 @@ define
 			{Send P getMovement(M)}
 			{Delay (10-S)*DELAY}
 			{M P}
-			{LoopMovement}
+			{LoopMovement P}
 		end
 		fun {HandleMessage Msg State}
 			case Msg
-			of moveX(X) then state(x:(State.x + X) y:(State.y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement))
-			[] moveY(Y) then state(x:(State.x) y:(State.y + Y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement))
-			[] pokemoz(Pokemoz) then state(x:(State.x) y:(State.y) pokemoz:(Pokemoz) speed:(State.speed) movement:(State.movement))
-			[] state(x:X y:Y pokemoz:P speed:S movement:M) then Msg
+			of moveX(X) then state(x:(State.x + X) y:(State.y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.h))
+			[] moveY(Y) then state(x:(State.x) y:(State.y + Y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.h))
+			[] pokemoz(Pokemoz) then state(x:(State.x) y:(State.y) pokemoz:(Pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.h))
+			[] state(x y pokemoz speed movement) then Msg
 			[] getPosition(x:X y:Y) then X=State.x Y=State.y State
 			[] getPokemoz(P) then P=State.pokemoz State
 			[] getMovement(M) then M=State.movement State
 			[] getSpeed(S) then S=State.speed State
+			[] getHandler(H) then H=State.handler State
 			end
 		end
 		P S

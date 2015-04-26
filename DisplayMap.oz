@@ -9,6 +9,7 @@ import
 	MoveHero(movementHandle:MovementHandle)
 	QTk at 'x-oz://system/wp/QTk.ozf'
 	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH)
+	Trainer(newTrainer:NewTrainer)
 
 export
 	HeroHandle FieldType
@@ -132,11 +133,13 @@ define
 
 	HeroTag={CanvasHandler newTag($)}
 	{CanvasHandler create(image StartX-12 StartY-25-34*10 image:Face anchor:nw handle:HeroHandle tags:HeroTag)}
+	
+	Tr = {NewTrainer state(x:StartX-12 y:StartY-25-34*10 pokemoz:0 speed:5 movement:proc{$ P} {Show move_compute} end handler:HeroHandle)}
 
 
-	{Window bind(event:"<Up>" action:proc{$} {MovementHandle u} end)} %trying to bind to an action
-	{Window bind(event:"<Down>" action:proc{$} {MovementHandle d} end)}
-	{Window bind(event:"<Left>" action:proc{$} {MovementHandle l} end)}
-	{Window bind(event:"<Right>" action:proc{$} {MovementHandle r} end)}
+	{Window bind(event:"<Up>" action:proc{$} {MovementHandle u Tr} end)} %trying to bind to an action
+	{Window bind(event:"<Down>" action:proc{$} {MovementHandle d Tr} end)}
+	{Window bind(event:"<Left>" action:proc{$} {MovementHandle l Tr} end)}
+	{Window bind(event:"<Right>" action:proc{$} {MovementHandle r Tr} end)}
 
 end
