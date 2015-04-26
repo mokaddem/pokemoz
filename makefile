@@ -4,6 +4,7 @@ clean:
 	rm *ozf
 
 compile:
+	ozc -c PokeConfig.oz -o PokeConfig.ozf
 	ozc -c DisplayMap.oz -o DisplayMap.ozf
 	ozc -c CutImages.oz -o CutImages.ozf
 	ozc -c MoveHero.oz -o MoveHero.ozf

@@ -1,10 +1,10 @@
 functor
 import
 	System
+	PokeConfig(dELAY:DELAY)
 export
 	NewTrainer
 define
-	DELAY=200
 	
 	% State = state(x:X y:Y pokemoz:P speed:S movement:M)
 	fun {NewTrainer Init}

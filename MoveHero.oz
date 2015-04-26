@@ -2,10 +2,9 @@
 functor
 import
 	System(show:Show)
-	Open
-	QTk at 'x-oz://system/wp/QTk.ozf'
 	CutImages(allHeroFrames:AllHeroFrames)
-	DisplayMap(heroHandle:HeroHandle squareLengthFloat:SquareLengthFloat)
+	DisplayMap(heroHandle:HeroHandle)
+	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH)
 
 export
 	MovementHandle
@@ -16,7 +15,7 @@ define
 %PROCEDURE THAT ANIMATE AND MOVE THE HERO
 	proc {MoveHero Dir}
 		D=75 
-		MovementValue=SquareLengthFloat/4.0 
+		MovementValue={IntToFloat SQUARE_LENGTH}/4.0 
 		Movement 
 		Frames 
 	in

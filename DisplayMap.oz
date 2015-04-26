@@ -8,14 +8,12 @@ import
 	CutImages(face:Face)
 	MoveHero(movementHandle:MovementHandle)
 	QTk at 'x-oz://system/wp/QTk.ozf'
+	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH)
 
 export
-	HeroHandle SquareLengthFloat
+	HeroHandle FieldType
 
 define
-																/* CONSTANTS */
-	SQUARE_LENGTH = 34 % length of a standard square
-	SquareLengthFloat = {IntToFloat SQUARE_LENGTH}
 
 																	/* GLOBAL_VARIABLES */
 	%Key_positions
@@ -116,6 +114,14 @@ define
 		Window = {QTk.build td(Canvas)}
 		{Window show}
 		{AddMapBlock MapRecord CanvasHandler}
+	end
+	
+	fun {FieldType X Y}
+		if X > {Length {Arity MapRecord}} then null
+		else if X < 0 then null
+		else if Y > {Length {Arity MapRecord}} then null
+		else if Y < 0  then null
+		else MapRecord.X.Y end end end end
 	end
 
 	MapFile={New Open.file init(name:'map.txt' flags:[read])}

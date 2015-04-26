@@ -1,7 +1,6 @@
 functor
 import
 	QTk at 'x-oz://system/wp/QTk.ozf'
-	DisplayMap(heroHandle:HeroHandle squareLengthFloat:SquareLengthFloat)
 
 export 
 	Face
@@ -53,7 +52,7 @@ define
 	{Up4 copy(HeroImage 'from':o(192 192 256 256))}
 	UpFrame = frame(Up1 Up2 Up3 Up4)
 %
-AllHeroFrames = heroFrames(upFrame:UpFrame rightFrame:RightFrame leftFrame:LeftFrame downFrame:DownFrame)
+	AllHeroFrames = heroFrames(upFrame:UpFrame rightFrame:RightFrame leftFrame:LeftFrame downFrame:DownFrame)
 
 end
 
