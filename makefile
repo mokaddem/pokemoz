@@ -13,3 +13,6 @@ run:
 	
 run-verbose:
 	ozengine DisplayMap.ozf
+	
+open:
+	gedit *oz makefile &

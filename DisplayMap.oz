@@ -6,7 +6,7 @@ import
 	System(show:Show)
 	Open
 	CutImages(face:Face)
-	MoveHero(upHandle:UpHandle rightHandle:RightHandle leftHandle:LeftHandle downHandle:DownHandle)
+	MoveHero(movementHandle:MovementHandle)
 	QTk at 'x-oz://system/wp/QTk.ozf'
 
 export
@@ -128,9 +128,9 @@ define
 	{CanvasHandler create(image StartX-12 StartY-25-34*10 image:Face anchor:nw handle:HeroHandle tags:HeroTag)}
 
 
-	{Window bind(event:"<Up>" action:UpHandle)} %trying to bind to an action
-	{Window bind(event:"<Down>" action:DownHandle)}
-	{Window bind(event:"<Left>" action:LeftHandle)}
-	{Window bind(event:"<Right>" action:RightHandle)}
+	{Window bind(event:"<Up>" action:proc{$} {MovementHandle u} end)} %trying to bind to an action
+	{Window bind(event:"<Down>" action:proc{$} {MovementHandle d} end)}
+	{Window bind(event:"<Left>" action:proc{$} {MovementHandle l} end)}
+	{Window bind(event:"<Right>" action:proc{$} {MovementHandle r} end)}
 
 end

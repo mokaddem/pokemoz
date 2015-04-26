@@ -8,10 +8,7 @@ import
 	DisplayMap(heroHandle:HeroHandle squareLengthFloat:SquareLengthFloat)
 
 export
-	UpHandle
-	DownHandle
-	RightHandle
-	LeftHandle
+	MovementHandle
 
 define	
 	
@@ -69,70 +66,24 @@ define
 	end
 	thread {Loop MovementStatusStream idle()} end
 
-	proc {LeftHandle}
-	   	thread X in
+	proc {MovementHandle M}
+		thread X in
 			{Send MovementStatus get(X)}
 			{Wait X}
 			{Show X}
 		   	case X of idle() then
 		   		{Send MovementStatus moving()}
-			   	{Show move_left}
-		   		{MoveHero l}
+			   	case M
+			   	of l then {Show move_left}
+			   	[] r then {Show move_right}
+			   	[] u then {Show move_up}
+			   	[] d then {Show move_down}
+			   	end
+		   		{MoveHero M}
 		   		{Send MovementStatus idle()}
 		   	else
 		   		skip
 		   	end
 	   	end
 	end
-
-	proc {RightHandle}
-	   	thread X in
-			{Send MovementStatus get(X)}
-			{Wait X}
-			{Show X}
-		   	case X of idle() then
-		   		{Send MovementStatus moving()}
-			   	{Show move_right}
-		   		{MoveHero r}
-		   		{Send MovementStatus idle()}
-		   	else
-		   		skip
-		   	end
-	   	end
-	end
-
-	proc {UpHandle}
-	   	thread X in
-			{Send MovementStatus get(X)}
-			{Wait X}
-			{Show X}
-		   	case X of idle() then
-		   		{Send MovementStatus moving()}
-			   	{Show move_up}
-		   		{MoveHero u}
-		   		{Send MovementStatus idle()}
-		   	else
-		   		skip
-		   	end
-	   	end
-	end
-
-	proc {DownHandle}
-	   	thread X in
-			{Send MovementStatus get(X)}
-			{Wait X}
-			{Show X}
-		   	case X of idle() then
-		   		{Send MovementStatus moving()}
-			   	{Show move_down}
-		   		{MoveHero d}
-		   		{Send MovementStatus idle()}
-		   	else
-		   		skip
-		   	end
-	   	end
-	end		
-		
-		
-		
 end
