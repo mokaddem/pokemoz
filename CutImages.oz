@@ -2,9 +2,10 @@ functor
 import
 	QTk at 'x-oz://system/wp/QTk.ozf'
 	DisplayMap(heroHandle:HeroHandle squareLengthFloat:SquareLengthFloat)
+
 export 
-	MoveHero
 	Face
+	AllHeroFrames
 define
 
 
@@ -51,37 +52,8 @@ define
 	{Up3 copy(HeroImage 'from':o(128 192 192 256))}
 	{Up4 copy(HeroImage 'from':o(192 192 256 256))}
 	UpFrame = frame(Up1 Up2 Up3 Up4)
-%PROCEDURE THAT ANIMATE AND MOVE THE HERO
-	proc {MoveHero Dir}
-		D=75 MovementValue=SquareLengthFloat/4.0 Movement Frames in
-		case Dir
-		of r then
-		Frames = RightFrame
-		Movement = move(MovementValue 0)
-		[]l then
-			Frames = LeftFrame
-			Movement = move(~MovementValue 0)
-		[]d then
-			Frames = DownFrame
-			Movement = move(0 MovementValue)
-		[]u then
-			Frames = UpFrame
-			Movement = move(0 ~MovementValue)
-		end
-		{HeroHandle set(image:Frames.1)}
-		{Delay D}
-		{HeroHandle set(image:Frames.2)}
-		{HeroHandle Movement}
-		{Delay D}
-		{HeroHandle set(image:Frames.3)}
-		{HeroHandle Movement}
-		{Delay D}
-		{HeroHandle set(image:Frames.4)}
-		{HeroHandle Movement}
-		{Delay D}
-		{HeroHandle set(image:Frames.1)}
-		{HeroHandle Movement}
-		end
+%
+AllHeroFrames = heroFrames(upFrame:UpFrame rightFrame:RightFrame leftFrame:LeftFrame downFrame:DownFrame)
 
 end
 
