@@ -1,14 +1,12 @@
-all: compile run
+all: compile run-verbose
 
 clean:
 	rm *ozf
 
-compile:
-	ozc -c PokeConfig.oz -o PokeConfig.ozf
-	ozc -c Trainer.oz -o Trainer.ozf
-	ozc -c DisplayMap.oz -o DisplayMap.ozf
-	ozc -c CutImages.oz -o CutImages.ozf
-	ozc -c MoveHero.oz -o MoveHero.ozf
+%.ozf: %.oz
+	ozc -c $< -o $@
+
+compile: PokeConfig.ozf Trainer.ozf DisplayMap.ozf CutImages.ozf MoveHero.ozf
 
 run:
 	ozengine DisplayMap.ozf > /dev/null &
