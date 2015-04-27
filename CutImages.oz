@@ -1,7 +1,6 @@
 functor
 import
 	QTk at 'x-oz://system/wp/QTk.ozf'
-	DisplayMap(heroHandle:HeroHandle squareLengthFloat:SquareLengthFloat)
 
 export 
 	Grass_Tile
@@ -14,7 +13,7 @@ export
 define
 
 PathHeroTotal = 'Images/HGSS_143.gif'
-PathPokeTotal = 'Images/001_0.gif'
+PathPokeTotal = 'Images/006_0.gif'
 
 %%%%% CREATE MOVEMENT IMAGES %%%%%   
 fun {CreateMovementImages Path}
@@ -61,6 +60,7 @@ fun {CreateMovementImages Path}
 	{Up3 copy(HeroImage 'from':o(128 192 192 256) subsample:o(2))}
 	{Up4 copy(HeroImage 'from':o(192 192 256 256) subsample:o(2))}
 	UpFrame = frame(Up1 Up2 Up3 Up4)
+
 in
 	AllFrames = allFrames(upFrame:UpFrame rightFrame:RightFrame leftFrame:LeftFrame downFrame:DownFrame)
 end
@@ -69,6 +69,7 @@ AllHeroFrames = {CreateMovementImages PathHeroTotal}
 HeroFace = AllHeroFrames.downFrame.1
 AllPokeFrames = {CreateMovementImages PathPokeTotal}
 PokeFace = AllPokeFrames.downFrame.1
+
 
 %%%% Create Ground Tile %%%%%
 %Grass_Tile_old = {QTk.newImage photo(file:'Images/Ground/grass-modif.gif')} %In the case if we need to adapt ground size

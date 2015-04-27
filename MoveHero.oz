@@ -5,21 +5,20 @@ import
 	Open
 	QTk at 'x-oz://system/wp/QTk.ozf'
 	CutImages(allHeroFrames:AllHeroFrames allPokeFrames:AllPokeFrames)
-	DisplayMap(heroHandle:HeroHandle heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat)
+	DisplayMap(heroHandle:HeroHandle heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat fieldType:FieldType)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
+	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH)
 	
 export
-	UpHandle
-	DownHandle
-	RightHandle
-	LeftHandle
+	MovementHandle
 
 define	
 	
 	
-
-	proc {MoveHero Dir}
-		MovementValue=SquareLengthFloat/5.0
+%PROCEDURE THAT ANIMATE AND MOVE THE HERO
+	proc {MoveHero Dir HeroHandle}
+		D=75 
+		MovementValue={IntToFloat SQUARE_LENGTH}/5.0 
 		Movement 
 		HeroFrames
 		NewHeroPosition
@@ -138,68 +137,37 @@ define
 	end
 	thread {Loop MovementStatusStream idle()} end
 
-	proc {LeftHandle}
-	   	thread StateVal in
-			{Send MovementStatus get(StateVal)}
-			{Wait StateVal}
-%			{Show StateVal}
-		   	case StateVal of idle() then
-		   		{Send MovementStatus moving()}
-%			   	{Show move_left}
-		   		{MoveHero l}
-		   		{Send MovementStatus idle()}
-		   	else
-		   		skip
-		   	end
+	proc {MovementHandle M TrainerPort}
+		thread S X Y H in
+			{Send MovementStatus get(S)}
+			{Wait S}
+			%{Show S}
+			{Send TrainerPort getHandler(H)}
+			{Wait H}
+			case S of idle() then
+				{Send MovementStatus moving()}
+			   	case M
+			   	of l then 
+			   		%{Show move_left}
+			   		{Send TrainerPort moveX(~1)}
+			   	[] r then
+			   		%{Show move_right}
+			   		{Send TrainerPort moveX(1)}
+			   	[] u then
+			   		%{Show move_up}
+			   		{Send TrainerPort moveY(~1)}
+			   	[] d then
+			   		%{Show move_down}
+			   		{Send TrainerPort moveY(1)}
+			   	end
+				{MoveHero M H}
+				{Send TrainerPort getPosition(x:X y:Y)}
+				{Wait X}
+				{Show 'Trainer was on'#{FieldType X Y}#'at'#X#' '#Y}
+				{Send MovementStatus idle()}
+			else
+				skip
+			end
 	   	end
 	end
-
-	proc {RightHandle}
-	   	thread StateVal in
-			{Send MovementStatus get(StateVal)}
-			{Wait StateVal}
-%			{Show StateVal}
-		   	case StateVal of idle() then
-		   		{Send MovementStatus moving()}
-%			   	{Show move_right}
-		   		{MoveHero r}
-		   		{Send MovementStatus idle()}
-		   	else
-		   		skip
-		   	end
-	   	end
-	end
-
-	proc {UpHandle}
-	   	thread StateVal in
-			{Send MovementStatus get(StateVal)}
-			{Wait StateVal}
-%			{Show StateVal}
-		   	case StateVal of idle() then
-		   		{Send MovementStatus moving()}
-%			   	{Show move_up}
-		   		{MoveHero u}
-		   		{Send MovementStatus idle()}
-		   	else
-		   		skip
-		   	end
-	   	end
-	end
-
-	proc {DownHandle}
-	   	thread StateVal in
-			{Send MovementStatus get(StateVal)}
-			{Wait StateVal}
-%			{Show StateVal}
-		   	case StateVal of idle() then
-		   		{Send MovementStatus moving()}
-%			   	{Show move_down}
-		   		{MoveHero d}
-		   		{Send MovementStatus idle()}
-		   	else
-		   		skip
-		   	end
-	   	end
-	end		
-
 end

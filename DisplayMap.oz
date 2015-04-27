@@ -5,10 +5,13 @@ functor
 import
 	System(show:Show)
 	Open
+
 	CutImages(heroFace:HeroFace pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile)
-	MoveHero(upHandle:UpHandle rightHandle:RightHandle leftHandle:LeftHandle downHandle:DownHandle)
+	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	QTk at 'x-oz://system/wp/QTk.ozf'
+	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH)
+	Trainer(newTrainer:NewTrainer)
 
 export
 	HeroHandle 
@@ -16,10 +19,10 @@ export
 	PokeHandle 
 	PokePosition
 	SquareLengthFloat
+	FieldType
 	
 define
 																/* CONSTANTS */
-	SQUARE_LENGTH = 16 % length of a standard square
 	SquareLengthFloat = {IntToFloat SQUARE_LENGTH}
 																	/* GLOBAL_VARIABLES */
 	%Key_positions
@@ -131,6 +134,14 @@ define
 		{Window show}
 		{AddMapBlock MapRecord CanvasHandler}
 	end
+	
+	fun {FieldType X Y}
+		if X > {Length {Arity MapRecord}} then null
+		else if X < 1 then null
+		else if Y > {Length {Arity MapRecord}} then null
+		else if Y < 1  then null
+		else MapRecord.Y.X end end end end
+	end
 
 	MapFile={New Open.file init(name:'map.txt' flags:[read])}
 	{MapFile read(list:MapParsed size:all)}
@@ -145,10 +156,11 @@ define
 	HeroTag={CanvasHandler newTag($)}
 	HeroPosition={CustomNewCell pos(x:{IntToFloat StartX} y:{IntToFloat StartY})}
 	{CanvasHandler create(image StartX-7 StartY-16 image:HeroFace anchor:nw handle:HeroHandle tags:HeroTag)}
+	Tr = {NewTrainer state(x:7 y:13 pokemoz:0 speed:5 movement:proc{$ P} 1=1 end handler:HeroHandle)}
 
-	{Window bind(event:"<Up>" action:UpHandle)} %trying to bind to an action
-	{Window bind(event:"<Down>" action:DownHandle)}
-	{Window bind(event:"<Left>" action:LeftHandle)}
-	{Window bind(event:"<Right>" action:RightHandle)}
+	{Window bind(event:"<Up>" action:proc{$} {MovementHandle u Tr} end)} %trying to bind to an action
+	{Window bind(event:"<Down>" action:proc{$} {MovementHandle d Tr} end)}
+	{Window bind(event:"<Left>" action:proc{$} {MovementHandle l Tr} end)}
+	{Window bind(event:"<Right>" action:proc{$} {MovementHandle r Tr} end)}
 
 end
