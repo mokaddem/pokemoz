@@ -127,7 +127,7 @@ define
 	proc {DrawMap MapRecord}
 		RowLength = {Length {Arity MapRecord}}
 		ColumnLength = {Length {Arity MapRecord.1}}
-		Canvas = canvas(handle:CanvasHandler width:ColumnLength*SQUARE_LENGTH+200 height:RowLength*SQUARE_LENGTH)
+		Canvas = canvas(handle:CanvasHandler width:ColumnLength*SQUARE_LENGTH+200 height:RowLength*SQUARE_LENGTH+200)
 	in
 		Window = {QTk.build td(Canvas)}
 		{Window show}
