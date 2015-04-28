@@ -1,7 +1,6 @@
 functor
 import
 	QTk at 'x-oz://system/wp/QTk.ozf'
-
 export 
 	Grass_Tile
 	Road_Tile
@@ -9,60 +8,27 @@ export
 	PokeFace
 	AllHeroFrames
 	AllPokeFrames
-	
 define
 
 PathHeroTotal = 'Images/HGSS_143.gif'
 PathPokeTotal = 'Images/006_0.gif'
+L = 64
+
+fun {GetFrame X Image}
+	Frame = frame({QTk.newImage photo()} {QTk.newImage photo()} {QTk.newImage photo()} {QTk.newImage photo()}) in
+	{Frame.1 copy(Image 'from':o(0*L X*L 1*L (X+1)*L) subsample:o(1))}
+	{Frame.2 copy(Image 'from':o(1*L X*L 2*L (X+1)*L) subsample:o(1))}
+	{Frame.3 copy(Image 'from':o(2*L X*L 3*L (X+1)*L) subsample:o(1))}
+	{Frame.4 copy(Image 'from':o(3*L X*L 4*L (X+1)*L) subsample:o(1))}
+	Frame
+end
 
 %%%%% CREATE MOVEMENT IMAGES %%%%%   
 fun {CreateMovementImages Path}
 	PathHeroTotal = photo(file:Path)
 	HeroImage = {QTk.newImage PathHeroTotal}
-	AllFrames
-%Down
-	Down1 = {QTk.newImage photo()}
-	Down2 = {QTk.newImage photo()}
-	Down3 = {QTk.newImage photo()}
-	Down4 = {QTk.newImage photo()}
-	{Down1 copy(HeroImage 'from':o(0 0 64 64) subsample:o(1))}
-	{Down2 copy(HeroImage 'from':o(64 0 128 64) subsample:o(1))}
-	{Down3 copy(HeroImage 'from':o(128 0 192 64) subsample:o(1))}
-	{Down4 copy(HeroImage 'from':o(192 0 256 64) subsample:o(1))}
-	DownFrame = frame(Down1 Down2 Down3 Down4)
-%Right
-	Right1 = {QTk.newImage photo()}
-	Right2 = {QTk.newImage photo()}
-	Right3 = {QTk.newImage photo()}
-	Right4 = {QTk.newImage photo()}
-	{Right1 copy(HeroImage 'from':o(0 128 64 192) subsample:o(1))}
-	{Right2 copy(HeroImage 'from':o(64 128 128 192) subsample:o(1))}
-	{Right3 copy(HeroImage 'from':o(128 128 192 192) subsample:o(1))}
-	{Right4 copy(HeroImage 'from':o(192 128 256 192) subsample:o(1))}
-	RightFrame = frame(Right1 Right2 Right3 Right4)
-%Left
-	Left1 = {QTk.newImage photo()}
-	Left2 = {QTk.newImage photo()}
-	Left3 = {QTk.newImage photo()}
-	Left4 = {QTk.newImage photo()}
-	{Left1 copy(HeroImage 'from':o(0 64 64 128) subsample:o(1))}
-	{Left2 copy(HeroImage 'from':o(64 64 128 128) subsample:o(1))}
-	{Left3 copy(HeroImage 'from':o(128 64 192 128) subsample:o(1))}
-	{Left4 copy(HeroImage 'from':o(192 64 256 128) subsample:o(1))}
-	LeftFrame = frame(Left1 Left2 Left3 Left4)
-%Up
-	Up1 = {QTk.newImage photo()}
-	Up2 = {QTk.newImage photo()}
-	Up3 = {QTk.newImage photo()}
-	Up4 = {QTk.newImage photo()}
-	{Up1 copy(HeroImage 'from':o(0 192 64 256) subsample:o(1))}
-	{Up2 copy(HeroImage 'from':o(64 192 128 256) subsample:o(1))}
-	{Up3 copy(HeroImage 'from':o(128 192 192 256) subsample:o(1))}
-	{Up4 copy(HeroImage 'from':o(192 192 256 256) subsample:o(1))}
-	UpFrame = frame(Up1 Up2 Up3 Up4)
-
-in
-	AllFrames = allFrames(upFrame:UpFrame rightFrame:RightFrame leftFrame:LeftFrame downFrame:DownFrame)
+	in
+	allFrames(upFrame:{GetFrame 3 HeroImage} rightFrame:{GetFrame 2 HeroImage} leftFrame:{GetFrame 1 HeroImage} downFrame:{GetFrame 0 HeroImage})
 end
 
 AllHeroFrames = {CreateMovementImages PathHeroTotal}
@@ -80,8 +46,3 @@ Road_Tile_old = {QTk.newImage photo(file:'Images/Ground/dirt-modif.gif')}
 Road_Tile = {QTk.newImage photo()}	
 {Road_Tile copy(Road_Tile_old 'from':o(0 0 16 16) zoom:o(2))}
 end
-
-
-%   HeroLibrary = {QTk.newImageLibrary}
-%  {HeroLibrary newPhoto(name:({String.toAtom "Yo.gif"}) BeerImage)}
-
