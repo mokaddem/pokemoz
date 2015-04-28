@@ -46,13 +46,12 @@ define
 		end
 		thread {Delay 50} {MakeTheFollowMove PokeHandle AllPokeFrames Movement} end % thread to not wit the end of poke move
 		{MakeTheMove HeroHandle HeroFrames Movement}
-%		{MakeTheFollowMove PokeHandle AllPokeFrames Movement}
 		{CellSet HeroPosition NewHeroPosition}
 	end
 
 /* Start - Make the follow */
 	proc {MakeTheFollowMove Handler FramesDirection HeroMovement}
-		MovementValue=SquareLengthFloat/5.0
+		MovementValue=1.0*SquareLengthFloat/5.0 
 		NewPokePosition
 		HeroPos
 		PokePos
@@ -138,32 +137,33 @@ define
 	thread {Loop MovementStatusStream idle()} end
 
 	proc {MovementHandle M TrainerPort}
-		thread S X Y H in
+		thread S X1 Y1 X2 Y2 H Flag in
 			{Send MovementStatus get(S)}
 			{Wait S}
-			%{Show S}
 			{Send TrainerPort getHandler(H)}
 			{Wait H}
+			{Send TrainerPort getPosition(x:X1 y:Y1)}
+			{Wait X1}
 			case S of idle() then
 				{Send MovementStatus moving()}
 			   	case M
 			   	of l then 
-			   		%{Show move_left}
-			   		{Send TrainerPort moveX(~1)}
+			   		if {FieldType X1-1 Y1} \= 'null' then 
+			   		{Send TrainerPort moveX(~1)} Flag=1 else Flag=0 end
 			   	[] r then
-			   		%{Show move_right}
-			   		{Send TrainerPort moveX(1)}
+				   	if {FieldType X1+1 Y1} \= 'null' then 
+			   		{Send TrainerPort moveX(1)} Flag=1 else Flag=0  end
 			   	[] u then
-			   		%{Show move_up}
-			   		{Send TrainerPort moveY(~1)}
+						if {FieldType X1 Y1-1} \= 'null' then 
+			   		{Send TrainerPort moveY(~1)} Flag=1 else Flag=0  end
 			   	[] d then
-			   		%{Show move_down}
-			   		{Send TrainerPort moveY(1)}
+						if {FieldType X1 Y1+1} \= 'null' then 
+			   		{Send TrainerPort moveY(1)} Flag=1 else Flag=0  end
 			   	end
-				{MoveHero M H}
-				{Send TrainerPort getPosition(x:X y:Y)}
-				{Wait X}
-				{Show 'Trainer was on'#{FieldType X Y}#'at'#X#' '#Y}
+				if Flag==1 then {MoveHero M H} end
+				{Send TrainerPort getPosition(x:X2 y:Y2)}
+				{Wait X2}
+				{Show 'Trainer is on'#{FieldType X2 Y2}#'at'#X2#' '#Y2}
 				{Send MovementStatus idle()}
 			else
 				skip
