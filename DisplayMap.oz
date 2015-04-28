@@ -12,6 +12,8 @@ import
 	QTk at 'x-oz://system/wp/QTk.ozf'
 	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH)
 	Trainer(newTrainer:NewTrainer)
+	Pokemoz(newPokemoz:NewPokemoz)
+	Battle(runBattle:RunBattle)
 
 export
 	HeroHandle 
@@ -142,6 +144,9 @@ define
 		else if Y < 1  then null
 		else MapRecord.Y.X end end end end
 	end
+	
+	% State = state(type:T num:Num name:N maxlife:Ml currentLife:Cl experience:E level:L)
+	{RunBattle {NewPokemoz state(type:grass num:0 name:bulbozar maxlife:20 currentLife:20 experience:0 level:5)} {NewPokemoz state(type:fire num:0 name:charmozer maxlife:20 currentLife:20 experience:0 level:5)}}
 
 	MapFile={New Open.file init(name:'map.txt' flags:[read])}
 	{MapFile read(list:MapParsed size:all)}
