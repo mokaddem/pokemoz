@@ -31,6 +31,7 @@ define
 			[] getType(X) then X=State.type State
 			[] getHp(X) then X=State.currentLife State
 			[] getName(X) then X=State.name State
+			[] getLevel(X) then X=State.level State
 			end
 		end
 		P S
