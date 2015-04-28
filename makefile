@@ -6,7 +6,7 @@ clean:
 %.ozf: %.oz
 	ozc -c $< -o $@
 
-compile: PokeConfig.ozf Trainer.ozf DisplayMap.ozf CutImages.ozf MoveHero.ozf Util.ozf
+compile: PokeConfig.ozf Trainer.ozf DisplayMap.ozf CutImages.ozf MoveHero.ozf Util.ozf Pokemoz.ozf Battle.ozf
 
 run:
 	ozengine DisplayMap.ozf > /dev/null &
@@ -16,3 +16,5 @@ run-verbose:
 	
 open:
 	gedit *oz makefile &
+	
+edit: open
