@@ -31,12 +31,16 @@ define
 	UICanvasHandler
 	Window
 	
+	UI_Control
+	UI_Control_Window
+	
 	proc {DrawBattleUI}
 		UICanvas = canvas(handle:UICanvasHandler width:UI_LENGTH height:UI_HEIGHT)
 		Window = {QTk.build td(UICanvas)}
 		{Window show}
 		{UICanvasHandler create(image 0 0 image:Background_Battle_Grass anchor:nw)}
 		{DrawPokemoz}
+		{DrawUI_Control}
 	end
 	
 	proc {DrawPokemoz}
@@ -45,10 +49,21 @@ define
 	
 		MiPokeTag={UICanvasHandler newTag($)}
 		{UICanvasHandler create(image MiPokePosX MiPokePosY image:AllSprites_B.8 anchor:se handle:MiPokeHandle tags:MiPokeTag)}
-		
+	
 %		V in
 %	{AllSprites_Op.1.1 getColor(1 1 V)}
-
+	end
+	
+	proc {DrawUI_Control}
+		Button_Attack = button(text:"Attack" action:proc{$} {Show 'Attack'} end)
+		Button_PokemOz = button(text:"PokemOz" action:proc{$} {Show 'PokemOz'} end)
+		Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} end)
+		Button_Capture = button(text:"Capture" action:proc{$} {Show 'Capture'} end)
+		in
+		UI_Control = grid(Button_Attack Button_Capture newline
+								Button_PokemOz Button_Fuite)
+		UI_Control_Window = {QTk.build td(UI_Control)} 
+		{UI_Control_Window show}
 	end
 
 in

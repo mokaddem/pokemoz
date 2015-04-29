@@ -3,11 +3,14 @@ functor
 import
 	System(show:Show)
 	Open
+	OS
 	QTk at 'x-oz://system/wp/QTk.ozf'
 	CutImages(allHeroFrames:AllHeroFrames allPokeFrames:AllPokeFrames)
 	DisplayMap(heroHandle:HeroHandle heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat fieldType:FieldType)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
-	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH)
+	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH wild_Pokemon_proba:Wild_Pokemon_proba)
+	Pokemoz(newPokemoz:NewPokemoz)
+	Battle(runBattle:RunBattle)
 	
 export
 	MovementHandle
@@ -137,7 +140,7 @@ define
 	thread {Loop MovementStatusStream idle()} end
 
 	proc {MovementHandle M TrainerPort}
-		thread S X1 Y1 X2 Y2 H Flag in
+		thread S X1 Y1 X2 Y2 H Flag Field in
 			{Send MovementStatus get(S)}
 			{Wait S}
 			{Send TrainerPort getHandler(H)}
@@ -149,18 +152,31 @@ define
 			   	case M
 			   	of l then 
 			   		if {FieldType X1-1 Y1} \= 'null' then 
-			   		{Send TrainerPort moveX(~1)} Flag=1 else Flag=0 end
+			   		{Send TrainerPort moveX(~1)} Flag=1 Field={FieldType X1-1 Y1} else Flag=0 end
 			   	[] r then
 				   	if {FieldType X1+1 Y1} \= 'null' then 
-			   		{Send TrainerPort moveX(1)} Flag=1 else Flag=0  end
+			   		{Send TrainerPort moveX(1)} Flag=1 Field={FieldType X1+1 Y1} else Flag=0  end
 			   	[] u then
 						if {FieldType X1 Y1-1} \= 'null' then 
-			   		{Send TrainerPort moveY(~1)} Flag=1 else Flag=0  end
+			   		{Send TrainerPort moveY(~1)} Flag=1 Field={FieldType X1 Y1-1} else Flag=0  end
 			   	[] d then
 						if {FieldType X1 Y1+1} \= 'null' then 
-			   		{Send TrainerPort moveY(1)} Flag=1 else Flag=0  end
+			   		{Send TrainerPort moveY(1)} Flag=1 Field={FieldType X1 Y1+1} else Flag=0  end
 			   	end
-				if Flag==1 then {MoveHero M H} end
+				if Flag==1 then 
+					{MoveHero M H} 
+					case Field 
+					of	0 then skip
+					[]1 then 
+						if(Wild_Pokemon_proba >= {OS.rand} mod 100) then
+							local Bulba Charmo in
+								Bulba = {NewPokemoz state(type:grass num:1 name:bulbozar maxlife:20 currentLife:20 experience:0 level:5)}
+								Charmo = {NewPokemoz state(type:fire num:0 name:charmozer maxlife:20 currentLife:20 experience:0 level:5)}
+								{RunBattle Bulba Charmo} 
+							end
+						end	
+					end
+				end
 				{Send TrainerPort getPosition(x:X2 y:Y2)}
 				{Wait X2}
 				{Show 'Trainer is on'#{FieldType X2 Y2}#'at'#X2#' '#Y2}
