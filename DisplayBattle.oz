@@ -32,11 +32,12 @@ define
 	Window
 	
 	UI_Control
+	UI_Control_Handler
 	UI_Control_Window
 	
 	proc {DrawBattleUI}
 		UICanvas = canvas(handle:UICanvasHandler width:UI_LENGTH height:UI_HEIGHT)
-		Window = {QTk.build td(UICanvas)}
+		Window = {QTk.build td(title:'PokemOz battle!' UICanvas)}
 		{Window show}
 		{UICanvasHandler create(image 0 0 image:Background_Battle_Grass anchor:nw)}
 		{DrawPokemoz}
@@ -55,16 +56,29 @@ define
 	end
 	
 	proc {DrawUI_Control}
-		Button_Attack = button(text:"Attack" action:proc{$} {Show 'Attack'} end)
-		Button_PokemOz = button(text:"PokemOz" action:proc{$} {Show 'PokemOz'} end)
-		Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} end)
-		Button_Capture = button(text:"Capture" action:proc{$} {Show 'Capture'} end)
-		in
-		
+		But_Attk_Handler
+		But_Poke_Handler
+		But_Fuite_Handler
+		But_Capt_Handler
+
+		Button_Attack = button(text:"Attack" action:proc{$} {Show 'Attack'} end handle:But_Attk_Handler)
+		Button_PokemOz = button(text:"PokemOz" action:proc{$} {Show 'PokemOz'} end handle:But_Poke_Handler)
+		Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} end handle:But_Capt_Handler)
+		Button_Capture = button(text:"Capture" action:proc{$} {Show 'Capture'} end handle:But_Fuite_Handler)
+	
 		UI_Control = grid(Button_Attack Button_Capture newline
-								Button_PokemOz Button_Fuite)
-		UI_Control_Window = {QTk.build td(UI_Control)} 
-		{UI_Control_Window show}
+								Button_PokemOz Button_Fuite
+								handle:UI_Control_Handler)
+	
+		in
+			% Get info about window and place the dialog ont the right place
+			UI_Control_Window = {QTk.build td(title:'PokemOz battle!' UI_Control)}
+			{UI_Control_Handler configure(But_Attk_Handler But_Poke_Handler But_Fuite_Handler But_Capt_Handler padx:10 pady:10)}	 
+			local X Y in {Window winfo(geometry:X)} {UI_Control_Handler winfo(geometry:Y)}
+			{UI_Control_Window set(geometry:geometry(x:X.x+{FloatToInt {IntToFloat X.width}/2.0-{IntToFloat Y.width}/2.0} y:X.y+X.height))}
+		end
+	
+		{UI_Control_Window show(modal:true)}
 	end
 
 in
