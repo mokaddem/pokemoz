@@ -145,7 +145,9 @@ define
 	end
 	
 	% State = state(type:T num:Num name:N maxlife:Ml currentLife:Cl experience:E level:L)
-	{RunBattle {NewPokemoz state(type:grass num:0 name:bulbozar maxlife:20 currentLife:20 experience:0 level:5)} {NewPokemoz state(type:fire num:0 name:charmozer maxlife:20 currentLife:20 experience:0 level:5)}}
+	Bulba = {NewPokemoz state(type:grass num:1 name:bulbozar maxlife:20 currentLife:20 experience:0 level:5)}
+	Charmo = {NewPokemoz state(type:fire num:0 name:charmozer maxlife:20 currentLife:20 experience:0 level:5)}
+	{RunBattle Bulba Charmo}
 
 	MapFile={New Open.file init(name:'map.txt' flags:[read])}
 	{MapFile read(list:MapParsed size:all)}

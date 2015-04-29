@@ -32,6 +32,8 @@ define
 			[] getHp(X) then X=State.currentLife State
 			[] getName(X) then X=State.name State
 			[] getLevel(X) then X=State.level State
+			[] getNum(X) then X=State.num State
+			[] setNum(X) then state(type:(State.type) num:(X) name:(State.name) maxlife:(State.maxlife) currentLife:(State.currentLife - X) experience:(State.experience) level:(State.level))
 			end
 		end
 		P S

@@ -1,5 +1,6 @@
 functor
 import
+	System(show:Show)
 	QTk at 'x-oz://system/wp/QTk.ozf'
 
 	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM pOKE_ZOOM:POKE_ZOOM)
@@ -8,26 +9,33 @@ import
 export 
 	Grass_Tile
 	Road_Tile
+	Background_Battle_Trainer
+	Background_Battle_Grass
+	
 	HeroFace
 	PokeFace
+	
 	AllHeroFrames
 	AllPokeFrames
 	AllSprites_B
+	AllSprites_Op
 	
 
 define
 PathHeroTotal = 'Images/HGSS_143.gif'
 PathPokeTotal = 'Images/001_0.gif'
-PathPokeBattleSprites = "Images/Pokemon-sprites-battle/own/sprite_B"
+PathPokeBattleSpritesBack = "Images/Pokemon-sprites-battle/own/sprite_B"
+PathPokeBattleSpritesOp = "Images/Pokemon-sprites-battle/opponent/sprite_"
+Path
 
 L = 64
 
 fun {GetFrame X Image}
 	Frame = frame({QTk.newImage photo()} {QTk.newImage photo()} {QTk.newImage photo()} {QTk.newImage photo()}) in
-	{Frame.1 copy(Image 'from':o(0*L X*L 1*L (X+1)*L) subsample:o(1))}
-	{Frame.2 copy(Image 'from':o(1*L X*L 2*L (X+1)*L) subsample:o(1))}
-	{Frame.3 copy(Image 'from':o(2*L X*L 3*L (X+1)*L) subsample:o(1))}
-	{Frame.4 copy(Image 'from':o(3*L X*L 4*L (X+1)*L) subsample:o(1))}
+	{Frame.1 copy(Image 'from':o(0*L X*L 1*L (X+1)*L) subsample:o(HERO_SUBSAMPLE))}
+	{Frame.2 copy(Image 'from':o(1*L X*L 2*L (X+1)*L) subsample:o(HERO_SUBSAMPLE))}
+	{Frame.3 copy(Image 'from':o(2*L X*L 3*L (X+1)*L) subsample:o(HERO_SUBSAMPLE))}
+	{Frame.4 copy(Image 'from':o(3*L X*L 4*L (X+1)*L) subsample:o(HERO_SUBSAMPLE))}
 	Frame
 end
 
@@ -56,40 +64,39 @@ Road_Tile = {QTk.newImage photo()}
 {Road_Tile copy(Road_Tile_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))}
 
 %%% Create Pokemoz Battle Sprites %%%
+	Background_Battle_Grass_old = {QTk.newImage photo(file:'Images/Pokemon-sprites-battle/grass-background.gif')}
+	Background_Battle_Trainer_old = {QTk.newImage photo(file:'Images/Pokemon-sprites-battle/trainer-background.gif')}
 	
-	Sprite_B1_old = {QTk.newImage photo(file:{Append PathPokeBattleSprites "1.gif"})}
-	Sprite_B2_old = {QTk.newImage photo(file:{Append PathPokeBattleSprites "2.gif"})}
-	Sprite_B3_old = {QTk.newImage photo(file:{Append PathPokeBattleSprites "3.gif"})}
-	Sprite_B4_old = {QTk.newImage photo(file:{Append PathPokeBattleSprites "4.gif"})}
-	Sprite_B5_old = {QTk.newImage photo(file:{Append PathPokeBattleSprites "5.gif"})}
-	Sprite_B6_old = {QTk.newImage photo(file:{Append PathPokeBattleSprites "6.gif"})}
-	Sprite_B7_old = {QTk.newImage photo(file:{Append PathPokeBattleSprites "7.gif"})}
-	Sprite_B8_old = {QTk.newImage photo(file:{Append PathPokeBattleSprites "8.gif"})}
-	Sprite_B9_old = {QTk.newImage photo(file:{Append PathPokeBattleSprites "9.gif"})}
-
-	Sprite_B1 = {QTk.newImage photo()}
-	Sprite_B2 = {QTk.newImage photo()}
-	Sprite_B3 = {QTk.newImage photo()}
-	Sprite_B4 = {QTk.newImage photo()}
-	Sprite_B5 = {QTk.newImage photo()}
-	Sprite_B6 = {QTk.newImage photo()}
-	Sprite_B7 = {QTk.newImage photo()}
-	Sprite_B8 = {QTk.newImage photo()}
-	Sprite_B9 = {QTk.newImage photo()}
+	Background_Battle_Grass = {QTk.newImage photo()}
+	Background_Battle_Trainer = {QTk.newImage photo()}
+	{Background_Battle_Grass copy(Background_Battle_Grass_old zoom:o(POKE_ZOOM-1))}
+	{Background_Battle_Trainer copy(Background_Battle_Trainer_old zoom:o(POKE_ZOOM-1))}
 	
-	{Sprite_B1 copy(Sprite_B1_old zoom:o(POKE_ZOOM))}
-	{Sprite_B2 copy(Sprite_B2_old zoom:o(POKE_ZOOM))}
-	{Sprite_B3 copy(Sprite_B3_old zoom:o(POKE_ZOOM))}
-	{Sprite_B4 copy(Sprite_B4_old zoom:o(POKE_ZOOM))}
-	{Sprite_B5 copy(Sprite_B5_old zoom:o(POKE_ZOOM))}
-	{Sprite_B6 copy(Sprite_B6_old zoom:o(POKE_ZOOM))}
-	{Sprite_B7 copy(Sprite_B7_old zoom:o(POKE_ZOOM))}
-	{Sprite_B8 copy(Sprite_B8_old zoom:o(POKE_ZOOM))}
-	{Sprite_B9 copy(Sprite_B9_old zoom:o(POKE_ZOOM))}
+%MiPoke
 	
+	fun {GetSprite_frame_B Num}
+		Sprite_B_old Sprite_B in
+		Sprite_B_old = {QTk.newImage photo(file:{Append PathPokeBattleSpritesBack {Append Num ".gif"}})}
+		Sprite_B = {QTk.newImage photo()}
+		{Sprite_B copy(Sprite_B_old zoom:o(POKE_ZOOM))}
+		Sprite_B
+	end
+	
+	AllSprites_B = sprite_b({GetSprite_frame_B "1"} {GetSprite_frame_B "2"} {GetSprite_frame_B "3"} {GetSprite_frame_B "4"} {GetSprite_frame_B "5"} {GetSprite_frame_B "6"} {GetSprite_frame_B "7"} {GetSprite_frame_B "8"} {GetSprite_frame_B "9"}) 
 
-	AllSprites_B = sprite_b(Sprite_B1 Sprite_B2 Sprite_B3 Sprite_B4 Sprite_B5 Sprite_B6 Sprite_B7 Sprite_B8 Sprite_B9) 
-
+%OpPoke
+	fun {GetSprite_frame_Op Num}
+		L=64 Sprites_Op_old Sprites_Op in
+		Sprites_Op_old = {QTk.newImage photo(file:{Append PathPokeBattleSpritesOp {Append Num ".gif"}})}
+		Sprites_Op = sprite_op({QTk.newImage photo()} {QTk.newImage photo()})
+		{Sprites_Op.1 copy(Sprites_Op_old 'from':o(0 0 L L)  zoom:o(POKE_ZOOM))}
+		{Sprites_Op.2 copy(Sprites_Op_old 'from':o(0 L L 2*L)  zoom:o(POKE_ZOOM))}
+		Sprites_Op
+	end
+	
+	AllSprites_Op = all_sprite_op({GetSprite_frame_Op "1"} {GetSprite_frame_Op "2"} {GetSprite_frame_Op "3"} {GetSprite_frame_Op "4"} 
+	{GetSprite_frame_Op "5"} {GetSprite_frame_Op "6"} {GetSprite_frame_Op "7"} {GetSprite_frame_Op "8"} {GetSprite_frame_Op "9"})
+		
 end
 
 %   HeroLibrary = {QTk.newImageLibrary}

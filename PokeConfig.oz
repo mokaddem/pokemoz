@@ -12,7 +12,7 @@ define
 	
 	HERO_SUBSAMPLE = 1
 	GRASS_ZOOM = 2
-	POKE_ZOOM = 2
+	POKE_ZOOM = 3
 	
 	DELAY = 200 % delay between the moves
 end
