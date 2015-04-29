@@ -60,6 +60,7 @@ define
 		Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} end)
 		Button_Capture = button(text:"Capture" action:proc{$} {Show 'Capture'} end)
 		in
+		
 		UI_Control = grid(Button_Attack Button_Capture newline
 								Button_PokemOz Button_Fuite)
 		UI_Control_Window = {QTk.build td(UI_Control)} 
