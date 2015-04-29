@@ -66,8 +66,9 @@ define
 		Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} end handle:But_Capt_Handler)
 		Button_Capture = button(text:"Capture" action:proc{$} {Show 'Capture'} end handle:But_Fuite_Handler)
 	
-		UI_Control = grid(Button_Attack Button_Capture newline
-								Button_PokemOz Button_Fuite
+		UI_Control = grid(empty Button_Attack  empty newline
+								Button_PokemOz empty Button_Capture newline
+								empty Button_Fuite empty
 								handle:UI_Control_Handler)
 	
 		in
@@ -77,8 +78,12 @@ define
 			local X Y in {Window winfo(geometry:X)} {UI_Control_Handler winfo(geometry:Y)}
 			{UI_Control_Window set(geometry:geometry(x:X.x+{FloatToInt {IntToFloat X.width}/2.0-{IntToFloat Y.width}/2.0} y:X.y+X.height))}
 		end
-	
 		{UI_Control_Window show(modal:true)}
+	
+		{UI_Control_Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} end)} %trying to bind to an action
+		{UI_Control_Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} end)}
+		{UI_Control_Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
+		{UI_Control_Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
 	end
 
 in
