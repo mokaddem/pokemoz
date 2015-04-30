@@ -11,7 +11,7 @@ import
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH wild_Pokemon_proba:Wild_Pokemon_proba)
 	Pokemoz(newPokemoz:NewPokemoz)
-	Battle(runBattle:RunBattle)
+	Battle(runAutoBattle:RunAutoBattle)
 	
 export
 	MovementHandle

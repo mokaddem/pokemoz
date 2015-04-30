@@ -11,7 +11,7 @@ import
 	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM)
 	Trainer(newTrainer:NewTrainer)
 	Pokemoz(newPokemoz:NewPokemoz)
-	Battle(runBattle:RunBattle)
+	Battle(runAutoBattle:RunAutoBattle)
 	
 export
 	PrepareBattle
@@ -138,14 +138,17 @@ define
 		But_Poke_Handler
 		But_Fuite_Handler
 		But_Capt_Handler
+		But_Auto_Handler
 
 		Button_Attack = button(text:"Attack" action:proc{$} {Show 'Attack'} end handle:But_Attk_Handler)
 		Button_PokemOz = button(text:"PokemOz" action:proc{$} {Show 'PokemOz'} end handle:But_Poke_Handler)
 		Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} {UI_Control_Window close} {Window close} end handle:But_Capt_Handler)
 		Button_Capture = button(text:"Capture" action:proc{$} {Show 'Capture'} end handle:But_Fuite_Handler)
+		Button_AutoBattle = button(text:"Auto-Battle" action:proc{$} {Show 'Run Auto Battle'} end handle:But_Auto_Handler)
+	
 	
 		UI_Control = grid(empty Button_Attack  empty newline
-								Button_PokemOz empty Button_Capture newline
+								Button_PokemOz Button_AutoBattle Button_Capture newline
 								empty Button_Fuite empty
 								handle:UI_Control_Handler)
 	
@@ -162,6 +165,7 @@ define
 		{UI_Control_Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {UI_Control_Window close} {Window close} end)}
 		{UI_Control_Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
 		{UI_Control_Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
+		{UI_Control_Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} end)}
 		
 	end
 	
