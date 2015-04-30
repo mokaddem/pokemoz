@@ -36,6 +36,7 @@ define
 		{Window show}
 		{UICanvasHandler create(image 0 0 image:Background_Battle_Grass anchor:nw)}
 		{DrawPokemoz OpNumber MiNumber UICanvasHandler}
+		{DrawHpBar UICanvasHandler Window}
 		{DrawUI_Control Window}
 	end
 	
@@ -49,9 +50,14 @@ define
 %	{AllSprites_Op.1.1 getColor(1 1 V)}	--> to correctly place the pokemon on the ground. (bulb/draco)
 	end
 	
+	proc {DrawHpBar UICanvasHandler Window}
+		WInfo
+		in
+		{UICanvasHandler create(text UI_LENGTH-125 UI_HEIGHT-30 text:"Hp:" fill:black)}
+	end
+	
 	proc {PrepareBattle MiPoke OpPoke}
 		{DrawBattleUI MiPoke OpPoke}
-		
 	end
 	
 	proc {DrawUI_Control Window}
@@ -66,7 +72,7 @@ define
 
 		Button_Attack = button(text:"Attack" action:proc{$} {Show 'Attack'} end handle:But_Attk_Handler)
 		Button_PokemOz = button(text:"PokemOz" action:proc{$} {Show 'PokemOz'} end handle:But_Poke_Handler)
-		Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} end handle:But_Capt_Handler)
+		Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} {UI_Control_Window close} {Window close} end handle:But_Capt_Handler)
 		Button_Capture = button(text:"Capture" action:proc{$} {Show 'Capture'} end handle:But_Fuite_Handler)
 	
 		UI_Control = grid(empty Button_Attack  empty newline
@@ -84,9 +90,11 @@ define
 		{UI_Control_Window show(modal:true)}
 	
 		{UI_Control_Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} end)} %trying to bind to an action
-		{UI_Control_Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} end)}
+		{UI_Control_Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {UI_Control_Window close} {Window close} end)}
 		{UI_Control_Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
 		{UI_Control_Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
 	end
-
+	in
+		{PrepareBattle 4 2}
+	
 end
