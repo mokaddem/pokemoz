@@ -3,6 +3,7 @@ import
 	System(show:Show)
 	Open
 
+	Offset_data(op_Offset:Op_Offset mi_Offset:Mi_Offset) at 'Data/Offset_data.ozf'
 	CutImages(heroFace:HeroFace pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile allSprites_B:AllSprites_B allSprites_Op:AllSprites_Op background_Battle_Trainer:Background_Battle_Trainer background_Battle_Grass:Background_Battle_Grass)
 	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
@@ -20,11 +21,10 @@ define
 	UI_HEIGHT = 143*2
 
 	OpPokePosX = 192*2
-%	OpPokePosY = (88-18)*2	%bulbizar
-	OpPokePosY = (88-38)*2	%dracofeu -> solve with getcolor
+	OpPokePosY = (88-38)*2
 	MiPokePosX = (90+20)*2
-	MiPokePosY = (143+21)*2
-	
+%	MiPokePosY = (143+24)*2
+	MiPokePosY = (143+8)*2
 
 	proc {DrawBattleUI MiNumber OpNumber}
 		UICanvas
@@ -43,9 +43,12 @@ define
 	proc {DrawPokemoz OpNumber MiNumber UICanvasHandler}
 		OpPokeHandle MiPokeHandle
 	in
-		{UICanvasHandler create(image OpPokePosX OpPokePosY image:AllSprites_Op.OpNumber.1 anchor:center handle:OpPokeHandle)}
-		{UICanvasHandler create(image MiPokePosX MiPokePosY image:AllSprites_B.MiNumber anchor:se handle:MiPokeHandle)}
-	
+		local Poke_Offset_Op Poke_Offset_Mi in
+			Poke_Offset_Op = 2*Op_Offset.OpNumber
+			Poke_Offset_Mi = 2*Mi_Offset.MiNumber
+			{UICanvasHandler create(image OpPokePosX OpPokePosY+Poke_Offset_Op image:AllSprites_Op.OpNumber.1 anchor:center handle:OpPokeHandle)}
+			{UICanvasHandler create(image MiPokePosX MiPokePosY+Poke_Offset_Mi image:AllSprites_B.MiNumber anchor:se handle:MiPokeHandle)}
+		end
 %		V in
 %	{AllSprites_Op.1.1 getColor(1 1 V)}	--> to correctly place the pokemon on the ground. (bulb/draco)
 	end
@@ -94,7 +97,17 @@ define
 		{UI_Control_Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
 		{UI_Control_Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
 	end
-	in
-		{PrepareBattle 4 2}
 	
+	%Read and assign coorect offset
+	
+	
+	in
+/*		local Pok1 Pok2 in
+			Pok1 = {NewPokemoz state(type:grass num:4 name:bulbozar maxlife:20 currentLife:20 experience:0 level:5)}
+			Pok2 = {NewPokemoz state(type:fire num:9 name:charmozer maxlife:20 currentLife:20 experience:0 level:5)}
+			%{RunBattle Bulba Charmo} 
+			local X Y in {Send Pok1 getNum(X)} {Send Pok2 getNum(Y)} {Wait Y}
+				{PrepareBattle X Y}
+			end
+		end*/
 end
