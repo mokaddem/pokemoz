@@ -166,11 +166,11 @@ define
 	end
 	
 	
-	in
+/*	in
 		local Pok1 Pok2 in
 			Pok1 = {NewPokemoz state(type:grass num:1 name:bulbozar maxlife:20 currentLife:18 experience:0 level:5)}
 			Pok2 = {NewPokemoz state(type:fire num:4 name:charmozer maxlife:20 currentLife:2 experience:0 level:5)}
 			%{RunBattle Bulba Charmo} 
 			{PrepareBattle Pok1 Pok2}
-		end
+		end*/
 end
