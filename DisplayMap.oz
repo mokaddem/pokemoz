@@ -16,7 +16,7 @@ import
 	Battle(runBattle:RunBattle)
 
 export
-	HeroHandle 
+	HeroTrainer
 	HeroPosition
 	PokeHandle 
 	PokePosition
@@ -43,12 +43,10 @@ define
 
 	%Hero_variables
 	HeroHandle	%The Hero handler
-	HeroTag		%The Hero Canvas Tag
 	HeroPosition	%The Hero's position cell
 	
 	%Poke_variables
 	PokeHandle
-	PokeTag
 	PokePosition
 																	/* FUNCTIONS */
 
@@ -160,19 +158,17 @@ define
 	PosXPokDecal=~14
 	PosYPokDecal={FloatToInt ~1.0*SquareLengthFloat}
 	
-	PokeTag={CanvasHandler newTag($)}
 	PokePosition={CustomNewCell pos(x:{IntToFloat StartX} y:({IntToFloat StartY}-SquareLengthFloat/5.0))}
-	{CanvasHandler create(image (StartX)*SQUARE_LENGTH+PosXPokDecal (StartY-1)*SQUARE_LENGTH+PosYPokDecal image:PokeFace anchor:nw handle:PokeHandle tags:PokeTag)}
+	{CanvasHandler create(image (StartX)*SQUARE_LENGTH+PosXPokDecal (StartY-1)*SQUARE_LENGTH+PosYPokDecal image:PokeFace anchor:nw handle:PokeHandle)}
 
-	HeroTag={CanvasHandler newTag($)}
 	HeroPosition={CustomNewCell pos(x:{IntToFloat StartX} y:{IntToFloat StartY})}
-	{CanvasHandler create(image (StartX)*SQUARE_LENGTH+PosXDecal (StartY-1)*SQUARE_LENGTH+PosYDecal image:HeroFace anchor:nw handle:HeroHandle tags:HeroTag)}
+	{CanvasHandler create(image (StartX)*SQUARE_LENGTH+PosXDecal (StartY-1)*SQUARE_LENGTH+PosYDecal image:HeroFace anchor:nw handle:HeroHandle)}
 
-	Tr = {NewTrainer state(x:StartX y:StartY pokemoz:0 speed:5 movement:proc{$ P} 1=1 end handler:HeroHandle)}
+	HeroTrainer = {NewTrainer state(x:StartX y:StartY pokemoz:0 speed:5 movement:proc{$ P} 1=1 end handler:HeroHandle)}
 
-	{Window bind(event:"<Up>" action:proc{$} {MovementHandle u Tr} end)} %trying to bind to an action
-	{Window bind(event:"<Down>" action:proc{$} {MovementHandle d Tr} end)}
-	{Window bind(event:"<Left>" action:proc{$} {MovementHandle l Tr} end)}
-	{Window bind(event:"<Right>" action:proc{$} {MovementHandle r Tr} end)}
+	{Window bind(event:"<Up>" action:proc{$} {MovementHandle u HeroTrainer} end)} %trying to bind to an action
+	{Window bind(event:"<Down>" action:proc{$} {MovementHandle d HeroTrainer} end)}
+	{Window bind(event:"<Left>" action:proc{$} {MovementHandle l HeroTrainer} end)}
+	{Window bind(event:"<Right>" action:proc{$} {MovementHandle r HeroTrainer} end)}
 
 end

@@ -11,51 +11,54 @@ import
 	Trainer(newTrainer:NewTrainer)
 	Pokemoz(newPokemoz:NewPokemoz)
 	Battle(runBattle:RunBattle)
+	
+export
+	PrepareBattle
 
 define
 	UI_LENGTH = 255*2
 	UI_HEIGHT = 143*2
 
 	OpPokePosX = 192*2
-%	OpPokePosY = (88-18)*2
-	OpPokePosY = (88-38)*2
+%	OpPokePosY = (88-18)*2	%bulbizar
+	OpPokePosY = (88-38)*2	%dracofeu -> solve with getcolor
 	MiPokePosX = (90+20)*2
 	MiPokePosY = (143+21)*2
 	
-	OpPokeHandle
-	OpPokeTag
-	MiPokeHandle
-	MiPokeTag
 
-	UICanvas
-	UICanvasHandler
-	Window
-	
-	UI_Control
-	UI_Control_Handler
-	UI_Control_Window
-	
-	proc {DrawBattleUI}
+	proc {DrawBattleUI MiNumber OpNumber}
+		UICanvas
+		UICanvasHandler
+		Window
+	in
 		UICanvas = canvas(handle:UICanvasHandler width:UI_LENGTH height:UI_HEIGHT)
 		Window = {QTk.build td(title:'PokemOz battle!' UICanvas)}
 		{Window show}
 		{UICanvasHandler create(image 0 0 image:Background_Battle_Grass anchor:nw)}
-		{DrawPokemoz}
-		{DrawUI_Control}
+		{DrawPokemoz OpNumber MiNumber UICanvasHandler}
+		{DrawUI_Control Window}
 	end
 	
-	proc {DrawPokemoz}
-		OpPokeTag={UICanvasHandler newTag($)}
-		{UICanvasHandler create(image OpPokePosX OpPokePosY image:AllSprites_Op.1.1 anchor:center handle:OpPokeHandle tags:OpPokeTag)}
-	
-		MiPokeTag={UICanvasHandler newTag($)}
-		{UICanvasHandler create(image MiPokePosX MiPokePosY image:AllSprites_B.8 anchor:se handle:MiPokeHandle tags:MiPokeTag)}
+	proc {DrawPokemoz OpNumber MiNumber UICanvasHandler}
+		OpPokeHandle MiPokeHandle
+	in
+		{UICanvasHandler create(image OpPokePosX OpPokePosY image:AllSprites_Op.OpNumber.1 anchor:center handle:OpPokeHandle)}
+		{UICanvasHandler create(image MiPokePosX MiPokePosY image:AllSprites_B.MiNumber anchor:se handle:MiPokeHandle)}
 	
 %		V in
-%	{AllSprites_Op.1.1 getColor(1 1 V)}
+%	{AllSprites_Op.1.1 getColor(1 1 V)}	--> to correctly place the pokemon on the ground. (bulb/draco)
 	end
 	
-	proc {DrawUI_Control}
+	proc {PrepareBattle MiPoke OpPoke}
+		{DrawBattleUI MiPoke OpPoke}
+		
+	end
+	
+	proc {DrawUI_Control Window}
+		UI_Control
+		UI_Control_Handler
+		UI_Control_Window
+		
 		But_Attk_Handler
 		But_Poke_Handler
 		But_Fuite_Handler
@@ -85,8 +88,5 @@ define
 		{UI_Control_Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
 		{UI_Control_Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
 	end
-
-in
-	{DrawBattleUI}
 
 end

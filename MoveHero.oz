@@ -6,7 +6,8 @@ import
 	OS
 	QTk at 'x-oz://system/wp/QTk.ozf'
 	CutImages(allHeroFrames:AllHeroFrames allPokeFrames:AllPokeFrames)
-	DisplayMap(heroHandle:HeroHandle heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat fieldType:FieldType)
+	DisplayMap(heroTrainer:HeroTrainer heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat fieldType:FieldType)
+	DisplayBattle(prepareBattle:PrepareBattle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH wild_Pokemon_proba:Wild_Pokemon_proba)
 	Pokemoz(newPokemoz:NewPokemoz)
@@ -17,7 +18,7 @@ export
 
 define	
 	
-	
+
 %PROCEDURE THAT ANIMATE AND MOVE THE HERO
 	proc {MoveHero Dir HeroHandle}
 		D=75 
@@ -169,12 +170,16 @@ define
 					of	0 then skip
 					[]1 then 
 						if(Wild_Pokemon_proba >= {OS.rand} mod 100) then
-							local Bulba Charmo in
-								Bulba = {NewPokemoz state(type:grass num:1 name:bulbozar maxlife:20 currentLife:20 experience:0 level:5)}
-								Charmo = {NewPokemoz state(type:fire num:0 name:charmozer maxlife:20 currentLife:20 experience:0 level:5)}
-								{RunBattle Bulba Charmo} 
+							local Pok1 Pok2 in
+								Pok1 = {NewPokemoz state(type:grass num:1 name:bulbozar maxlife:20 currentLife:20 experience:0 level:5)}
+								Pok2 = {NewPokemoz state(type:fire num:7 name:charmozer maxlife:20 currentLife:20 experience:0 level:5)}
+								%{RunBattle Bulba Charmo} 
+								local X Y in {Send Pok1 getNum(X)} {Send Pok2 getNum(Y)} {Wait Y}
+									{PrepareBattle X Y}
+								end
 							end
-						end	
+						end
+					else skip	
 					end
 				end
 				{Send TrainerPort getPosition(x:X2 y:Y2)}
