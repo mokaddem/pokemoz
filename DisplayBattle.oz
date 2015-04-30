@@ -26,17 +26,20 @@ define
 %	MiPokePosY = (143+24)*2
 	MiPokePosY = (143+8)*2
 
-	proc {DrawBattleUI MiNumber OpNumber}
+	proc {DrawBattleUI MiPoke OpPoke}
 		UICanvas
 		UICanvasHandler
 		Window
+		MiNumber
+		OpNumber 
 	in
+		{Send MiPoke getNum(MiNumber)} {Send OpPoke getNum(OpNumber)}
 		UICanvas = canvas(handle:UICanvasHandler width:UI_LENGTH height:UI_HEIGHT)
 		Window = {QTk.build td(title:'PokemOz battle!' UICanvas)}
 		{Window show}
 		{UICanvasHandler create(image 0 0 image:Background_Battle_Grass anchor:nw)}
 		{DrawPokemoz OpNumber MiNumber UICanvasHandler}
-		{DrawHpBar UICanvasHandler Window}
+		{DrawHpBar UICanvasHandler Window MiPoke OpPoke}
 		{DrawUI_Control Window}
 	end
 	
@@ -54,19 +57,30 @@ define
 	end
 	
 	
+	%Compute BarLength
+	fun {ComputeBarLength TotalBarLength Val ValMax}
+		{Show Val#ValMax}
+		{Show {IntToFloat Val}/{IntToFloat ValMax}}
+		{Show ({IntToFloat Val}/{IntToFloat ValMax})*{IntToFloat TotalBarLength}}
+		{Show '------------------------' }
+		{FloatToInt ({IntToFloat Val}/{IntToFloat ValMax})*{IntToFloat TotalBarLength}}
+	end
 	
-	proc {DrawHpBar UICanvasHandler Window}		
-		Font18 Font14
-		BarWidth = 10
-		MiStartX = UI_LENGTH-225
+	proc {DrawHpBar UICanvasHandler Window MiPoke OpPoke}		
+		Font18={QTk.newFont font(size:18)} Font14={QTk.newFont font(size:14)}
+		BarWidth = 10 BarLength = 200
+		MiStartX = UI_LENGTH-25 - BarLength
 		MiStartY = UI_HEIGHT-45 
 		MiEndX = UI_LENGTH-25 
-		MiEndY = UI_HEIGHT-45 + BarWidth
+		MiEndY = UI_HEIGHT-45 + BarWidth		
+		MiBarLength
 
 		OpStartX = 15
 		OpStartY = 65
-		OpEndX = 15 + 200
+		OpEndX = 15 + BarLength
 		OpEndY = 65 + BarWidth
+		OpBarLength
+		
 
 		XpHandler MiPvHandler MiPokeTextHandler MiPokeLvlHandler	
 		OpPvHandler OpPokeTextHandler OpPokeLvlHandler	
@@ -75,29 +89,39 @@ define
 		OpPvTag={UICanvasHandler newTag($)}
 		
 		in
-		Font18 = {QTk.newFont font(size:18)}
-		Font14 = {QTk.newFont font(size:14)}	
-	
+		
+		local MiName OpName MiLvl OpLvl MiHp OpHp MiHpMax OpHpMax MiExp in 
+		{Send MiPoke getName(MiName)} {Send OpPoke getName(OpName)}
+		{Send MiPoke getLevel(MiLvl)} {Send OpPoke getLevel(OpLvl)}
+		{Send MiPoke getHp(MiHp)} {Send OpPoke getHp(OpHp)} 
+		{Send MiPoke getHpMax(MiHpMax)} {Send OpPoke getHpMax(OpHpMax)} 
+		{Send MiPoke getHp(MiExp)} %TODO !!  --> Get Exp
+		{Wait MiExp}
+		
+		MiBarLength = {ComputeBarLength BarLength MiHp MiHpMax}
+		OpBarLength = {ComputeBarLength BarLength OpHp OpHpMax}
+		
 	%Mi
 		%Bars
 		{UICanvasHandler create(rectangle MiStartX+3 MiEndY MiEndX-2 MiEndY+7 fill:white width:2.0)}
       {UICanvasHandler create(rectangle MiStartX+3 MiEndY MiEndX-2 MiEndY+7 fill:white outline:nil handle:XpHandler tags:XpTag)}
       {UICanvasHandler create(rectangle MiStartX MiStartY MiEndX MiEndY+2 fill:white width:3.0)}
-      {UICanvasHandler create(rectangle MiStartX MiStartY MiEndX MiEndY+2 fill:green width:3.0 handle:MiPvHandler tags:MiPvTag)}
+      {UICanvasHandler create(rectangle MiStartX MiStartY MiEndX-BarLength+MiBarLength MiEndY+2 fill:green width:3.0 handle:MiPvHandler tags:MiPvTag)}
       %Texts
-      {UICanvasHandler create(text MiStartX MiStartY-28 text:"BulbaOz" font:Font18 anchor:nw fill:black handle:MiPokeTextHandler)}
+      {UICanvasHandler create(text MiStartX MiStartY-28 text:MiName font:Font18 anchor:nw fill:black handle:MiPokeTextHandler)}
       {UICanvasHandler create(text MiEndX-30 MiStartY-23 text:"Lv." font:Font14 anchor:ne fill:black)}
-		{UICanvasHandler create(text MiEndX MiStartY-28 text:"12" font:Font18 anchor:ne fill:black handle:MiPokeLvlHandler)}
+		{UICanvasHandler create(text MiEndX-8 MiStartY-28 text:MiLvl font:Font18 anchor:ne fill:black handle:MiPokeLvlHandler)}
 		
 	%Op	
 		%Bars
       {UICanvasHandler create(rectangle OpStartX OpStartY OpEndX OpEndY+2 fill:white width:3.0)}
-      {UICanvasHandler create(rectangle OpStartX OpStartY OpEndX OpEndY+2 fill:red width:3.0 handle:OpPvHandler tags:OpPvTag)}
+      {UICanvasHandler create(rectangle OpStartX OpStartY OpEndX-BarLength+OpBarLength OpEndY+2 fill:red width:3.0 handle:OpPvHandler tags:OpPvTag)}
       %Texts
-      {UICanvasHandler create(text OpStartX OpStartY-28 text:"BulbaOz" font:Font18 anchor:nw fill:black handle:OpPokeTextHandler)}
+      {UICanvasHandler create(text OpStartX OpStartY-28 text:OpName font:Font18 anchor:nw fill:black handle:OpPokeTextHandler)}
       {UICanvasHandler create(text OpEndX-30 OpStartY-23 text:"Lv." font:Font14 anchor:ne fill:black)}
-		{UICanvasHandler create(text OpEndX OpStartY-28 text:"12" font:Font18 anchor:ne fill:black handle:OpPokeLvlHandler)}
+		{UICanvasHandler create(text OpEndX-8 OpStartY-28 text:OpLvl font:Font18 anchor:ne fill:black handle:OpPokeLvlHandler)}
 		
+		end %local
 	end
 
 	
@@ -144,11 +168,9 @@ define
 	
 	in
 		local Pok1 Pok2 in
-			Pok1 = {NewPokemoz state(type:grass num:4 name:bulbozar maxlife:20 currentLife:20 experience:0 level:5)}
-			Pok2 = {NewPokemoz state(type:fire num:9 name:charmozer maxlife:20 currentLife:20 experience:0 level:5)}
+			Pok1 = {NewPokemoz state(type:grass num:1 name:bulbozar maxlife:20 currentLife:18 experience:0 level:5)}
+			Pok2 = {NewPokemoz state(type:fire num:4 name:charmozer maxlife:20 currentLife:2 experience:0 level:5)}
 			%{RunBattle Bulba Charmo} 
-			local X Y in {Send Pok1 getNum(X)} {Send Pok2 getNum(Y)} {Wait Y}
-				{PrepareBattle X Y}
-			end
+			{PrepareBattle Pok1 Pok2}
 		end
 end
