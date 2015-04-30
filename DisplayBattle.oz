@@ -53,11 +53,53 @@ define
 %	{AllSprites_Op.1.1 getColor(1 1 V)}	--> to correctly place the pokemon on the ground. (bulb/draco)
 	end
 	
-	proc {DrawHpBar UICanvasHandler Window}
-		WInfo
+	
+	
+	proc {DrawHpBar UICanvasHandler Window}		
+		Font18 Font14
+		BarWidth = 10
+		MiStartX = UI_LENGTH-225
+		MiStartY = UI_HEIGHT-45 
+		MiEndX = UI_LENGTH-25 
+		MiEndY = UI_HEIGHT-45 + BarWidth
+
+		OpStartX = 15
+		OpStartY = 65
+		OpEndX = 15 + 200
+		OpEndY = 65 + BarWidth
+
+		XpHandler MiPvHandler MiPokeTextHandler MiPokeLvlHandler	
+		OpPvHandler OpPokeTextHandler OpPokeLvlHandler	
+		XpTag={UICanvasHandler newTag($)} 
+		MiPvTag={UICanvasHandler newTag($)}
+		OpPvTag={UICanvasHandler newTag($)}
+		
 		in
-		{UICanvasHandler create(text UI_LENGTH-125 UI_HEIGHT-30 text:"Hp:" fill:black)}
+		Font18 = {QTk.newFont font(size:18)}
+		Font14 = {QTk.newFont font(size:14)}	
+	
+	%Mi
+		%Bars
+		{UICanvasHandler create(rectangle MiStartX+3 MiEndY MiEndX-2 MiEndY+7 fill:white width:2.0)}
+      {UICanvasHandler create(rectangle MiStartX+3 MiEndY MiEndX-2 MiEndY+7 fill:white outline:nil handle:XpHandler tags:XpTag)}
+      {UICanvasHandler create(rectangle MiStartX MiStartY MiEndX MiEndY+2 fill:white width:3.0)}
+      {UICanvasHandler create(rectangle MiStartX MiStartY MiEndX MiEndY+2 fill:green width:3.0 handle:MiPvHandler tags:MiPvTag)}
+      %Texts
+      {UICanvasHandler create(text MiStartX MiStartY-28 text:"BulbaOz" font:Font18 anchor:nw fill:black handle:MiPokeTextHandler)}
+      {UICanvasHandler create(text MiEndX-30 MiStartY-23 text:"Lv." font:Font14 anchor:ne fill:black)}
+		{UICanvasHandler create(text MiEndX MiStartY-28 text:"12" font:Font18 anchor:ne fill:black handle:MiPokeLvlHandler)}
+		
+	%Op	
+		%Bars
+      {UICanvasHandler create(rectangle OpStartX OpStartY OpEndX OpEndY+2 fill:white width:3.0)}
+      {UICanvasHandler create(rectangle OpStartX OpStartY OpEndX OpEndY+2 fill:red width:3.0 handle:OpPvHandler tags:OpPvTag)}
+      %Texts
+      {UICanvasHandler create(text OpStartX OpStartY-28 text:"BulbaOz" font:Font18 anchor:nw fill:black handle:OpPokeTextHandler)}
+      {UICanvasHandler create(text OpEndX-30 OpStartY-23 text:"Lv." font:Font14 anchor:ne fill:black)}
+		{UICanvasHandler create(text OpEndX OpStartY-28 text:"12" font:Font18 anchor:ne fill:black handle:OpPokeLvlHandler)}
+		
 	end
+
 	
 	proc {PrepareBattle MiPoke OpPoke}
 		{DrawBattleUI MiPoke OpPoke}
@@ -96,18 +138,17 @@ define
 		{UI_Control_Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {UI_Control_Window close} {Window close} end)}
 		{UI_Control_Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
 		{UI_Control_Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
+		
 	end
-	
-	%Read and assign coorect offset
 	
 	
 	in
-/*		local Pok1 Pok2 in
+		local Pok1 Pok2 in
 			Pok1 = {NewPokemoz state(type:grass num:4 name:bulbozar maxlife:20 currentLife:20 experience:0 level:5)}
 			Pok2 = {NewPokemoz state(type:fire num:9 name:charmozer maxlife:20 currentLife:20 experience:0 level:5)}
 			%{RunBattle Bulba Charmo} 
 			local X Y in {Send Pok1 getNum(X)} {Send Pok2 getNum(Y)} {Wait Y}
 				{PrepareBattle X Y}
 			end
-		end*/
+		end
 end
