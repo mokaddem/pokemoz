@@ -9,7 +9,7 @@ export
 	RandomMove
 define
 	
-	% State = state(x:X y:Y pokemoz:P speed:S movement:M handler:H number:N)
+	% State = state(x:X y:Y pokemoz:P speed:S movement:M handler:H number:N movementStatus:MovementStatus)
 	fun {NewTrainer Init}
 		proc {Loop S State}
 			case S of Msg|S2 then {Loop S2 {HandleMessage Msg State}} end
@@ -26,9 +26,9 @@ define
 		end
 		fun {HandleMessage Msg State}
 			case Msg
-			of moveX(X) then state(x:(State.x + X) y:(State.y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number))
-			[] moveY(Y) then state(x:(State.x) y:(State.y + Y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number))
-			[] pokemoz(Pokemoz) then state(x:(State.x) y:(State.y) pokemoz:(Pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number))
+			of moveX(X) then state(x:(State.x + X) y:(State.y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:(State.movementStatus))
+			[] moveY(Y) then state(x:(State.x) y:(State.y + Y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:(State.movementStatus))
+			[] pokemoz(Pokemoz) then state(x:(State.x) y:(State.y) pokemoz:(Pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:(State.movementStatus))
 			[] state(x y pokemoz speed movement) then Msg
 			[] getPosition(x:X y:Y) then X=State.x Y=State.y State
 			[] getPokemoz(P) then P=State.pokemoz State
@@ -36,12 +36,33 @@ define
 			[] getSpeed(S) then S=State.speed State
 			[] getHandler(H) then H=State.handler State
 			[] getNumber(N) then N=State.'number' State
+			[] getMovementStatus(MS) then {Send State.movementStatus get(MS)} State
+			[] sendMovementStatus(MS) then {Send State.movementStatus MS} State
 			end
 		end
 		P S
+		
+		/* The INDIVIDUAL Movement Status Port for each trainer */
+		MovementStatusStream
+		MovementStatus = {NewPort MovementStatusStream}
+		fun {MovementStatusMsgHandler MSMsg MSState}
+			case MSMsg
+			of moving() then moving()
+			[] idle() then idle()
+			[] get(MSStateVal) then MSStateVal=MSState MSState
+			end
+		end
+		proc {LoopMovementStatus MSS MSState}
+			case MSS of MSMsg|MSS2 then
+				{LoopMovementStatus MSS2 {MovementStatusMsgHandler MSMsg MSState}}
+			end
+		end
+		thread {LoopMovementStatus MovementStatusStream idle()} end
+		Init_Final
 	in
 		P = {NewPort S}
-		thread {Loop S Init} end
+		Init_Final={Record.adjoinAt Init movementStatus MovementStatus}
+		thread {Loop S Init_Final} end
 		thread {LoopMovement proc {$ F} {Send P F} end} end
 		proc {$ F} {Send P F} end
 	end
