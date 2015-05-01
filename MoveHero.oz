@@ -124,7 +124,7 @@ define
 
 		
 /* ******************************** */
-	MovementStatusStream
+/*	MovementStatusStream
 	MovementStatus = {NewPort MovementStatusStream}
 	fun {F Msg State}
 		case Msg
@@ -139,15 +139,15 @@ define
 		end
 	end
 	thread {Loop MovementStatusStream idle()} end
-
+*/
 	proc {MovementHandle M TrainerPort IsHero}
 		thread S X1 Y1 H Flag Field in
-			{Send MovementStatus get(S)}
+			{TrainerPort getMovementStatus(S)}
 			{TrainerPort getHandler(H)}
 			{TrainerPort getPosition(x:X1 y:Y1)}
 			{Wait Y1}
 			case S of idle() then
-				{Send MovementStatus moving()}
+				{TrainerPort sendMovementStatus(moving())}
 			   	case M
 			   	of l then 
 			   		if {FieldType X1-1 Y1} \= 'null' then 
@@ -186,7 +186,7 @@ define
 					{Wait N}
 					{Show 'Trainer'#N#' is on'#{FieldType X2 Y2}#'at'#X2#' '#Y2}
 				end
-				{Send MovementStatus idle()}
+				{TrainerPort  sendMovementStatus(idle())}
 			else
 				skip
 			end
