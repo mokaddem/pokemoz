@@ -40,7 +40,7 @@ define
 		{UICanvasHandler create(image 0 0 image:Background_Battle_Grass anchor:nw)}
 		{DrawPokemoz OpNumber MiNumber UICanvasHandler}
 		{DrawHpBar UICanvasHandler Window MiPoke OpPoke}
-		{DrawUI_Control Window}
+		{DrawUI_Control Window MiPoke OpPoke}
 	end
 	
 	proc {DrawPokemoz OpNumber MiNumber UICanvasHandler}
@@ -129,7 +129,7 @@ define
 		{DrawBattleUI MiPoke OpPoke}
 	end
 	
-	proc {DrawUI_Control Window}
+	proc {DrawUI_Control Window MiPoke OpPoke}
 		UI_Control
 		UI_Control_Handler
 		UI_Control_Window
@@ -144,7 +144,7 @@ define
 		Button_PokemOz = button(text:"PokemOz" action:proc{$} {Show 'PokemOz'} end handle:But_Poke_Handler)
 		Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} {UI_Control_Window close} {Window close} end handle:But_Capt_Handler)
 		Button_Capture = button(text:"Capture" action:proc{$} {Show 'Capture'} end handle:But_Fuite_Handler)
-		Button_AutoBattle = button(text:"Auto-Battle" action:proc{$} {Show 'Run Auto Battle'} end handle:But_Auto_Handler)
+		Button_AutoBattle = button(text:"Auto-Battle" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke} end handle:But_Auto_Handler)
 	
 	
 		UI_Control = grid(empty Button_Attack  empty newline
@@ -156,7 +156,8 @@ define
 			% Get info about window and place the dialog ont the right place
 			UI_Control_Window = {QTk.build td(title:'PokemOz battle!' UI_Control)}
 			{UI_Control_Handler configure(But_Attk_Handler But_Poke_Handler But_Fuite_Handler But_Capt_Handler padx:10 pady:10)}	 
-			local X Y in {Window winfo(geometry:X)} {UI_Control_Handler winfo(geometry:Y)}
+		local X Y in 
+			{Window winfo(geometry:X)} {UI_Control_Handler winfo(geometry:Y)}
 			{UI_Control_Window set(geometry:geometry(x:X.x+{FloatToInt {IntToFloat X.width}/2.0-{IntToFloat Y.width}/2.0} y:X.y+X.height))}
 		end
 		{UI_Control_Window show(modal:true)}
@@ -165,7 +166,7 @@ define
 		{UI_Control_Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {UI_Control_Window close} {Window close} end)}
 		{UI_Control_Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
 		{UI_Control_Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
-		{UI_Control_Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} end)}
+		{UI_Control_Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke} end)}
 		
 	end
 	

@@ -164,7 +164,9 @@ define
 	HeroPosition={CustomNewCell pos(x:{IntToFloat StartX} y:{IntToFloat StartY})}
 	{CanvasHandler create(image (StartX)*SQUARE_LENGTH+PosXDecal (StartY-1)*SQUARE_LENGTH+PosYDecal image:HeroFace anchor:nw handle:HeroHandle)}
 
-	HeroTrainer = {NewTrainer state(x:StartX y:StartY pokemoz:0 speed:5 movement:proc{$ P} 1=1 end handler:HeroHandle)}
+	local PokemOz = {NewPokemoz state(type:grass num:1 name:bulbozar maxlife:20 currentLife:18 experience:0 level:5)} in
+		HeroTrainer = {NewTrainer state(x:StartX y:StartY pokemoz:PokemOz speed:5 movement:proc{$ P} 1=1 end handler:HeroHandle)}
+	end
 
 	{Window bind(event:"<Up>" action:proc{$} {MovementHandle u HeroTrainer} end)} %trying to bind to an action
 	{Window bind(event:"<Down>" action:proc{$} {MovementHandle d HeroTrainer} end)}

@@ -171,11 +171,10 @@ define
 					[]1 then 
 						if(Wild_Pokemon_proba >= {OS.rand} mod 100) then
 							local Pok1 Pok2 in
-								Pok1 = {NewPokemoz state(type:grass num:1 name:bulbozar maxlife:20 currentLife:20 experience:0 level:5)}
-								Pok2 = {NewPokemoz state(type:fire num:7 name:charmozer maxlife:20 currentLife:20 experience:0 level:5)}
+								Pok2 = {NewPokemoz state(type:fire num:4 name:charmozer maxlife:20 currentLife:20 experience:0 level:5)}
 								%{RunBattle Bulba Charmo} 
-								{PrepareBattle Pok1 Pok2}
-								
+								local Pok in {Send TrainerPort getPokemoz(Pok)} {Wait Pok} {PrepareBattle Pok Pok2} end
+								%local Pok in {Send TrainerPort getPokemoz(Pok)} {Wait Pok} {RunAutoBattle Pok Pok2} end
 							end
 						end
 					else skip	
