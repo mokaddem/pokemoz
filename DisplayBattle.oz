@@ -15,6 +15,8 @@ import
 	
 export
 	PrepareBattle
+	DrawHpBar
+	ComputeBarLength
 
 define
 	UI_LENGTH = 255*2
@@ -32,6 +34,7 @@ define
 		Window
 		MiNumber
 		OpNumber
+		HpBarRecord
 	in
 		{MiPoke getNum(MiNumber)} {OpPoke getNum(OpNumber)}
 		UICanvas = canvas(handle:UICanvasHandler width:UI_LENGTH height:UI_HEIGHT)
@@ -39,8 +42,8 @@ define
 		{Window show}
 		{UICanvasHandler create(image 0 0 image:Background_Battle_Grass anchor:nw)}
 		{DrawPokemoz OpNumber MiNumber UICanvasHandler}
-		{DrawHpBar UICanvasHandler Window MiPoke OpPoke}
-		{DrawUI_Control Window MiPoke OpPoke TrainerPort}
+		HpBarRecord = {DrawHpBar UICanvasHandler Window MiPoke OpPoke}
+		{DrawUI_Control Window MiPoke OpPoke TrainerPort HpBarRecord}
 	end
 	
 	proc {DrawPokemoz OpNumber MiNumber UICanvasHandler}
@@ -62,7 +65,7 @@ define
 		{FloatToInt ({IntToFloat Val}/{IntToFloat ValMax})*{IntToFloat TotalBarLength}}
 	end
 	
-	proc {DrawHpBar UICanvasHandler Window MiPoke OpPoke}		
+	fun {DrawHpBar UICanvasHandler Window MiPoke OpPoke}		
 		Font18={QTk.newFont font(size:18)} Font14={QTk.newFont font(size:14)}
 		BarWidth = 10 BarLength = 200
 		MiStartX = UI_LENGTH-25 - BarLength
@@ -117,6 +120,8 @@ define
       {UICanvasHandler create(text OpEndX-30 OpStartY-23 text:"Lv." font:Font14 anchor:ne fill:black)}
 		{UICanvasHandler create(text OpEndX-8 OpStartY-28 text:OpLvl font:Font18 anchor:ne fill:black handle:OpPokeLvlHandler)}
 		
+		
+		hpbar(mi:MiPvTag 'op':OpPvTag)
 		end %local
 	end
 
@@ -126,11 +131,11 @@ define
 		{DrawBattleUI MiPoke OpPoke TrainerPort}
 	end
 	
-	proc {DrawUI_Control Window MiPoke OpPoke TrainerPort}
-		UI_Components
+	proc {DrawUI_Control Window MiPoke OpPoke TrainerPort HpBarRecord}		
 		UI_Control
 		UI_Control_Handler
 		UI_Control_Window
+		UI_Components = components(window:Window ui_control_window:UI_Control_Window)
 		
 		But_Attk_Handler
 		But_Poke_Handler
@@ -138,11 +143,11 @@ define
 		But_Capt_Handler
 		But_Auto_Handler
 
-		Button_Attack = button(text:"Attack" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke TrainerPort} end handle:But_Attk_Handler)
+		Button_Attack = button(text:"Attack" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke TrainerPort UI_Components HpBarRecord} end handle:But_Attk_Handler)
 		Button_PokemOz = button(text:"PokemOz" action:proc{$} {Show 'PokemOz'} end handle:But_Poke_Handler)
 		Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} {UI_Control_Window close} {Window close} end handle:But_Capt_Handler)
 		Button_Capture = button(text:"Capture" action:proc{$} {Show 'Capture'} end handle:But_Fuite_Handler)
-		Button_AutoBattle = button(text:"Auto-Battle" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke TrainerPort} end handle:But_Auto_Handler)
+		Button_AutoBattle = button(text:"Auto-Battle" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke TrainerPort UI_Components HpBarRecord} end handle:But_Auto_Handler)
 	
 	
 		UI_Control = grid(empty Button_Attack  empty newline
@@ -151,7 +156,7 @@ define
 								handle:UI_Control_Handler)
 	
 		in
-			UI_Components = components(window:Window ui_control_window:UI_Control_Window)
+			
 			% Get info about window and place the dialog ont the right place
 			UI_Control_Window = {QTk.build td(title:'PokemOz battle!' UI_Control)}
 			{UI_Control_Handler configure(But_Attk_Handler But_Poke_Handler But_Fuite_Handler But_Capt_Handler padx:10 pady:10)}	 
@@ -162,11 +167,11 @@ define
 		{UI_Control_Window show(modal:true)}
 		thread
 			{Delay 500}
-			{UI_Control_Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke TrainerPort UI_Components} end)} %trying to bind to an action
+			{UI_Control_Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke TrainerPort UI_Components HpBarRecord} end)} %trying to bind to an action
 			{UI_Control_Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {TrainerPort setInCombat(false)} {UI_Control_Window close} {Window close} end)}
 			{UI_Control_Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
 			{UI_Control_Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
-			{UI_Control_Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke TrainerPort UI_Components} end)}
+			{UI_Control_Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke TrainerPort UI_Components HpBarRecord} end)}
 		end
 		
 	end
