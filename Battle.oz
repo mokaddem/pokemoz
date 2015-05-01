@@ -3,12 +3,12 @@ import
 	System(show:Show)
 	OS
 export
-	RunBattle
+	RunAutoBattle
 define
 	/* 
 	 * Pok1 attacks first
 	 */
-	proc {RunBattle Pok1 Pok2}
+	proc {RunAutoBattle Pok1 Pok2}
 		Name1 Name2 Type1 Type2 Damage Hp2 Level1 Level2 in
 		{Send Pok1 getType(Type1)}
 		{Send Pok2 getType(Type2)}
@@ -24,7 +24,7 @@ define
 			{Show 'Run, you fool!'}
 		else
 			if Hp2 > 0 then 
-				{RunBattle Pok2 Pok1}
+				{RunAutoBattle Pok2 Pok1}
 			else
 				{Show Name2#' fainted'}
 				{Send Pok1 'exp'(Level2)}

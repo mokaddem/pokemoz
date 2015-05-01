@@ -11,7 +11,7 @@ import
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH wild_Pokemon_proba:Wild_Pokemon_proba)
 	Pokemoz(newPokemoz:NewPokemoz)
-	Battle(runBattle:RunBattle)
+	Battle(runAutoBattle:RunAutoBattle)
 	
 export
 	MovementHandle
@@ -174,9 +174,8 @@ define
 								Pok1 = {NewPokemoz state(type:grass num:1 name:bulbozar maxlife:20 currentLife:20 experience:0 level:5)}
 								Pok2 = {NewPokemoz state(type:fire num:7 name:charmozer maxlife:20 currentLife:20 experience:0 level:5)}
 								%{RunBattle Bulba Charmo} 
-								local X Y in {Send Pok1 getNum(X)} {Send Pok2 getNum(Y)} {Wait Y}
-									{PrepareBattle X Y}
-								end
+								{PrepareBattle Pok1 Pok2}
+								
 							end
 						end
 					else skip	
