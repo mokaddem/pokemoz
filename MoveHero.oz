@@ -173,7 +173,7 @@ define
 							local Pok1 Pok2 in
 								Pok2 = {NewPokemoz state(type:fire num:4 name:charmozer maxlife:20 currentLife:20 experience:0 level:5)}
 								%{RunBattle Bulba Charmo} 
-								local Pok in {Send TrainerPort getPokemoz(Pok)} {Wait Pok} {PrepareBattle Pok Pok2} end
+								local Pok in {TrainerPort getPokemoz(Pok)} {Wait Pok} {PrepareBattle Pok Pok2} end
 								%local Pok in {Send TrainerPort getPokemoz(Pok)} {Wait Pok} {RunAutoBattle Pok Pok2} end
 							end
 						end
