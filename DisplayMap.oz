@@ -14,15 +14,21 @@ import
 	Trainer(newTrainer:NewTrainer)
 	Pokemoz(newPokemoz:NewPokemoz)
 	Battle(runBattle:RunBattle)
-
+%	Game(heroTrainer:HeroTrainer)
 export
-	HeroTrainer
+	
 	HeroPosition
 	PokeHandle 
 	PokePosition
 	SquareLengthFloat
 	FieldType
 	MapRecord
+	CreateAndDisplayHeroAndFollower
+	CreateAndDisplayTrainer
+	DrawMap
+%	HeroHandle
+	StartX
+	StartY
 	
 define
 																/* CONSTANTS */
@@ -42,8 +48,10 @@ define
 	MapParsed	%List readed from map.txt
 
 	%Hero_variables
-	HeroHandle	%The Hero handler
+%	HeroHandle	%The Hero handler
 	HeroPosition	%The Hero's position cell
+	HeroPosXDecal=~14
+	HeroPosYDecal=0
 	
 	%Poke_variables
 	PokeHandle
@@ -124,7 +132,7 @@ define
 	* pre: A valid MapRecord record
 	* result: Draw and display the map
 	*/
-	proc {DrawMap MapRecord}
+	proc {DrawMap MapRecord HeroTrainer}
 		RowLength = {Length {Arity MapRecord}}
 		ColumnLength = {Length {Arity MapRecord.1}}
 		Canvas = canvas(handle:CanvasHandler width:ColumnLength*SQUARE_LENGTH+200 height:RowLength*SQUARE_LENGTH+200)
@@ -132,6 +140,11 @@ define
 		Window = {QTk.build td(Canvas)}
 		{Window show}
 		{AddMapBlock MapRecord CanvasHandler}
+		
+		{Window bind(event:"<Up>" action:proc{$} {MovementHandle u HeroTrainer} end)}
+		{Window bind(event:"<Down>" action:proc{$} {MovementHandle d HeroTrainer} end)}
+		{Window bind(event:"<Left>" action:proc{$} {MovementHandle l HeroTrainer} end)}
+		{Window bind(event:"<Right>" action:proc{$} {MovementHandle r HeroTrainer} end)}
 	end
 	
 	fun {FieldType X Y}
@@ -142,8 +155,36 @@ define
 		else MapRecord.Y.X end end end end
 	end
 	
+	/*
+	*	result: Draw and display the hero and his fellow
+	*	return: the created Hero Handle
+	*/
+	fun {CreateAndDisplayHeroAndFollower}
+		PosXPokDecal=~14
+		PosYPokDecal={FloatToInt ~1.0*SquareLengthFloat}
+		HeroHandle
+	in	
+		PokePosition={CustomNewCell pos(x:{IntToFloat StartX} y:({IntToFloat StartY}-SquareLengthFloat/5.0))}
+		{CanvasHandler create(image (StartX)*SQUARE_LENGTH+PosXPokDecal (StartY-1)*SQUARE_LENGTH+PosYPokDecal image:PokeFace anchor:nw handle:PokeHandle)}
+		HeroPosition={CustomNewCell pos(x:{IntToFloat StartX} y:{IntToFloat StartY})}
+		{CanvasHandler create(image (StartX)*SQUARE_LENGTH+HeroPosXDecal (StartY-1)*SQUARE_LENGTH+HeroPosYDecal image:HeroFace anchor:nw handle:HeroHandle)}
+		HeroHandle
+	end
+	
+	/*
+	*	result: Draw and display a trainer
+	*	return: the created trainer Handle
+	*/
+	fun {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1}
+		TrainerHandle
+	in	
+		%TrainerPosition={CustomNewCell pos(x:{IntToFloat TrainerPosX1} y:{IntToFloat TrainerPosY1})}
+		{CanvasHandler create(image (TrainerPosX1)*SQUARE_LENGTH+HeroPosXDecal (TrainerPosY1-1)*SQUARE_LENGTH+HeroPosYDecal image:HeroFace anchor:nw handle:TrainerHandle)}
+		TrainerHandle
+	end
+	
 	% State = state(type:T num:Num name:N maxlife:Ml currentLife:Cl experience:E level:L)
-/*	Bulba = {NewPokemoz state(type:grass num:1 name:bulbozar maxlife:20 currentLife:20 experience:0 level:5)}
+   /*	Bulba = {NewPokemoz state(type:grass num:1 name:bulbozar maxlife:20 currentLife:20 experience:0 level:5)}
 	Charmo = {NewPokemoz state(type:fire num:0 name:charmozer maxlife:20 currentLife:20 experience:0 level:5)}
 	{RunBattle Bulba Charmo}*/
 
@@ -151,26 +192,5 @@ define
 	{MapFile read(list:MapParsed size:all)}
 	MapRecord={List.toTuple map {Scan MapParsed}}
 	{MapFile close}
-	{DrawMap MapRecord}
-
-	PosXDecal=~14
-	PosYDecal=0
-	PosXPokDecal=~14
-	PosYPokDecal={FloatToInt ~1.0*SquareLengthFloat}
-	
-	PokePosition={CustomNewCell pos(x:{IntToFloat StartX} y:({IntToFloat StartY}-SquareLengthFloat/5.0))}
-	{CanvasHandler create(image (StartX)*SQUARE_LENGTH+PosXPokDecal (StartY-1)*SQUARE_LENGTH+PosYPokDecal image:PokeFace anchor:nw handle:PokeHandle)}
-
-	HeroPosition={CustomNewCell pos(x:{IntToFloat StartX} y:{IntToFloat StartY})}
-	{CanvasHandler create(image (StartX)*SQUARE_LENGTH+PosXDecal (StartY-1)*SQUARE_LENGTH+PosYDecal image:HeroFace anchor:nw handle:HeroHandle)}
-
-	local PokemOz = {NewPokemoz state(type:grass num:1 name:bulbozar maxlife:20 currentLife:18 experience:0 level:5)} in
-		HeroTrainer = {NewTrainer state(x:StartX y:StartY pokemoz:PokemOz speed:5 movement:proc{$ P} 1=1 end handler:HeroHandle)}
-	end
-
-	{Window bind(event:"<Up>" action:proc{$} {MovementHandle u HeroTrainer} end)} %trying to bind to an action
-	{Window bind(event:"<Down>" action:proc{$} {MovementHandle d HeroTrainer} end)}
-	{Window bind(event:"<Left>" action:proc{$} {MovementHandle l HeroTrainer} end)}
-	{Window bind(event:"<Right>" action:proc{$} {MovementHandle r HeroTrainer} end)}
 
 end
