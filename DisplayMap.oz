@@ -141,10 +141,10 @@ define
 		{Window show}
 		{AddMapBlock MapRecord CanvasHandler}
 		
-		{Window bind(event:"<Up>" action:proc{$} {MovementHandle u HeroTrainer} end)}
-		{Window bind(event:"<Down>" action:proc{$} {MovementHandle d HeroTrainer} end)}
-		{Window bind(event:"<Left>" action:proc{$} {MovementHandle l HeroTrainer} end)}
-		{Window bind(event:"<Right>" action:proc{$} {MovementHandle r HeroTrainer} end)}
+		{Window bind(event:"<Up>" action:proc{$} {MovementHandle u HeroTrainer true} end)}
+		{Window bind(event:"<Down>" action:proc{$} {MovementHandle d HeroTrainer true} end)}
+		{Window bind(event:"<Left>" action:proc{$} {MovementHandle l HeroTrainer true} end)}
+		{Window bind(event:"<Right>" action:proc{$} {MovementHandle r HeroTrainer true} end)}
 	end
 	
 	fun {FieldType X Y}

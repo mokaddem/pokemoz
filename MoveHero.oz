@@ -20,7 +20,7 @@ define
 	
 
 %PROCEDURE THAT ANIMATE AND MOVE THE HERO
-	proc {MoveHero Dir HeroHandle}
+	proc {MoveHero Dir HeroHandle IsHero}
 		D=75 
 		MovementValue={IntToFloat SQUARE_LENGTH}/5.0 
 		Movement 
@@ -48,9 +48,9 @@ define
 			Movement = move(0 ~MovementValue)
 			NewHeroPosition=pos(x:HeroPos.x y:HeroPos.y-MovementValue)
 		end
-		thread {Delay 50} {MakeTheFollowMove PokeHandle AllPokeFrames Movement} end % thread to not wit the end of poke move
+		if(IsHero) then thread {Delay 50} {MakeTheFollowMove PokeHandle AllPokeFrames Movement} end end % thread to not wit the end of poke move
 		{MakeTheMove HeroHandle HeroFrames Movement}
-		{CellSet HeroPosition NewHeroPosition}
+		if(IsHero) then {CellSet HeroPosition NewHeroPosition} end
 	end
 
 /* Start - Make the follow */
@@ -140,14 +140,12 @@ define
 	end
 	thread {Loop MovementStatusStream idle()} end
 
-	proc {MovementHandle M TrainerPort}
-		thread S X1 Y1 X2 Y2 H Flag Field in
+	proc {MovementHandle M TrainerPort IsHero}
+		thread S X1 Y1 H Flag Field in
 			{Send MovementStatus get(S)}
-			{Wait S}
 			{TrainerPort getHandler(H)}
-			{Wait H}
 			{TrainerPort getPosition(x:X1 y:Y1)}
-			{Wait X1}
+			{Wait Y1}
 			case S of idle() then
 				{Send MovementStatus moving()}
 			   	case M
@@ -165,24 +163,29 @@ define
 			   		{TrainerPort moveY(1)} Flag=1 Field={FieldType X1 Y1+1} else Flag=0  end
 			   	end
 				if Flag==1 then 
-					{MoveHero M H} 
+					{MoveHero M H IsHero} 
 					case Field 
 					of	0 then skip
 					[]1 then 
-						if(Wild_Pokemon_proba >= {OS.rand} mod 100) then
-							local Pok1 Pok2 in
-								Pok2 = {NewPokemoz state(type:fire num:4 name:charmozer maxlife:20 currentLife:20 experience:0 level:5)}
-								%{RunBattle Bulba Charmo} 
-								local Pok in {TrainerPort getPokemoz(Pok)} {Wait Pok} {PrepareBattle Pok Pok2} end
-								%local Pok in {Send TrainerPort getPokemoz(Pok)} {Wait Pok} {RunAutoBattle Pok Pok2} end
+						if(IsHero) then
+							if(Wild_Pokemon_proba >= {OS.rand} mod 100) then
+								local Pok1 Pok2 in
+									Pok2 = {NewPokemoz state(type:fire num:4 name:charmozer maxlife:20 currentLife:20 experience:0 level:5)}
+									%{RunBattle Bulba Charmo} 
+									local Pok in {TrainerPort getPokemoz(Pok)} {Wait Pok} {PrepareBattle Pok Pok2} end
+									%local Pok in {Send TrainerPort getPokemoz(Pok)} {Wait Pok} {RunAutoBattle Pok Pok2} end
+								end
 							end
 						end
 					else skip	
 					end
 				end
-				{TrainerPort getPosition(x:X2 y:Y2)}
-				{Wait X2}
-				{Show 'Trainer is on'#{FieldType X2 Y2}#'at'#X2#' '#Y2}
+				local X2 Y2 N in
+					{TrainerPort getPosition(x:X2 y:Y2)}
+					{TrainerPort getNumber(N)}
+					{Wait N}
+					{Show 'Trainer'#N#' is on'#{FieldType X2 Y2}#'at'#X2#' '#Y2}
+				end
 				{Send MovementStatus idle()}
 			else
 				skip

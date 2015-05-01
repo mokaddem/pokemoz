@@ -15,7 +15,7 @@ import
 					startX:StartX startY:StartY)
 	
 	DisplayBattle(prepareBattle:PrepareBattle)
-	Trainer(newTrainer:NewTrainer)
+	Trainer(newTrainer:NewTrainer randomlyMoveTrainer:RandomlyMoveTrainer)
 	Pokemoz(newPokemoz:NewPokemoz)
 	Battle(runBattle:RunBattle)
 	
@@ -28,21 +28,21 @@ define
 	
 	Trainer1
 	TrainerHandle1
-	TrainerPosX1=2
-	TrainerPosY1=3
+	TrainerPosX1=5
+	TrainerPosY1=5
 	PokeTrainer1
 in
 	{DrawMap MapRecord HeroTrainer} %	/!\ Concurrency! {DrawMap} need 'HeroHandler' that need the variables initialated in {DrawMap}
 	HeroHandler = {CreateAndDisplayHeroAndFollower}
 	PokemOz = {NewPokemoz state(type:grass num:1 name:bulbozar maxlife:20 currentLife:20 experience:0 level:5)}
-	HeroTrainer = {NewTrainer state(x:StartX y:StartY pokemoz:PokemOz speed:5 movement:proc{$ P} 1=1 end handler:HeroHandler)}
+	HeroTrainer = {NewTrainer state(x:StartX y:StartY pokemoz:PokemOz speed:5 movement:proc{$ P} 1=1 end handler:HeroHandler number:1)}
 	
 	
 	TrainerHandle1 = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1}
 	PokeTrainer1 = {NewPokemoz state(type:grass num:7 name:squirtOz maxlife:20 currentLife:20 experience:0 level:5)}
-	Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokemOz speed:5 movement:proc{$ P} 1=1 end handler:TrainerHandle1)}
+	Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokemOz speed:5 movement:proc{$ P} 1=1 end handler:TrainerHandle1 number:2)}
 	
-	
+	thread {RandomlyMoveTrainer Trainer1} end
 
 end
 
