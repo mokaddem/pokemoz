@@ -4,12 +4,20 @@ import
 	OS
 export
 	RunAutoBattle
+	Attack
 define
 	/* 
 	 * Pok1 attacks first
 	 */
 	proc {RunAutoBattle Pok1 Pok2}
-		Name1 Name2 Type1 Type2 Damage Hp2 Level1 Level2 in
+		Hp1 Hp2 in
+		{Pok1 getHp(Hp1)}
+		{Pok2 getHp(Hp2)}
+		if Hp1 > 0 then if Hp2 > 0 then {Attack Pok1 Pok2} {RunAutoBattle Pok1 Pok2} end end
+	end
+	
+	proc {Attack Pok1 Pok2}
+		Name1 Name2 Type1 Type2 Damage Hp1 Hp2 Level1 Level2 in
 		{Pok1 getType(Type1)}
 		{Pok2 getType(Type2)}
 		{Pok1 getName(Name1)}
@@ -17,21 +25,16 @@ define
 		{Pok1 getLevel(Level1)}
 		{Pok2 getLevel(Level2)}
 		Damage = {GetDamage Type1 Type2 Level1 Level2}
+		{Show Name1#' attacks'}
 		{Pok2 damage(Damage)}
 		{Pok2 getHp(Hp2)}
-		{Show Name1#' did '#Damage#' damage to '#Name2}
-		if {WannaRun} == 'true' then
-			{Show 'Run, you fool!'}
+		if Hp2 > 0 then
+			Damage2 in Damage2 = {GetDamage Type2 Type1 Level2 Level1}
+			{Show Name2#' attacks'}
+			{Pok1 damage(Damage2)}
 		else
-			if Hp2 > 0 then 
-				{RunAutoBattle Pok2 Pok1}
-			else
-				{Show Name2#' fainted'}
-				{Pok1 'exp'(Level2)}
-				{Show Name1#' earn exp : '#Level2}
-			end
+			{Pok1 'exp'(Level2)}
 		end
-		
 	end
 	
 	fun {GetDamage AtkType DefType AtkLvl DefLvl}

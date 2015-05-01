@@ -1,5 +1,6 @@
 functor
-
+import
+	System(show:Show)
 export
 	NewPokemoz
 define
@@ -12,14 +13,20 @@ define
 			case Msg
 			of heal() then state(type:(State.type) num:(State.num) name:(State.name) maxlife:(State.maxlife) currentLife:(State.maxlife) experience:(State.experience) level:(State.level))
 			[] damage(X) then
-				if State.currentLife - X < 0 then state(type:(State.type) num:(State.num) name:(State.name) maxlife:(State.maxlife) currentLife:(0) experience:(State.experience) level:(State.level))
+				{Show State.name#' took '#X#' damage'}
+				if State.currentLife - X < 1 then
+					{Show State.name#' fainted'}
+					state(type:(State.type) num:(State.num) name:(State.name) maxlife:(State.maxlife) currentLife:(0) experience:(State.experience) level:(State.level))
 				else state(type:(State.type) num:(State.num) name:(State.name) maxlife:(State.maxlife) currentLife:(State.currentLife - X) experience:(State.experience) level:(State.level))
 				end
 			[] 'exp'(X) then
+				{Show State.name#' earn '#X#' experience'}
 				local Hp L Xp=State.experience+X in
 					L = {GetLevel Xp}.l
 					Hp = {GetLevel Xp}.hp
-					if L > State.level then state(type:(State.type) num:(State.num) name:(State.name) maxlife:Hp currentLife:Hp experience:(State.experience)+X level:L)
+					if L > State.level then
+						{Show State.name#' is now level '#State.level}
+						state(type:(State.type) num:(State.num) name:(State.name) maxlife:Hp currentLife:Hp experience:(State.experience)+X level:L)
 					else state(type:(State.type) num:(State.num) name:(State.name) maxlife:(State.maxlife) currentLife:(State.maxlife) experience:(State.experience)+X level:(State.level))
 					end
 				end
