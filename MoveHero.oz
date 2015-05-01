@@ -144,25 +144,25 @@ define
 		thread S X1 Y1 X2 Y2 H Flag Field in
 			{Send MovementStatus get(S)}
 			{Wait S}
-			{Send TrainerPort getHandler(H)}
+			{TrainerPort getHandler(H)}
 			{Wait H}
-			{Send TrainerPort getPosition(x:X1 y:Y1)}
+			{TrainerPort getPosition(x:X1 y:Y1)}
 			{Wait X1}
 			case S of idle() then
 				{Send MovementStatus moving()}
 			   	case M
 			   	of l then 
 			   		if {FieldType X1-1 Y1} \= 'null' then 
-			   		{Send TrainerPort moveX(~1)} Flag=1 Field={FieldType X1-1 Y1} else Flag=0 end
+			   		{TrainerPort moveX(~1)} Flag=1 Field={FieldType X1-1 Y1} else Flag=0 end
 			   	[] r then
 				   	if {FieldType X1+1 Y1} \= 'null' then 
-			   		{Send TrainerPort moveX(1)} Flag=1 Field={FieldType X1+1 Y1} else Flag=0  end
+			   		{TrainerPort moveX(1)} Flag=1 Field={FieldType X1+1 Y1} else Flag=0  end
 			   	[] u then
 						if {FieldType X1 Y1-1} \= 'null' then 
-			   		{Send TrainerPort moveY(~1)} Flag=1 Field={FieldType X1 Y1-1} else Flag=0  end
+			   		{TrainerPort moveY(~1)} Flag=1 Field={FieldType X1 Y1-1} else Flag=0  end
 			   	[] d then
 						if {FieldType X1 Y1+1} \= 'null' then 
-			   		{Send TrainerPort moveY(1)} Flag=1 Field={FieldType X1 Y1+1} else Flag=0  end
+			   		{TrainerPort moveY(1)} Flag=1 Field={FieldType X1 Y1+1} else Flag=0  end
 			   	end
 				if Flag==1 then 
 					{MoveHero M H} 
@@ -181,7 +181,7 @@ define
 					else skip	
 					end
 				end
-				{Send TrainerPort getPosition(x:X2 y:Y2)}
+				{TrainerPort getPosition(x:X2 y:Y2)}
 				{Wait X2}
 				{Show 'Trainer is on'#{FieldType X2 Y2}#'at'#X2#' '#Y2}
 				{Send MovementStatus idle()}

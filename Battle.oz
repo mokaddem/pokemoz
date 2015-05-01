@@ -10,15 +10,15 @@ define
 	 */
 	proc {RunAutoBattle Pok1 Pok2}
 		Name1 Name2 Type1 Type2 Damage Hp2 Level1 Level2 in
-		{Send Pok1 getType(Type1)}
-		{Send Pok2 getType(Type2)}
-		{Send Pok1 getName(Name1)}
-		{Send Pok2 getName(Name2)}
-		{Send Pok1 getLevel(Level1)}
-		{Send Pok2 getLevel(Level2)}
+		{Pok1 getType(Type1)}
+		{Pok2 getType(Type2)}
+		{Pok1 getName(Name1)}
+		{Pok2 getName(Name2)}
+		{Pok1 getLevel(Level1)}
+		{Pok2 getLevel(Level2)}
 		Damage = {GetDamage Type1 Type2 Level1 Level2}
-		{Send Pok2 damage(Damage)}
-		{Send Pok2 getHp(Hp2)}
+		{Pok2 damage(Damage)}
+		{Pok2 getHp(Hp2)}
 		{Show Name1#' did '#Damage#' damage to '#Name2}
 		if {WannaRun} == 'true' then
 			{Show 'Run, you fool!'}
@@ -27,7 +27,7 @@ define
 				{RunAutoBattle Pok2 Pok1}
 			else
 				{Show Name2#' fainted'}
-				{Send Pok1 'exp'(Level2)}
+				{Pok1 'exp'(Level2)}
 				{Show Name1#' earn exp : '#Level2}
 			end
 		end

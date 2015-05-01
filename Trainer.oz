@@ -36,6 +36,6 @@ define
 		P = {NewPort S}
 		thread {Loop S Init} end
 		thread {LoopMovement P} end
-		P
+		proc {$ F} {Send P F} end
 	end
 end

@@ -33,7 +33,7 @@ define
 		MiNumber
 		OpNumber 
 	in
-		{Send MiPoke getNum(MiNumber)} {Send OpPoke getNum(OpNumber)}
+		{MiPoke getNum(MiNumber)} {OpPoke getNum(OpNumber)}
 		UICanvas = canvas(handle:UICanvasHandler width:UI_LENGTH height:UI_HEIGHT)
 		Window = {QTk.build td(title:'PokemOz battle!' UICanvas)}
 		{Window show}
@@ -91,11 +91,11 @@ define
 		in
 		
 		local MiName OpName MiLvl OpLvl MiHp OpHp MiHpMax OpHpMax MiExp in 
-		{Send MiPoke getName(MiName)} {Send OpPoke getName(OpName)}
-		{Send MiPoke getLevel(MiLvl)} {Send OpPoke getLevel(OpLvl)}
-		{Send MiPoke getHp(MiHp)} {Send OpPoke getHp(OpHp)} 
-		{Send MiPoke getHpMax(MiHpMax)} {Send OpPoke getHpMax(OpHpMax)} 
-		{Send MiPoke getHp(MiExp)} %TODO !!  --> Get Exp
+		{MiPoke getName(MiName)} {OpPoke getName(OpName)}
+		{MiPoke getLevel(MiLvl)} {OpPoke getLevel(OpLvl)}
+		{MiPoke getHp(MiHp)} {OpPoke getHp(OpHp)} 
+		{MiPoke getHpMax(MiHpMax)} {OpPoke getHpMax(OpHpMax)} 
+		{MiPoke getHp(MiExp)} %TODO !!  --> Get Exp
 		{Wait MiExp}
 		
 		MiBarLength = {ComputeBarLength BarLength MiHp MiHpMax}

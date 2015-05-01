@@ -44,7 +44,7 @@ define
 	in
 		P = {NewPort S}
 		thread {Loop S Init} end
-		P
+		proc{$ F} {Send P F} end
 	end
 	
 	fun {GetLevel Xp}
