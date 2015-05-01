@@ -9,14 +9,14 @@ define
 	/* 
 	 * Pok1 attacks first
 	 */
-	proc {RunAutoBattle Pok1 Pok2}
+	proc {RunAutoBattle Pok1 Pok2 TrainerPort}
 		Hp1 Hp2 in
 		{Pok1 getHp(Hp1)}
 		{Pok2 getHp(Hp2)}
-		if Hp1 > 0 then if Hp2 > 0 then {Attack Pok1 Pok2} {RunAutoBattle Pok1 Pok2} end end
+		if Hp1 > 0 then if Hp2 > 0 then {Attack Pok1 Pok2 TrainerPort} {RunAutoBattle Pok1 Pok2 TrainerPort} end end
 	end
 	
-	proc {Attack Pok1 Pok2}
+	proc {Attack Pok1 Pok2 TrainerPort}
 		Name1 Name2 Type1 Type2 Damage Hp1 Hp2 Level1 Level2 in
 		{Pok1 getType(Type1)}
 		{Pok2 getType(Type2)}
@@ -34,6 +34,7 @@ define
 			{Pok1 damage(Damage2)}
 		else
 			{Pok1 'exp'(Level2)}
+			{TrainerPort setInCombat(false)}
 		end
 	end
 	

@@ -26,7 +26,7 @@ define
 %	MiPokePosY = (143+24)*2
 	MiPokePosY = (143+8)*2
 
-	proc {DrawBattleUI MiPoke OpPoke}
+	proc {DrawBattleUI MiPoke OpPoke TrainerPort}
 		UICanvas
 		UICanvasHandler
 		Window
@@ -40,7 +40,7 @@ define
 		{UICanvasHandler create(image 0 0 image:Background_Battle_Grass anchor:nw)}
 		{DrawPokemoz OpNumber MiNumber UICanvasHandler}
 		{DrawHpBar UICanvasHandler Window MiPoke OpPoke}
-		{DrawUI_Control Window MiPoke OpPoke}
+		{DrawUI_Control Window MiPoke OpPoke TrainerPort}
 	end
 	
 	proc {DrawPokemoz OpNumber MiNumber UICanvasHandler}
@@ -59,10 +59,6 @@ define
 	
 	%Compute BarLength
 	fun {ComputeBarLength TotalBarLength Val ValMax}
-		{Show Val#ValMax}
-		{Show {IntToFloat Val}/{IntToFloat ValMax}}
-		{Show ({IntToFloat Val}/{IntToFloat ValMax})*{IntToFloat TotalBarLength}}
-		{Show '------------------------' }
 		{FloatToInt ({IntToFloat Val}/{IntToFloat ValMax})*{IntToFloat TotalBarLength}}
 	end
 	
@@ -125,11 +121,12 @@ define
 	end
 
 	
-	proc {PrepareBattle MiPoke OpPoke}
-		{DrawBattleUI MiPoke OpPoke}
+	proc {PrepareBattle MiPoke OpPoke TrainerPort}
+		{TrainerPort setInCombat(true)}
+		{DrawBattleUI MiPoke OpPoke TrainerPort}
 	end
 	
-	proc {DrawUI_Control Window MiPoke OpPoke}
+	proc {DrawUI_Control Window MiPoke OpPoke TrainerPort}
 		UI_Control
 		UI_Control_Handler
 		UI_Control_Window
@@ -140,11 +137,11 @@ define
 		But_Capt_Handler
 		But_Auto_Handler
 
-		Button_Attack = button(text:"Attack" action:proc{$} {Show 'Attack'} end handle:But_Attk_Handler)
+		Button_Attack = button(text:"Attack" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke TrainerPort} end handle:But_Attk_Handler)
 		Button_PokemOz = button(text:"PokemOz" action:proc{$} {Show 'PokemOz'} end handle:But_Poke_Handler)
 		Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} {UI_Control_Window close} {Window close} end handle:But_Capt_Handler)
 		Button_Capture = button(text:"Capture" action:proc{$} {Show 'Capture'} end handle:But_Fuite_Handler)
-		Button_AutoBattle = button(text:"Auto-Battle" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke} end handle:But_Auto_Handler)
+		Button_AutoBattle = button(text:"Auto-Battle" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke TrainerPort} end handle:But_Auto_Handler)
 	
 	
 		UI_Control = grid(empty Button_Attack  empty newline
@@ -163,11 +160,11 @@ define
 		{UI_Control_Window show(modal:true)}
 		thread
 			{Delay 500}
-			{UI_Control_Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke} end)} %trying to bind to an action
-			{UI_Control_Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {UI_Control_Window close} {Window close} end)}
+			{UI_Control_Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke TrainerPort} end)} %trying to bind to an action
+			{UI_Control_Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {TrainerPort setInCombat(false)} {UI_Control_Window close} {Window close} end)}
 			{UI_Control_Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
 			{UI_Control_Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
-			{UI_Control_Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke} end)}
+			{UI_Control_Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke TrainerPort} end)}
 		end
 		
 	end

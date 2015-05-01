@@ -124,22 +124,7 @@ define
 
 		
 /* ******************************** */
-/*	MovementStatusStream
-	MovementStatus = {NewPort MovementStatusStream}
-	fun {F Msg State}
-		case Msg
-		of moving() then moving()
-		[] idle() then idle()
-		[] get(StateVal) then StateVal=State State
-		end
-	end
-	proc {Loop S State}
-		case S of Msg|S2 then
-			{Loop S2 {F Msg State}}
-		end
-	end
-	thread {Loop MovementStatusStream idle()} end
-*/
+
 	proc {MovementHandle M TrainerPort IsHero}
 		thread S X1 Y1 H Flag Field in
 			{TrainerPort getMovementStatus(S)}
@@ -148,6 +133,7 @@ define
 			{Wait Y1}
 			case S of idle() then
 				{TrainerPort sendMovementStatus(moving())}
+			   	{Show M}
 			   	case M
 			   	of l then 
 			   		if {FieldType X1-1 Y1} \= 'null' then 
@@ -172,7 +158,7 @@ define
 								local Pok1 Pok2 in
 									Pok2 = {NewPokemoz state(type:fire num:4 name:charmozer maxlife:20 currentLife:20 experience:0 level:5)}
 									%{RunBattle Bulba Charmo} 
-									local Pok in {TrainerPort getPokemoz(Pok)} {Wait Pok} {PrepareBattle Pok Pok2} end
+									local Pok in {TrainerPort getPokemoz(Pok)} {Wait Pok} {PrepareBattle Pok Pok2 TrainerPort} end
 									%local Pok in {Send TrainerPort getPokemoz(Pok)} {Wait Pok} {RunAutoBattle Pok Pok2} end
 								end
 							end
@@ -184,7 +170,7 @@ define
 					{TrainerPort getPosition(x:X2 y:Y2)}
 					{TrainerPort getNumber(N)}
 					{Wait N}
-					{Show 'Trainer'#N#' is on'#{FieldType X2 Y2}#'at'#X2#' '#Y2}
+	%				{Show 'Trainer'#N#' is on'#{FieldType X2 Y2}#'at'#X2#' '#Y2}
 				end
 				{TrainerPort  sendMovementStatus(idle())}
 			else
