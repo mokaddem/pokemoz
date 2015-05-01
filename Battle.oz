@@ -61,9 +61,4 @@ define
 			end
 		end
 	end
-	
-	fun {WannaRun}
-		{Show 'You dont want to run'}
-		'false'
-	end
 end

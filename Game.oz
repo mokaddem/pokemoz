@@ -15,7 +15,7 @@ import
 					startX:StartX startY:StartY)
 	
 	DisplayBattle(prepareBattle:PrepareBattle)
-	Trainer(newTrainer:NewTrainer randomlyMoveTrainer:RandomlyMoveTrainer)
+	Trainer(newTrainer:NewTrainer randomMove:RandomMove)
 	Pokemoz(newPokemoz:NewPokemoz)
 	Battle(runBattle:RunBattle)
 	
@@ -40,9 +40,7 @@ in
 	
 	TrainerHandle1 = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1}
 	PokeTrainer1 = {NewPokemoz state(type:grass num:7 name:squirtOz maxlife:20 currentLife:20 experience:0 level:5)}
-	Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokemOz speed:5 movement:proc{$ P} 1=1 end handler:TrainerHandle1 number:2)}
-	
-	thread {RandomlyMoveTrainer Trainer1} end
+	Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokemOz speed:5 movement:{RandomMove} handler:TrainerHandle1 number:2)}
 
 end
 

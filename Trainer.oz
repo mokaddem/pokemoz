@@ -2,11 +2,11 @@ functor
 import
 	OS
 	System(show:Show)
-	PokeConfig(dELAY:DELAY sPEED:SPEED trainer_Move_Proba:Trainer_Move_Proba trainer_MoveS_Speed:Trainer_MoveS_Speed)
+	PokeConfig(dELAY:DELAY sPEED:SPEED trainer_Move_Proba:Trainer_Move_Proba)
 	MoveHero(movementHandle:MovementHandle)
 export
 	NewTrainer
-	RandomlyMoveTrainer
+	RandomMove
 define
 	
 	% State = state(x:X y:Y pokemoz:P speed:S movement:M handler:H number:N)
@@ -16,11 +16,12 @@ define
 		end
 		proc {LoopMovement P}
 			S M in
-			{Send P getSpeed(S)}
-			{Send P getMovement(M)}
+			{P getSpeed(S)}
+			{P getMovement(M)}
+			{Wait S}
+			{Wait M}
 			{Delay (10-S)*DELAY}
 			{M P}
-			{RandomlyMoveTrainer P}
 			{LoopMovement P}
 		end
 		fun {HandleMessage Msg State}
@@ -41,7 +42,7 @@ define
 	in
 		P = {NewPort S}
 		thread {Loop S Init} end
-	%	thread {LoopMovement P} end
+		thread {LoopMovement proc {$ F} {Send P F} end} end
 		proc {$ F} {Send P F} end
 	end
 
@@ -49,7 +50,6 @@ define
 			MoveDir
 			Proba = {OS.rand} mod 100 
 		in
-		{Delay Trainer_MoveS_Speed}
 		if (Trainer_Move_Proba >= Proba) then
 			if Proba<25 then MoveDir=l
 			elseif Proba<50 then MoveDir=r
@@ -57,7 +57,10 @@ define
 			else MoveDir=t end
 			{MovementHandle MoveDir Trainer false}
 		end
-		{RandomlyMoveTrainer Trainer}
+	end
+	
+	fun {RandomMove}
+		proc {$ T} {RandomlyMoveTrainer T} end
 	end
 	
 end
