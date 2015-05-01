@@ -6,7 +6,7 @@ import
 	MoveHero(movementHandle:MovementHandle)
 export
 	NewTrainer
-	RandomlyMoveTrainer
+	RandomMove
 define
 	
 	% State = state(x:X y:Y pokemoz:P speed:S movement:M handler:H number:N movementStatus:MovementStatus incombat:IC)
@@ -14,6 +14,18 @@ define
 		proc {Loop S State}
 			case S of Msg|S2 then {Loop S2 {HandleMessage Msg State}} end
 		end
+
+		proc {LoopMovement P}
+			S M in
+			{P getSpeed(S)}
+			{P getMovement(M)}
+			{Wait S}
+			{Wait M}
+			{Delay (10-S)*DELAY}
+			{M P}
+			{LoopMovement P}
+		end
+
 		fun {HandleMessage Msg State}
 			case Msg
 			of moveX(X) then state(x:(State.x + X) y:(State.y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:(State.movementStatus) incombat:(State.incombat))
@@ -56,7 +68,7 @@ define
 		P = {NewPort S}
 		Init_Final={Record.adjoinAt Init movementStatus MovementStatus}
 		thread {Loop S Init_Final} end
-	%	thread {LoopMovement P} end
+		thread {LoopMovement proc {$ F} {Send P F} end} end
 		proc {$ F} {Send P F} end
 	end
 
@@ -79,7 +91,9 @@ define
 				{MovementHandle MoveDir Trainer false}
 			end
 		end
-		{RandomlyMoveTrainer Trainer HeroTrainer}
+	end
+	fun {RandomMove HeroTrainer}
+		proc {$ T} {RandomlyMoveTrainer T HeroTrainer} end
 	end
 	
 end

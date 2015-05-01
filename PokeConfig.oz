@@ -20,7 +20,7 @@ define
 	POKE_ZOOM = 3
 	
 	DELAY = 200 % delay between the moves
-	SPEED = 5 %[0,10]
+	SPEED = 7 %[0,10]
 	
 	Wild_Pokemon_proba = 30 % encounter probability (%)
 	Trainer_Move_Proba = 70 % move probability (%)

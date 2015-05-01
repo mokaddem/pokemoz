@@ -15,7 +15,7 @@ import
 					startX:StartX startY:StartY)
 	
 	DisplayBattle(prepareBattle:PrepareBattle)
-	Trainer(newTrainer:NewTrainer randomlyMoveTrainer:RandomlyMoveTrainer)
+	Trainer(newTrainer:NewTrainer randomMove:RandomMove)
 	Pokemoz(newPokemoz:NewPokemoz)
 	Battle(runBattle:RunBattle)
 	
@@ -46,16 +46,14 @@ in
 /*trainer 1*/	
 	TrainerHandle1 = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1}
 	PokeTrainer1 = {NewPokemoz state(type:grass num:7 name:squirtOz maxlife:20 currentLife:20 experience:0 level:5)}
-	Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:proc{$ P} 1=1 end handler:TrainerHandle1 number:2 incombat:false)}
+	Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove HeroTrainer} handler:TrainerHandle1 number:2 incombat:false)}
 	
-	thread {RandomlyMoveTrainer Trainer1 HeroTrainer} end
 
 /*trainer 2*/
 	TrainerHandle2 = {CreateAndDisplayTrainer TrainerPosX2 TrainerPosY2}
 	PokeTrainer2 = {NewPokemoz state(type:grass num:7 name:squirtOz maxlife:20 currentLife:20 experience:0 level:5)}
-	Trainer2 = {NewTrainer state(x:TrainerPosX2 y:TrainerPosY2 pokemoz:PokeTrainer2 speed:5 movement:proc{$ P} 1=1 end handler:TrainerHandle2 number:3 incombat:false)}
+	Trainer2 = {NewTrainer state(x:TrainerPosX2 y:TrainerPosY2 pokemoz:PokeTrainer2 speed:5 movement:{RandomMove HeroTrainer} handler:TrainerHandle2 number:3 incombat:false)}
 	
-	thread {Delay 300} {RandomlyMoveTrainer Trainer2 HeroTrainer} end
 
 end
 
