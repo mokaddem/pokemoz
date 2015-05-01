@@ -32,6 +32,9 @@ define
 			[] getHp(X) then X=State.currentLife State
 			[] getName(X) then X=State.name State
 			[] getLevel(X) then X=State.level State
+			[] getExp(X) then 
+				if State.level == 10 then X = 100
+				else X = {FloatToInt ({IntToFloat (State.experience - {GetExpNeeded State.level})}/{IntToFloat ({GetExpNeeded (State.level + 1)} - {GetExpNeeded State.level})})} end State
 			[] getNum(X) then X=State.num State
 			[] setNum(X) then state(type:(State.type) num:(X) name:(State.name) maxlife:(State.maxlife) currentLife:(State.currentLife - X) experience:(State.experience) level:(State.level))
 			end
@@ -51,5 +54,16 @@ define
 		else if Xp < 50 then level(l:9 hp:28)
 		else level(l:10 hp:30)
 		end end end end end
+	end
+	
+	fun{GetExpNeeded Lvl}
+		case Lvl
+		of 5 then 0
+		[] 6 then 5
+		[] 7 then 12
+		[] 8 then 20
+		[] 9 then 30
+		[] 10 then 50
+		end
 	end
 end
