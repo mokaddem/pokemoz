@@ -11,7 +11,7 @@ import
 	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM)
 	Trainer(newTrainer:NewTrainer)
 	Pokemoz(newPokemoz:NewPokemoz)
-	Battle(runAutoBattle:RunAutoBattle)
+	Battle(runAutoBattle:RunAutoBattle attack:Attack)
 	
 export
 	PrepareBattle
@@ -161,12 +161,14 @@ define
 			{UI_Control_Window set(geometry:geometry(x:X.x+{FloatToInt {IntToFloat X.width}/2.0-{IntToFloat Y.width}/2.0} y:X.y+X.height))}
 		end
 		{UI_Control_Window show(modal:true)}
-	
-		{UI_Control_Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} end)} %trying to bind to an action
-		{UI_Control_Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {UI_Control_Window close} {Window close} end)}
-		{UI_Control_Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
-		{UI_Control_Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
-		{UI_Control_Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke} end)}
+		thread
+			{Delay 500}
+			{UI_Control_Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke} end)} %trying to bind to an action
+			{UI_Control_Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {UI_Control_Window close} {Window close} end)}
+			{UI_Control_Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
+			{UI_Control_Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
+			{UI_Control_Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke} end)}
+		end
 		
 	end
 	
