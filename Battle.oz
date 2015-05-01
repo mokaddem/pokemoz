@@ -2,7 +2,7 @@ functor
 import
 	System(show:Show)
 	OS
-	DisplayBattle(drawHpBar:DrawHpBar computeBarLength:ComputeBarLength)
+	DisplayBattle(drawHpBar:DrawHpBar computeBarLength:ComputeBarLength doTheBarAnimation:DoTheBarAnimation doThePokeAttackAnimation:DoThePokeAttackAnimation)
 export
 	RunAutoBattle
 	Attack
@@ -10,17 +10,18 @@ define
 	/* 
 	 * Pok1 attacks first
 	 */
-	proc {RunAutoBattle Pok1 Pok2 TrainerPort UI_Components HpBarRecord}
+	proc {RunAutoBattle Pok1 Pok2 TrainerPort UI_Components HpRecord PokeTagsRecord}
 		Hp1 Hp2 in
 		{Pok1 getHp(Hp1)}
 		{Pok2 getHp(Hp2)}
-		if Hp1 > 0 then if Hp2 > 0 then {Attack Pok1 Pok2 TrainerPort UI_Components HpBarRecord} {RunAutoBattle Pok1 Pok2 TrainerPort UI_Components HpBarRecord} end end
+		if Hp1 > 0 then if Hp2 > 0 then {Attack Pok1 Pok2 TrainerPort UI_Components HpRecord PokeTagsRecord} {RunAutoBattle Pok1 Pok2 TrainerPort UI_Components HpRecord PokeTagsRecord} end end
 	end
 	
-	proc {Attack Pok1 Pok2 TrainerPort UI_Components HpBarRecord}
+	proc {Attack Pok1 Pok2 TrainerPort UI_Components HpRecord PokeTagsRecord}
 		Name1 Name2 Type1 Type2 Damage Hp1 Hp2 Hp2Max Hp1Max Level1 Level2 
-		MiPvBarTag = HpBarRecord.mi
-		OpPvBarTag = HpBarRecord.op
+		MiPvBarTag = HpRecord.miBar	OpPvBarTag = HpRecord.opBar
+		MiPvTxtTag = HpRecord.miTxt	OpPvTxtTag = HpRecord.opTxt
+		MiPokeTag = PokeTagsRecord.mi	OpPokeTag = PokeTagsRecord.op
 		CoordOp
 		CoordMi
 		NewMiPvBarTag
@@ -40,14 +41,15 @@ define
 		{Pok2 getHp(Hp2)} 
 		{Pok2 getHpMax(Hp2Max)}
 		{Wait Hp2Max} 		{Wait Hp2}
-		local X1 X2 Y1 Y2 BarLen in
+		{DoThePokeAttackAnimation MiPokeTag true}
+		local X1 X2 Y1 Y2 BarLen PBarLen in
 			X1 = {FloatToInt {String.toFloat {VirtualString.toString CoordOp.1}}}
 			X2 = {FloatToInt {String.toFloat {VirtualString.toString CoordOp.2.2.1}}}
 			Y1 = {FloatToInt {String.toFloat {VirtualString.toString CoordOp.2.1}}}
 			Y2 = {FloatToInt {String.toFloat {VirtualString.toString CoordOp.2.2.2.1}}}
-			{Show {ComputeBarLength X2-X1 Hp2 Hp2Max}}
-			BarLen = {ComputeBarLength X2-X1 Hp2 Hp2Max}
-			{OpPvBarTag setCoords(X1 Y1 X1+BarLen Y2)}
+			PBarLen = {ComputeBarLength Hp2+Damage Hp2Max}
+			BarLen = {ComputeBarLength Hp2 Hp2Max}
+			{DoTheBarAnimation OpPvTxtTag OpPvBarTag X1 Y1 BarLen PBarLen X2 Y2 Damage+Hp2 Hp2 Hp2Max}
 		end
 
 		
@@ -59,14 +61,15 @@ define
 			{Pok1 getHp(Hp1)}
 			{Pok1 getHpMax(Hp1Max)}
 			{Wait Hp1Max} 		{Wait Hp1}
-			local X1 X2 Y1 Y2 BarLen in
+			{DoThePokeAttackAnimation OpPokeTag false}
+			local X1 X2 Y1 Y2 BarLen PBarLen in
 				X1 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.1}}}
 				X2 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.2.2.1}}}
 				Y1 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.2.1}}}
 				Y2 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.2.2.2.1}}}
-				{Show {ComputeBarLength X2-X1 Hp1 Hp1Max}}
-				BarLen = {ComputeBarLength X2-X1 Hp1 Hp1Max}
-				{MiPvBarTag setCoords(X1 Y1 X1+BarLen Y2)}
+				PBarLen = {ComputeBarLength Hp1+Damage2 Hp2Max}
+				BarLen = {ComputeBarLength Hp1 Hp1Max}
+				{DoTheBarAnimation MiPvTxtTag MiPvBarTag X1 Y1 BarLen PBarLen X2 Y2 Damage2+Hp1 Hp1 Hp1Max}
 			end
 			
 			if Hp1 =< 0 then
