@@ -9,14 +9,14 @@ define
 	/* 
 	 * Pok1 attacks first
 	 */
-	proc {RunAutoBattle Pok1 Pok2 TrainerPort}
+	proc {RunAutoBattle Pok1 Pok2 TrainerPort UI_Components}
 		Hp1 Hp2 in
 		{Pok1 getHp(Hp1)}
 		{Pok2 getHp(Hp2)}
-		if Hp1 > 0 then if Hp2 > 0 then {Attack Pok1 Pok2 TrainerPort} {RunAutoBattle Pok1 Pok2 TrainerPort} end end
+		if Hp1 > 0 then if Hp2 > 0 then {Attack Pok1 Pok2 TrainerPort UI_Components} {RunAutoBattle Pok1 Pok2 TrainerPort UI_Components} end end
 	end
 	
-	proc {Attack Pok1 Pok2 TrainerPort}
+	proc {Attack Pok1 Pok2 TrainerPort UI_Components}
 		Name1 Name2 Type1 Type2 Damage Hp1 Hp2 Level1 Level2 in
 		{Pok1 getType(Type1)}
 		{Pok2 getType(Type2)}
@@ -32,8 +32,18 @@ define
 			Damage2 in Damage2 = {GetDamage Type2 Type1 Level2 Level1}
 			{Show Name2#' attacks'}
 			{Pok1 damage(Damage2)}
+			{Pok1 getHp(Hp1)}
+			if Hp1 =< 0 then
+				{Delay 1000}
+				{UI_Components.window close} 
+				{UI_Components.ui_control_window close}
+				{TrainerPort setInCombat(false)}
+			end
 		else
 			{Pok1 'exp'(Level2)}
+			{Delay 1000}
+			{UI_Components.window close} 
+			{UI_Components.ui_control_window close}
 			{TrainerPort setInCombat(false)}
 		end
 	end

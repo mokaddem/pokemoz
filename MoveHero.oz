@@ -133,7 +133,6 @@ define
 			{Wait Y1}
 			case S of idle() then
 				{TrainerPort sendMovementStatus(moving())}
-			   	{Show M}
 			   	case M
 			   	of l then 
 			   		if {FieldType X1-1 Y1} \= 'null' then 

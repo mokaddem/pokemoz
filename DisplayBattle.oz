@@ -31,7 +31,7 @@ define
 		UICanvasHandler
 		Window
 		MiNumber
-		OpNumber 
+		OpNumber
 	in
 		{MiPoke getNum(MiNumber)} {OpPoke getNum(OpNumber)}
 		UICanvas = canvas(handle:UICanvasHandler width:UI_LENGTH height:UI_HEIGHT)
@@ -127,6 +127,7 @@ define
 	end
 	
 	proc {DrawUI_Control Window MiPoke OpPoke TrainerPort}
+		UI_Components
 		UI_Control
 		UI_Control_Handler
 		UI_Control_Window
@@ -150,6 +151,7 @@ define
 								handle:UI_Control_Handler)
 	
 		in
+			UI_Components = components(window:Window ui_control_window:UI_Control_Window)
 			% Get info about window and place the dialog ont the right place
 			UI_Control_Window = {QTk.build td(title:'PokemOz battle!' UI_Control)}
 			{UI_Control_Handler configure(But_Attk_Handler But_Poke_Handler But_Fuite_Handler But_Capt_Handler padx:10 pady:10)}	 
@@ -160,11 +162,11 @@ define
 		{UI_Control_Window show(modal:true)}
 		thread
 			{Delay 500}
-			{UI_Control_Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke TrainerPort} end)} %trying to bind to an action
+			{UI_Control_Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke TrainerPort UI_Components} end)} %trying to bind to an action
 			{UI_Control_Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {TrainerPort setInCombat(false)} {UI_Control_Window close} {Window close} end)}
 			{UI_Control_Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
 			{UI_Control_Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
-			{UI_Control_Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke TrainerPort} end)}
+			{UI_Control_Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke TrainerPort UI_Components} end)}
 		end
 		
 	end
