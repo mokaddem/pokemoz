@@ -6,7 +6,7 @@ clean:
 %.ozf: %.oz
 	ozc -c $< -o $@
 
-compile: PokeConfig.ozf Trainer.ozf DisplayMap.ozf CutImages.ozf MoveHero.ozf Util.ozf Pokemoz.ozf Battle.ozf Data/Offset_data.ozf DisplayBattle.ozf Game.ozf
+compile: PokeConfig.ozf Trainer.ozf DisplayMap.ozf CutImages.ozf MoveHero.ozf Util.ozf Pokemoz.ozf Battle.ozf Data/Offset_data.ozf DisplayBattle.ozf Game.ozf PokeChoice.oz
 
 run:
 	ozengine Game.ozf > /dev/null &
