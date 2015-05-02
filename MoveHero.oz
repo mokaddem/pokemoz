@@ -143,7 +143,6 @@ define
 			   	if {FieldType NextX NextY} \= 'null' then
 			   		if {PlaceAllowed NextX NextY} \= 'occupied' then
 			   			{TrainerPort move(NextX-X1 NextY-Y1)}
-			   			{DeplaceAllowedPlace NextX NextY X1 Y1}
 			   			Flag=1 Field={FieldType NextX NextY}
 			   		else {Show 'place not allowed'} Flag=0
 			   		end

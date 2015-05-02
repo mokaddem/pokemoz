@@ -169,8 +169,8 @@ define
 	end
 	
 	proc {DeplaceAllowedPlace NewX NewY OldX OldY}
-		{CellSet AllowedPlace.NewY.NewX 'occupied'}
 		{CellSet AllowedPlace.OldY.OldX 'free'}
+		{CellSet AllowedPlace.NewY.NewX 'occupied'}
 	end
 	
 	/*
