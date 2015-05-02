@@ -10,7 +10,7 @@ import
 	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	QTk at 'x-oz://system/wp/QTk.ozf'
-	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM)
+	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM heroPosYDecal:HeroPosYDecal heroPosXDecal:HeroPosXDecal)
 	Trainer(newTrainer:NewTrainer)
 	Pokemoz(newPokemoz:NewPokemoz)
 	Battle(runBattle:RunBattle)
@@ -22,7 +22,10 @@ export
 	PokePosition
 	SquareLengthFloat
 	FieldType
+	InitMap
 	MapRecord
+	PlaceAllowed
+	%DeplaceAllowedPlace
 	CreateAndDisplayHeroAndFollower
 	CreateAndDisplayTrainer
 	DrawMap
@@ -50,8 +53,8 @@ define
 	%Hero_variables
 %	HeroHandle	%The Hero handler
 	HeroPosition	%The Hero's position cell
-	HeroPosXDecal=~14
-	HeroPosYDecal=0
+	%HeroPosXDecal=~14
+	%HeroPosYDecal=0
 	
 	%Poke_variables
 	PokeHandle
@@ -155,6 +158,19 @@ define
 		else MapRecord.Y.X end end end end
 	end
 	
+	fun {PlaceAllowed AllowedPlace X Y}
+		if X > {Length {Arity AllowedPlace}} then null
+		else if X < 1 then null
+		else if Y > {Length {Arity AllowedPlace}} then null
+		else if Y < 1  then null
+		else MapRecord.Y.X end end end end
+	end
+	
+	fun {DeplaceAllowedPlace AllowedPlace NewX NewY OldX OldY}
+		AllowedPlace.NewY.NewX = 'occupied'
+		AllowedPlace.OldY.OldX = 'free'
+	end
+	
 	/*
 	*	result: Draw and display the hero and his fellow
 	*	return: the created Hero Handle
@@ -188,9 +204,11 @@ define
 	Charmo = {NewPokemoz state(type:fire num:0 name:charmozer maxlife:20 currentLife:20 experience:0 level:5)}
 	{RunBattle Bulba Charmo}*/
 
-	MapFile={New Open.file init(name:'map.txt' flags:[read])}
-	{MapFile read(list:MapParsed size:all)}
-	MapRecord={List.toTuple map {Scan MapParsed}}
-	{MapFile close}
+	proc {InitMap}
+		MapFile={New Open.file init(name:'map.txt' flags:[read])}
+		{MapFile read(list:MapParsed size:all)}
+		MapRecord={List.toTuple map {Scan MapParsed}}
+		{MapFile close}
+	end
 
 end

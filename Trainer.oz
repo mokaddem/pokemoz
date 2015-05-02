@@ -2,7 +2,7 @@ functor
 import
 	OS
 	System(show:Show)
-	PokeConfig(dELAY:DELAY sPEED:SPEED trainer_Move_Proba:Trainer_Move_Proba trainer_MoveS_Speed:Trainer_MoveS_Speed)
+	PokeConfig(dELAY:DELAY trainer_Move_Proba:Trainer_Move_Proba trainer_MoveS_Speed:Trainer_MoveS_Speed)
 	MoveHero(movementHandle:MovementHandle)
 export
 	NewTrainer
@@ -38,36 +38,16 @@ define
 			[] getSpeed(S) then S=State.speed State
 			[] getHandler(H) then H=State.handler State
 			[] getNumber(N) then N=State.'number' State
-			[] getMovementStatus(MS) then {Send State.movementStatus get(MS)} State
-			[] sendMovementStatus(MS) then {Send State.movementStatus MS} State
+			[] getMovementStatus(MS) then MS=State.movementStatus State
+			[] sendMovementStatus(MS) then state(x:(State.x) y:(State.y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:MS incombat:(State.incombat))
 			[] getInCombat(IC) then IC=State.incombat State
 			[] setInCombat(SIC) then state(x:(State.x) y:(State.y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:(State.movementStatus) incombat:SIC)
 			end
 		end
 		P S
-		
-		/* The INDIVIDUAL Movement Status Port for each trainer */
-		MovementStatusStream
-		MovementStatus = {NewPort MovementStatusStream}
-		fun {MovementStatusMsgHandler MSMsg MSState}
-			case MSMsg
-			of moving() then moving()
-			[] idle() then idle()
-			[] inbattle() then inbattle()
-			[] get(MSStateVal) then MSStateVal=MSState MSState
-			end
-		end
-		proc {LoopMovementStatus MSS MSState}
-			case MSS of MSMsg|MSS2 then
-				{LoopMovementStatus MSS2 {MovementStatusMsgHandler MSMsg MSState}}
-			end
-		end
-		thread {LoopMovementStatus MovementStatusStream idle()} end
-		Init_Final
 	in
 		P = {NewPort S}
-		Init_Final={Record.adjoinAt Init movementStatus MovementStatus}
-		thread {Loop S Init_Final} end
+		thread {Loop S Init} end
 		thread {LoopMovement proc {$ F} {Send P F} end} end
 		proc {$ F} {Send P F} end
 	end
@@ -79,9 +59,11 @@ define
 		{HeroTrainer getInCombat(X)} 
 	in
 		{Wait X}
-		if {Not X} then
+		if {Not X} then S in
 			Proba = {OS.rand} mod 100
-			{Delay Trainer_MoveS_Speed}
+			{Trainer getSpeed(S)}
+			{Wait S}
+			{Delay (10-S)*DELAY}
 			if (Trainer_Move_Proba >= Proba) then
 				if Proba*100<25*Trainer_Move_Proba then MoveDir=l
 				elseif Proba*100<50*Trainer_Move_Proba then MoveDir=r
