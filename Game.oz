@@ -8,6 +8,7 @@ import
 	CutImages(heroFace:HeroFace pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile)
 	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
+	PokeChoice(launchTheIntro:LaunchTheIntro)
 	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM dELAY:DELAY wild_Pokemon_proba:Wild_Pokemon_proba pathPokeTotal:PathPokeTotal pathTrainersTotal:PathTrainersTotal)
 	
 	DisplayMap(heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat fieldType:FieldType
@@ -23,11 +24,12 @@ export
 	HeroTrainer
 	
 define
+	IntroFinish
+
 	HeroTrainer
 	HeroHandler
 	PokemOz
 	MapRecord
-	
 	
 	Trainer2
 	TrainerHandle2
@@ -35,6 +37,8 @@ define
 	TrainerPosY2=9
 	PokeTrainer2
 in
+	IntroFinish = {LaunchTheIntro}
+	{Wait IntroFinish}
 	{InitMap}
 	{DrawMap MapRecord HeroTrainer} %	/!\ Concurrency! {DrawMap} need 'HeroHandler' that need the variables initialated in {DrawMap}
 	
