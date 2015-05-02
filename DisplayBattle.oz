@@ -184,17 +184,24 @@ define
 	end
 	
 	%Bar Animation
-	proc {DoTheBarAnimation TxtTag BarTag X1 Y1 BarLen PBarLen X2 Y2 HpP HpC HpMax} 
-		if HpP-HpC > 0 then
-			for I in 0..PBarLen-BarLen do
-				{Delay BarRegressionDelay}
-				if(X2-I < X1+1) then skip
-				else
-					{BarTag setCoords(X1 Y1 X2-I Y2)}
-				end
-				local Factor = {IntToFloat (PBarLen-BarLen)} / {IntToFloat (HpP-HpC)} in
-				{Show Factor#{IntToFloat I}/Factor#HpP-{FloatToInt ({IntToFloat I}/Factor)}}
-					{TxtTag set(text:{Append "Hp: " {Append {IntToString HpP-{FloatToInt ({IntToFloat I}/Factor)}} {Append "/" {IntToString HpMax}}}})}
+	proc {DoTheBarAnimation TxtTag BarTag BarLen PBarLen HpP HpC HpMax OpPvBarTag} 
+		{MiPvBarTag getCoords(1:CoordMi)}
+		local X1 X2 Y1 Y2 BarLen PBarLen in
+			X1 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.1}}}
+			X2 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.2.2.1}}}
+			Y1 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.2.1}}}
+			Y2 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.2.2.2.1}}}
+			if HpP-HpC > 0 then
+				for I in 0..PBarLen-BarLen do
+					{Delay BarRegressionDelay}
+					if(X2-I < X1+1) then skip
+					else
+						{BarTag setCoords(X1 Y1 X2-I Y2)}
+					end
+					local Factor = {IntToFloat (PBarLen-BarLen)} / {IntToFloat (HpP-HpC)} in
+					{Show Factor#{IntToFloat I}/Factor#HpP-{FloatToInt ({IntToFloat I}/Factor)}}
+						{TxtTag set(text:{Append "Hp: " {Append {IntToString HpP-{FloatToInt ({IntToFloat I}/Factor)}} {Append "/" {IntToString HpMax}}}})}
+					end
 				end
 			end
 		end

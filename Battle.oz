@@ -40,33 +40,23 @@ define
 		{OpPvBarTag getCoords(1:CoordOp)}
 		{Pok2 getHp(Hp2C)} 
 		{DoThePokeAttackAnimation MiPokeTag true}
-		local X1 X2 Y1 Y2 BarLen PBarLen in
-			X1 = {FloatToInt {String.toFloat {VirtualString.toString CoordOp.1}}}
-			X2 = {FloatToInt {String.toFloat {VirtualString.toString CoordOp.2.2.1}}}
-			Y1 = {FloatToInt {String.toFloat {VirtualString.toString CoordOp.2.1}}}
-			Y2 = {FloatToInt {String.toFloat {VirtualString.toString CoordOp.2.2.2.1}}}
-			PBarLen = {ComputeBarLength Hp2P Hp2Max}
-			BarLen = {ComputeBarLength Hp2C Hp2Max}
-			{DoTheBarAnimation OpPvTxtTag OpPvBarTag X1 Y1 BarLen PBarLen X2 Y2 Hp2P Hp2C Hp2Max}
-		end
+	
+		PBarLen = {ComputeBarLength Hp2P Hp2Max}
+		BarLen = {ComputeBarLength Hp2C Hp2Max}
+		{DoTheBarAnimation OpPvTxtTag OpPvBarTag BarLen PBarLen Hp2P Hp2C Hp2Max OpPvBarTag}
+
 
 		
 		if Hp2C > 0 then
 			Damage2 in Damage2 = {GetDamage Type2 Type1 Level2 Level1}
 			{Show Name2#' attacks'}
-			{Pok1 damage(Damage2)}
-			{MiPvBarTag getCoords(1:CoordMi)}
+			{Pok1 damage(Damage2)}			
 			{Pok1 getHp(Hp1C)}
 			{DoThePokeAttackAnimation OpPokeTag false}
-			local X1 X2 Y1 Y2 BarLen PBarLen in
-				X1 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.1}}}
-				X2 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.2.2.1}}}
-				Y1 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.2.1}}}
-				Y2 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.2.2.2.1}}}
-				PBarLen = {ComputeBarLength Hp1P Hp2Max}
-				BarLen = {ComputeBarLength Hp1C Hp1Max}
-				{DoTheBarAnimation MiPvTxtTag MiPvBarTag X1 Y1 BarLen PBarLen X2 Y2 Hp1P Hp1C Hp1Max}
-			end
+			PBarLen = {ComputeBarLength Hp1P Hp2Max}
+			BarLen = {ComputeBarLength Hp1C Hp1Max}
+			{DoTheBarAnimation MiPvTxtTag MiPvBarTag BarLen PBarLen Hp1P Hp1C Hp1Max OpPvBarTag}
+
 			
 			if Hp1C =< 0 then
 				{Delay 1000}
