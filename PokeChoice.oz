@@ -10,7 +10,7 @@ export
 	LaunchTheIntro
 	
 define
-	LaunchTheIntro Ok
+	LaunchTheIntro MakeTheChoice Ok
 
 	Font22={QTk.newFont font(size:22)}
 	Font16={QTk.newFont font(size:16)}
@@ -25,9 +25,9 @@ define
 	Window
 	But_1_Handler But_2_Handler But_3_Handler But_prof_Handler 
 	Grid_Handler1 Grid_Handler2 PlaceHolder_Handle
-	Button_Pok1 = button(action:proc{$} {Show 'Pok1'} end image:Pok1 handle:But_1_Handler)
-	Button_Pok2 = button(action:proc{$} {Show 'Pok2'} end image:Pok2 handle:But_2_Handler)
-	Button_Pok3 = button(action:proc{$} {Show 'Pok3'} end image:Pok3 handle:But_3_Handler)
+	Button_Pok1 = button(action:proc{$} {Show 'Pok1'} {Window close} Ok=1 end image:Pok1 handle:But_1_Handler)
+	Button_Pok2 = button(action:proc{$} {Show 'Pok2'} {Window close} Ok=1 end image:Pok2 handle:But_2_Handler)
+	Button_Pok3 = button(action:proc{$} {Show 'Pok3'} {Window close} Ok=1 end image:Pok3 handle:But_3_Handler)
 	Button_Prof = button(action:proc{$} {Show 'Ouch!'}
 	local V1 V2 V3 V4 V5 V6 in
 		V1= {Num1 get($)}
@@ -38,11 +38,10 @@ define
 		V6= {Name get($)}
 	 	{SaveValue V1 V2 V3 V4 V5 V6}
  	end
- 	{MaketheChoice}
- 	{Window close}
+ 	{MakeTheChoice}
  	end image:Prof handle:But_prof_Handler)
 	
-	Grid2 = grid(empty Button_Prof  empty newline
+	Grid2 = grid(empty empty  empty newline
 					Button_Pok1 Button_Pok2 Button_Pok3
 					handle:Grid_Handler2)
 	
@@ -73,21 +72,30 @@ define
 					CheckButtonNormal newline
 					handle:Grid_Handler1)
 			
-	Placeholder_handler
+	Placeholder_handler G1 G2
    Desc=placeholder(glue:nswe handle:Placeholder_handler)
 in
 	fun {LaunchTheIntro}
 		Window = {QTk.build td(title:'Choose you pokemon!' Desc)}
-		{Window show}
-		                 
+	
+	%Build the two grid	
+		{Placeholder_handler set(td(handle:G2
+             Grid2))} 
+       {Placeholder_handler set(td(handle:G1
+             Grid1))} 
+             		                 
 	%The parameters window
-		{Placeholder_handler set(td(Grid1))}
 	  	{Grid_Handler1 configure(label(text:"Hello! Enter your game's parameter below." font:Font22 glue:w) column:1 columnspan:3 row:1 pady:5)}
 		{Grid_Handler1 configure(tdspace(glue:w width:10) column:1 columnspan:3 row:2 pady:10)}
 		{Grid_Handler1 configure(Button_Prof column:3 rowspan:25 row:4 pady:5 padx:5)}
+
+		{Window show}
 		Ok
 	end
 	
+	proc {MakeTheChoice}
+		{Placeholder_handler set(G2)}
+	end
 
 end	
 
