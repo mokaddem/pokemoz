@@ -4,7 +4,7 @@ import
 	QTk at 'x-oz://system/wp/QTk.ozf'
 
 	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM pOKE_ZOOM:POKE_ZOOM pathTrainersTotal:PathTrainersTotal pathPokeTotal:PathPokeTotal starter:Starter)
-
+	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 
 export 
 	Grass_Tile
@@ -50,8 +50,8 @@ end
 
 AllHeroFrames = {CreateMovementImages {Append PathTrainersTotal "hero.gif"}}
 HeroFace = AllHeroFrames.downFrame.1
-AllPokeFrames = {CreateMovementImages {Append PathPokeTotal {Append {IntToString Starter} ".gif"}}}
-PokeFace = AllPokeFrames.downFrame.1
+AllPokeFrames = {CustomNewCell {CreateMovementImages {Append PathPokeTotal {Append {IntToString Starter} ".gif"}}}}
+PokeFace = {CellGet AllPokeFrames}.downFrame.1
 
 
 %%%% Create Ground Tile %%%%%

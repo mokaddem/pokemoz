@@ -55,6 +55,10 @@ define
 
 /* Start - Make the follow */
 	proc {MakeTheFollowMove Handler FramesDirection HeroMovement}
+		NiceFramesDirection
+		if {Port.is FramesDirection} then NiceFramesDirection={CellGet FramesDirection}
+		else NiceFramesDirection=FramesDirection end
+		
 		MovementValue=1.0*SquareLengthFloat/5.0 
 		NewPokePosition
 		HeroPos
@@ -85,7 +89,7 @@ define
 		end
 	
 		{CellSet PokePosition NewPokePosition}
-		{MakeTheMove Handler FramesDirection.DirectionToTake Movement}
+		{MakeTheMove Handler NiceFramesDirection.DirectionToTake Movement}
 		
 		case HeroMovement
 		of move(X Y) then
@@ -100,24 +104,27 @@ define
 			end
 		end
 		{Delay 75}
-		{Handler set(image:AllPokeFrames.DirectionToFace.1)}
+		{Handler set(image:{CellGet AllPokeFrames}.DirectionToFace.1)}
 	end
 
 /*  END - Make the follow */
 
 	proc {MakeTheMove Handler FramesDirection Movement}
+		NiceFramesDirection
+		if {Port.is FramesDirection} then NiceFramesDirection={CellGet FramesDirection}
+		else NiceFramesDirection=FramesDirection end
 		D=75 in
-		{Handler set(image:FramesDirection.2)}
+		{Handler set(image:NiceFramesDirection.2)}
 		{Handler Movement}
 		{Delay D}
 		{Handler Movement}
 		{Delay D}
-		{Handler set(image:FramesDirection.4)}
+		{Handler set(image:NiceFramesDirection.4)}
 		{Handler Movement}
 		{Delay D}
 		{Handler Movement}
 		{Delay D}
-		{Handler set(image:FramesDirection.1)}
+		{Handler set(image:NiceFramesDirection.1)}
 		{Handler Movement}
 		{Delay D}
 	end
