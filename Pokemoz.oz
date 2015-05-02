@@ -81,14 +81,14 @@ define
 	end
 	
 	fun {GenerateRandomPokemon}
-		Type Num Name in
-		Num = ({OS.rand} mod 3)*3+1
-		if Num == 1 then 
-			Type=grass Name='Bulbasoz'
-		elseif Num==4 
-			then Type=fire  Name='Charmandoz'
+		Type Rand Name Num in
+		Rand = ({OS.rand} mod 100)
+		if Rand < 33 then 
+			Num=1 Type=grass Name='Bulbasoz'
+		elseif Rand < 66 
+			then Num=4 Type=fire  Name='Charmandoz'
 		else 
-			Type=water  Name='Oztirtle'
+			Type=water Num=7 Name='Oztirtle'
 		end
 		{NewPokemoz state(type:Type num:Num name:Name maxlife:20 currentLife:20 experience:0 level:5)}
 	end

@@ -2,7 +2,7 @@ functor
 import
 	System(show:Show)
 	OS
-	DisplayBattle(drawHpBar:DrawHpBar computeBarLength:ComputeBarLength doTheBarAnimation:DoTheBarAnimation doThePokeAttackAnimation:DoThePokeAttackAnimation doTheXpBarAnimation:DoTheXpBarAnimation)
+	DisplayBattle(drawHpBar:DrawHpBar computeBarLength:ComputeBarLength doTheBarAnimation:DoTheBarAnimation doThePokeAttackAnimation:DoThePokeAttackAnimation doTheXpBarAnimation:DoTheXpBarAnimation doTheFaintAnim:DoTheFaintAnim)
 export
 	RunAutoBattle
 	Attack
@@ -60,6 +60,7 @@ define
 			end
 			
 			if Hp1C =< 0 then
+				{DoTheFaintAnim MiPokeTag}
 				{Delay 1000}
 				{UI_Components.window close} 
 				{UI_Components.ui_control_window close}
@@ -80,7 +81,8 @@ define
 				{Show BarLen}
 				{DoTheXpBarAnimation Pok1 Level2 BarLen PBarLen HpRecord.expBar}
 			end
-			{Delay 5000}
+			{DoTheFaintAnim OpPokeTag}
+			{Delay 1000}
 			{UI_Components.window close} 
 			{UI_Components.ui_control_window close}
 			{TrainerPort setInCombat(false)}
