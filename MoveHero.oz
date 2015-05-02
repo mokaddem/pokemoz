@@ -6,7 +6,7 @@ import
 	OS
 	QTk at 'x-oz://system/wp/QTk.ozf'
 	CutImages(allHeroFrames:AllHeroFrames allPokeFrames:AllPokeFrames)
-	DisplayMap(heroTrainer:HeroTrainer heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat fieldType:FieldType)
+	DisplayMap(heroTrainer:HeroTrainer heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat fieldType:FieldType placeAllowed:PlaceAllowed deplaceAllowedPlace:DeplaceAllowedPlace)
 	DisplayBattle(prepareBattle:PrepareBattle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH wild_Pokemon_proba:Wild_Pokemon_proba)
@@ -126,26 +126,29 @@ define
 /* ******************************** */
 
 	proc {MovementHandle M TrainerPort IsHero}
-		thread S X1 Y1 H Flag Field in
+		thread S X1 Y1 H Flag Field NextX NextY in
 			{TrainerPort getMovementStatus(S)}
 			{TrainerPort getHandler(H)}
 			{TrainerPort getPosition(x:X1 y:Y1)}
 			{Wait Y1}
+			{Wait S}
 			case S of idle() then
 				{TrainerPort sendMovementStatus(moving())}
 			   	case M
-			   	of l then 
-			   		if {FieldType X1-1 Y1} \= 'null' then 
-			   		{TrainerPort moveX(~1)} Flag=1 Field={FieldType X1-1 Y1} else Flag=0 end
-			   	[] r then
-				   	if {FieldType X1+1 Y1} \= 'null' then 
-			   		{TrainerPort moveX(1)} Flag=1 Field={FieldType X1+1 Y1} else Flag=0  end
-			   	[] u then
-						if {FieldType X1 Y1-1} \= 'null' then 
-			   		{TrainerPort moveY(~1)} Flag=1 Field={FieldType X1 Y1-1} else Flag=0  end
-			   	[] d then
-						if {FieldType X1 Y1+1} \= 'null' then 
-			   		{TrainerPort moveY(1)} Flag=1 Field={FieldType X1 Y1+1} else Flag=0  end
+			   	of l then NextX = X1-1 NextY = Y1
+			   	[] r then NextX = X1+1 NextY = Y1
+			   	[] u then NextX = X1 NextY = Y1-1
+			   	[] d then NextX = X1 NextY = Y1+1
+			   	end
+			   	if {FieldType NextX NextY} \= 'null' then
+			   		if {PlaceAllowed NextX NextY} \= 'occupied' then
+			   			{TrainerPort move(NextX-X1 NextY-Y1)}
+			   			{DeplaceAllowedPlace NextX NextY X1 Y1}
+			   			Flag=1 Field={FieldType NextX NextY}
+			   		else {Show 'place not allowed'} Flag=0
+			   		end
+			   	else 
+			   		Flag=0  
 			   	end
 				if Flag==1 then 
 					{MoveHero M H IsHero} 
