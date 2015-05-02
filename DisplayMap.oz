@@ -26,6 +26,7 @@ export
 	MapRecord
 	AllowedPlace
 	PlaceAllowed
+	LookAround
 	DeplaceAllowedPlace
 	CreateAndDisplayHeroAndFollower
 	CreateAndDisplayTrainer
@@ -168,9 +169,25 @@ define
 		else {CellGet AllowedPlace.Y.X} end end end end
 	end
 	
-	proc {DeplaceAllowedPlace NewX NewY OldX OldY}
+	proc {DeplaceAllowedPlace NewX NewY OldX OldY Type}
 		{CellSet AllowedPlace.OldY.OldX 'free'}
-		{CellSet AllowedPlace.NewY.NewX 'occupied'}
+		{CellSet AllowedPlace.NewY.NewX Type}
+	end
+	
+	fun {LookAround X Y Type}
+		OtherType in
+		if Type == 'player' then OtherType = 'ia'
+		elseif Type == 'ia' then OtherType = 'player' end
+		
+		/*if {PlaceAllowed X-1 Y-1} == OtherType then 'true'
+		else*/if {PlaceAllowed X-1 Y} == OtherType then 'true'
+		%else if {PlaceAllowed X-1 Y+1} == OtherType then 'true'
+		else if {PlaceAllowed X Y-1} == OtherType then 'true'
+		else if {PlaceAllowed X Y+1} == OtherType then 'true'
+		%else if {PlaceAllowed X+1 Y-1} == OtherType then 'true'
+		else if {PlaceAllowed X+1 Y} == OtherType then 'true'
+		%else if {PlaceAllowed X+1 Y+1} == OtherType then 'true'
+		else 'false' end end end end %end end end end
 	end
 	
 	/*

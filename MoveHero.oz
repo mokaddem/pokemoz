@@ -6,7 +6,7 @@ import
 	OS
 	QTk at 'x-oz://system/wp/QTk.ozf'
 	CutImages(allHeroFrames:AllHeroFrames allPokeFrames:AllPokeFrames)
-	DisplayMap(heroTrainer:HeroTrainer heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat fieldType:FieldType placeAllowed:PlaceAllowed deplaceAllowedPlace:DeplaceAllowedPlace)
+	DisplayMap(heroTrainer:HeroTrainer heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat fieldType:FieldType placeAllowed:PlaceAllowed deplaceAllowedPlace:DeplaceAllowedPlace lookAround:LookAround)
 	DisplayBattle(prepareBattle:PrepareBattle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH wild_Pokemon_proba:Wild_Pokemon_proba)
@@ -126,12 +126,14 @@ define
 /* ******************************** */
 
 	proc {MovementHandle M TrainerPort IsHero}
-		thread S X1 Y1 H Flag Field NextX NextY in
+		thread S X1 Y1 H Flag Field NextX NextY Type in
 			{TrainerPort getMovementStatus(S)}
 			{TrainerPort getHandler(H)}
 			{TrainerPort getPosition(x:X1 y:Y1)}
+			{TrainerPort getType(Type)}
 			{Wait Y1}
 			{Wait S}
+			{Wait Type}
 			case S of idle() then
 				{TrainerPort sendMovementStatus(moving())}
 			   	case M
@@ -141,19 +143,20 @@ define
 			   	[] d then NextX = X1 NextY = Y1+1
 			   	end
 			   	if {FieldType NextX NextY} \= 'null' then
-			   		if {PlaceAllowed NextX NextY} \= 'occupied' then
+			   		if {PlaceAllowed NextX NextY} \= 'occupied' then if {PlaceAllowed NextX NextY} \= 'ia' then if {PlaceAllowed NextX NextY} \= 'player' then
 			   			{TrainerPort move(NextX-X1 NextY-Y1)}
 			   			Flag=1 Field={FieldType NextX NextY}
-			   		else {Show 'place not allowed'} Flag=0
+			   		else {Show 'place not allowed'} Flag=0 end else {Show 'place not allowed'} Flag=0 end else {Show 'place not allowed'} Flag=0
 			   		end
 			   	else 
 			   		Flag=0  
 			   	end
 				if Flag==1 then 
 					{MoveHero M H IsHero} 
+					if {LookAround NextX NextY Type} == 'true' then {Show 'Battle with Other Trainer !'} end
 					case Field 
-					of	0 then skip
-					[]1 then 
+					of 0 then skip
+					[] 1 then 
 						if(IsHero) then
 							if(Wild_Pokemon_proba >= {OS.rand} mod 100) then
 								local Pok1 Pok2 in

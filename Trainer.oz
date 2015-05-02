@@ -30,26 +30,27 @@ define
 		fun {HandleMessage Msg State}
 			case Msg
 			of moveX(X) then 
-				{DeplaceAllowedPlace (State.x + X) State.y State.x State.y}
-				state(x:(State.x + X) y:(State.y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:(State.movementStatus) incombat:(State.incombat))
+				{DeplaceAllowedPlace (State.x + X) State.y State.x State.y State.type}
+				state(x:(State.x + X) y:(State.y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:(State.movementStatus) incombat:(State.incombat) type:(State.type))
 			[] moveY(Y) then
-				{DeplaceAllowedPlace State.x (State.y + Y) State.x State.y}
-				state(x:(State.x) y:(State.y + Y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:(State.movementStatus) incombat:(State.incombat))
+				{DeplaceAllowedPlace State.x (State.y + Y) State.x State.y State.type}
+				state(x:(State.x) y:(State.y + Y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:(State.movementStatus) incombat:(State.incombat) type:(State.type))
 			[] move(X Y) then
-				{DeplaceAllowedPlace (State.x + X) (State.y + Y) State.x State.y}
-				state(x:(State.x + X) y:(State.y + Y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:(State.movementStatus) incombat:(State.incombat))
-			[] pokemoz(Pokemoz) then state(x:(State.x) y:(State.y) pokemoz:(Pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:(State.movementStatus) incombat:(State.incombat))
-			[] state(x y pokemoz speed movement) then {DeplaceAllowedPlace Msg.x Msg.y Msg.x Msg.y} Msg
+				{DeplaceAllowedPlace (State.x + X) (State.y + Y) State.x State.y State.type}
+				state(x:(State.x + X) y:(State.y + Y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:(State.movementStatus) incombat:(State.incombat) type:(State.type))
+			[] pokemoz(Pokemoz) then state(x:(State.x) y:(State.y) pokemoz:(Pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:(State.movementStatus) incombat:(State.incombat) type:(State.type))
+			[] state(x y pokemoz speed movement) then {DeplaceAllowedPlace Msg.x Msg.y Msg.x Msg.y State.type} Msg
 			[] getPosition(x:X y:Y) then X=State.x Y=State.y State
 			[] getPokemoz(P) then P=State.pokemoz State
 			[] getMovement(M) then M=State.movement State
 			[] getSpeed(S) then S=State.speed State
 			[] getHandler(H) then H=State.handler State
 			[] getNumber(N) then N=State.'number' State
+			[] getType(T) then T=State.type State
 			[] getMovementStatus(MS) then MS=State.movementStatus State
-			[] sendMovementStatus(MS) then state(x:(State.x) y:(State.y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:MS incombat:(State.incombat))
+			[] sendMovementStatus(MS) then state(x:(State.x) y:(State.y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:MS incombat:(State.incombat) type:(State.type))
 			[] getInCombat(IC) then IC=State.incombat State
-			[] setInCombat(SIC) then state(x:(State.x) y:(State.y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:(State.movementStatus) incombat:SIC)
+			[] setInCombat(SIC) then state(x:(State.x) y:(State.y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:(State.movementStatus) incombat:SIC type:(State.type))
 			end
 		end
 		P S

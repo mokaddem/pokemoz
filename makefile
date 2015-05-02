@@ -18,3 +18,6 @@ open:
 	gedit *oz makefile &
 	
 edit: open
+
+kill:
+	kill -9 $(pidof /usr/bin/ozwish)
