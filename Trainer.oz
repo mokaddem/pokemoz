@@ -60,16 +60,12 @@ define
 		proc {$ F} {Send P F} end
 	end
 
-	proc {RandomlyMoveTrainer Trainer Frames HeroTrainer}
+	proc {RandomlyMoveTrainer Trainer Frames}
 		MoveDir
-		Proba  
-		S 
+		Proba
 	in
 		Proba = {OS.rand} mod 100
-		{Trainer getSpeed(S)}
-		{Wait S}
-		{Delay (10-S)*DELAY}
-		if (Trainer_Move_Proba >= Proba) then
+		if (Trainer_Move_Proba > Proba) then
 			if Proba*100<25*Trainer_Move_Proba then MoveDir=l
 			elseif Proba*100<50*Trainer_Move_Proba then MoveDir=r
 			elseif Proba*100<75*Trainer_Move_Proba then MoveDir=d
@@ -77,10 +73,9 @@ define
 			end
 			{MovementHandle MoveDir Trainer Frames false}
 		end
-		{MovementHandle MoveDir Trainer false}
 	end
-	fun {RandomMove HeroTrainer Frames}
-		proc {$ T} {RandomlyMoveTrainer T Frames HeroTrainer} end
+	fun {RandomMove Frames}
+		proc {$ T} {RandomlyMoveTrainer T Frames} end
 	end
 	
 end

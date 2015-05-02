@@ -128,78 +128,79 @@ define
 /* ******************************** */
 
 	proc {MovementHandle M TrainerPort Frames IsHero}
-		X in X = {CellGet InBattle} {Wait X} if {Not X} then
-		thread S X1 Y1 H Flag Field NextX NextY Type NextIsTrainer in
-			{TrainerPort getMovementStatus(S)}
-			{TrainerPort getHandler(H)}
-			{TrainerPort getPosition(x:X1 y:Y1)}
-			{TrainerPort getType(Type)}
-			{Wait Y1}
-			{Wait S}
-			{Wait Type}
-			case S of idle() then
-				{TrainerPort sendMovementStatus(moving())}
-			   	case M
-			   	of l then NextX = X1-1 NextY = Y1
-			   	[] r then NextX = X1+1 NextY = Y1
-			   	[] u then NextX = X1 NextY = Y1-1
-			   	[] d then NextX = X1 NextY = Y1+1
-			   	end
-			   	if {FieldType NextX NextY} \= 'null' then E D X in
-			   		try {{PlaceAllowed NextX NextY} getPokemoz(X)} NextIsTrainer = 'true' catch error(1:E debug:D) then NextIsTrainer = 'false' end
-			   	
-			   		if {PlaceAllowed NextX NextY} \= 'occupied' then 
-			   			if NextIsTrainer == 'false' then
-			   				{TrainerPort move(NextX-X1 NextY-Y1)}
-			   				Flag=1 Field={FieldType NextX NextY}
-			   			else {Show 'place not allowed'} Flag=0 
-			   			end 
-			   		else {Show 'place not allowed'} Flag=0 
-			   		end
-			   	else 
-			   		Flag=0  
-			   	end
-				if Flag==1 then 
-					{MoveHero M H Frames IsHero}
-					case Field 
-					of 0 then 
-						if {LookAround NextX NextY Type} \= 'false' then if(IsHero) then
-							{Show 'Battle with Other Trainer !'}
-							local Pok1 Pok2 in {TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok1 Pok2 TrainerPort} end
-						else
-							{Show 'Battle with Other Trainer !'}
-							local Pok1 Pok2 in {TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok2 Pok1 TrainerPort} end
-						end end
-					[] 1 then 
-						if(IsHero) then
+		X 
+	in 
+		X = {CellGet InBattle} {Wait X}
+		if {Not X} then
+			thread S X1 Y1 H Flag Field NextX NextY Type NextIsTrainer in
+				{TrainerPort getMovementStatus(S)}
+				{Wait S}
+				case S of idle() then
+					{TrainerPort sendMovementStatus(moving())}
+					{TrainerPort getHandler(H)}
+					{TrainerPort getPosition(x:X1 y:Y1)}
+					{TrainerPort getType(Type)}
+					{Wait Y1}
+					{Wait Type}
+					{Wait H}
+				   	case M
+				   	of l then NextX = X1-1 NextY = Y1
+				   	[] r then NextX = X1+1 NextY = Y1
+				   	[] u then NextX = X1 NextY = Y1-1
+				   	[] d then NextX = X1 NextY = Y1+1
+				   	end
+				   	if {FieldType NextX NextY} \= 'null' then E D X in
+				   		try {{PlaceAllowed NextX NextY} getPokemoz(X)} {Wait X} NextIsTrainer = 'true' catch error(1:E debug:D) then NextIsTrainer = 'false' end
+				   	
+				   		if {PlaceAllowed NextX NextY} \= 'occupied' then 
+				   			if NextIsTrainer == 'false' then
+				   				{TrainerPort move(NextX-X1 NextY-Y1)}
+				   				Flag=1 Field={FieldType NextX NextY}
+				   			else {Show 'place not allowed'} Flag=0 
+				   			end 
+				   		else {Show 'place not allowed'} Flag=0 
+				   		end
+				   	else 
+				   		Flag=0  
+				   	end
+					if Flag==1 then 
+						{MoveHero M H Frames IsHero}
+						case Field 
+						of 0 then 
 							if {LookAround NextX NextY Type} \= 'false' then 
-								{Show 'Battle with Other Trainer !'}
-								local Pok1 Pok2 in {TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok1 Pok2 TrainerPort} end
-							elseif(Wild_Pokemon_proba > {OS.rand} mod 100) then
-								local Pok1 Pok2 in
-									local Pok in {TrainerPort getPokemoz(Pok)} {Wait Pok} {PrepareBattle Pok {GenerateRandomPokemon} TrainerPort} end
-									%local Pok in {Send TrainerPort getPokemoz(Pok)} {Wait Pok} {RunAutoBattle Pok Pok2} end
+								if(IsHero) then
+									{Show 'Battle with Other Trainer !'}
+									local Pok1 Pok2 in {TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok1 Pok2 TrainerPort} end
+								else
+									{Show 'Battle with Other Trainer !'}
+									local Pok1 Pok2 in {TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok2 Pok1 TrainerPort} end
+								end 
+							end
+						[] 1 then 
+							if(IsHero) then
+								if {LookAround NextX NextY Type} \= 'false' then 
+									{Show 'Battle with Other Trainer !'}
+									local Pok1 Pok2 in {TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok1 Pok2 TrainerPort} end
+								elseif(Wild_Pokemon_proba > {OS.rand} mod 100) then
+									local Pok1 Pok2 in
+										local Pok in {TrainerPort getPokemoz(Pok)} {Wait Pok} {PrepareBattle Pok {GenerateRandomPokemon} TrainerPort} end
+									end
+								end
+							else
+								if {LookAround NextX NextY Type} \= 'false' then 
+									{Show 'Battle with Other Trainer !'}
+									local Pok1 Pok2 in {TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok2 Pok1 TrainerPort} end
 								end
 							end
 						else
-							if {LookAround NextX NextY Type} \= 'false' then 
-								{Show 'Battle with Other Trainer !'}
-								local Pok1 Pok2 in {TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok2 Pok1 TrainerPort} end
-							end
+							skip	
 						end
-					else skip	
 					end
+					{TrainerPort  sendMovementStatus(idle())}
+				else
+					skip
 				end
-				local X2 Y2 N in
-					{TrainerPort getPosition(x:X2 y:Y2)}
-					{TrainerPort getNumber(N)}
-					{Wait N}
-	%				{Show 'Trainer'#N#' is on'#{FieldType X2 Y2}#'at'#X2#' '#Y2}
-				end
-				{TrainerPort  sendMovementStatus(idle())}
-			else
-				skip
-			end
-	   	end end
+		   	end
+		   end
 	end
 end
