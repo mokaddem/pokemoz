@@ -4,7 +4,7 @@ import
 	System(show:Show)
 	Open
 	QTk at 'x-oz://system/wp/QTk.ozf'
-	PokeConfig(saveValue:SaveValue)
+	PokeConfig(saveValue:SaveValue saveStarter:SaveStarter)
 	
 export
 	LaunchTheIntro
@@ -25,9 +25,9 @@ define
 	Window
 	But_1_Handler But_2_Handler But_3_Handler But_prof_Handler 
 	Grid_Handler1 Grid_Handler2 PlaceHolder_Handle
-	Button_Pok1 = button(action:proc{$} {Show 'Pok1'} {Window close} Ok=1 end image:Pok1 handle:But_1_Handler)
-	Button_Pok2 = button(action:proc{$} {Show 'Pok2'} {Window close} Ok=1 end image:Pok2 handle:But_2_Handler)
-	Button_Pok3 = button(action:proc{$} {Show 'Pok3'} {Window close} Ok=1 end image:Pok3 handle:But_3_Handler)
+	Button_Pok1 = button(action:proc{$} {Show 'Pok1'} {SaveStarter 1} {Window close} Ok=1 end image:Pok1 handle:But_1_Handler)
+	Button_Pok2 = button(action:proc{$} {Show 'Pok2'} {SaveStarter 4} {Window close} Ok=1 end image:Pok2 handle:But_2_Handler)
+	Button_Pok3 = button(action:proc{$} {Show 'Pok3'} {SaveStarter 7} {Window close} Ok=1 end image:Pok3 handle:But_3_Handler)
 	Button_Prof = button(action:proc{$} {Show 'Ouch!'}
 	local V1 V2 V3 V4 V5 V6 in
 		V1= {Num1 get($)}

@@ -25,8 +25,10 @@ export
 	PathTrainersTotal
 	PathPokeTotal
 	
-	SaveValue
+	Starter
 	
+	SaveValue
+	SaveStarter
 define
 	SQUARE_LENGTH = 32 % length of a standard square
 	
