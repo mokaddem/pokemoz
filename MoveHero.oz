@@ -20,11 +20,11 @@ define
 	
 
 %PROCEDURE THAT ANIMATE AND MOVE THE HERO
-	proc {MoveHero Dir HeroHandle IsHero}
+	proc {MoveHero Dir HeroHandle Frames IsHero}
 		D=75 
 		MovementValue={IntToFloat SQUARE_LENGTH}/5.0 
 		Movement 
-		HeroFrames
+		TrainerFrames
 		NewHeroPosition
 		HeroPos
 	in
@@ -32,24 +32,24 @@ define
 		{Wait HeroPos}
 		case Dir
 		of r then
-		HeroFrames = AllHeroFrames.rightFrame
+		TrainerFrames = Frames.rightFrame
 		Movement = move(MovementValue 0)
 		NewHeroPosition=pos(x:HeroPos.x+MovementValue y:HeroPos.y)
 		[]l then
-			HeroFrames = AllHeroFrames.leftFrame
+			TrainerFrames = Frames.leftFrame
 			Movement = move(~MovementValue 0)
 			NewHeroPosition=pos(x:HeroPos.x-MovementValue y:HeroPos.y)
 		[]d then
-			HeroFrames = AllHeroFrames.downFrame
+			TrainerFrames = Frames.downFrame
 			Movement = move(0 MovementValue)
 			NewHeroPosition=pos(x:HeroPos.x y:HeroPos.y+MovementValue)
 		[]u then
-			HeroFrames = AllHeroFrames.upFrame
+			TrainerFrames = Frames.upFrame
 			Movement = move(0 ~MovementValue)
 			NewHeroPosition=pos(x:HeroPos.x y:HeroPos.y-MovementValue)
 		end
 		if(IsHero) then thread {Delay 50} {MakeTheFollowMove PokeHandle AllPokeFrames Movement} end end % thread to not wit the end of poke move
-		{MakeTheMove HeroHandle HeroFrames Movement}
+		{MakeTheMove HeroHandle TrainerFrames Movement}
 		if(IsHero) then {CellSet HeroPosition NewHeroPosition} end
 	end
 
@@ -125,7 +125,7 @@ define
 		
 /* ******************************** */
 
-	proc {MovementHandle M TrainerPort IsHero}
+	proc {MovementHandle M TrainerPort Frames IsHero}
 		thread S X1 Y1 H Flag Field NextX NextY in
 			{TrainerPort getMovementStatus(S)}
 			{TrainerPort getHandler(H)}
@@ -150,7 +150,7 @@ define
 			   		Flag=0  
 			   	end
 				if Flag==1 then 
-					{MoveHero M H IsHero} 
+					{MoveHero M H Frames IsHero} 
 					case Field 
 					of	0 then skip
 					[]1 then 

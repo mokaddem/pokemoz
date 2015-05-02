@@ -60,7 +60,7 @@ define
 		proc {$ F} {Send P F} end
 	end
 
-	proc {RandomlyMoveTrainer Trainer HeroTrainer}
+	proc {RandomlyMoveTrainer Trainer Frames HeroTrainer}
 		MoveDir
 		Proba  
 		X
@@ -78,12 +78,12 @@ define
 				elseif Proba*100<75*Trainer_Move_Proba then MoveDir=d
 				else MoveDir=u 
 				end
-				{MovementHandle MoveDir Trainer false}
+				{MovementHandle MoveDir Trainer Frames false}
 			end
 		end
 	end
-	fun {RandomMove HeroTrainer}
-		proc {$ T} {RandomlyMoveTrainer T HeroTrainer} end
+	fun {RandomMove HeroTrainer Frames}
+		proc {$ T} {RandomlyMoveTrainer T Frames HeroTrainer} end
 	end
 	
 end
