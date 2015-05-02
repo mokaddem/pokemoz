@@ -24,8 +24,9 @@ export
 	FieldType
 	InitMap
 	MapRecord
+	AllowedPlace
 	PlaceAllowed
-	%DeplaceAllowedPlace
+	DeplaceAllowedPlace
 	CreateAndDisplayHeroAndFollower
 	CreateAndDisplayTrainer
 	DrawMap
@@ -49,6 +50,7 @@ define
 	MapFile		%The map.txt file to read
 	MapRecord	%Record 
 	MapParsed	%List readed from map.txt
+	AllowedPlace    %Record = occupied if not allowed
 
 	%Hero_variables
 %	HeroHandle	%The Hero handler
@@ -158,17 +160,17 @@ define
 		else MapRecord.Y.X end end end end
 	end
 	
-	fun {PlaceAllowed AllowedPlace X Y}
+	fun {PlaceAllowed X Y}
 		if X > {Length {Arity AllowedPlace}} then null
 		else if X < 1 then null
 		else if Y > {Length {Arity AllowedPlace}} then null
 		else if Y < 1  then null
-		else MapRecord.Y.X end end end end
+		else {CellGet AllowedPlace.Y.X} end end end end
 	end
 	
-	fun {DeplaceAllowedPlace AllowedPlace NewX NewY OldX OldY}
-		AllowedPlace.NewY.NewX = 'occupied'
-		AllowedPlace.OldY.OldX = 'free'
+	proc {DeplaceAllowedPlace NewX NewY OldX OldY}
+		{CellSet AllowedPlace.OldY.OldX 'free'}
+		{CellSet AllowedPlace.NewY.NewX 'occupied'}
 	end
 	
 	/*
@@ -208,6 +210,13 @@ define
 		MapFile={New Open.file init(name:'map.txt' flags:[read])}
 		{MapFile read(list:MapParsed size:all)}
 		MapRecord={List.toTuple map {Scan MapParsed}}
+		AllowedPlace = {Record.make allowed {Arity MapRecord}}
+		for N in 1..{Length {Arity MapRecord}} do
+			AllowedPlace.N = {Record.make allowed {Arity MapRecord.N}}
+			for M in 1..{Length {Arity MapRecord.N}} do
+				AllowedPlace.N.M = {CustomNewCell MapRecord.N.M}
+			end
+		end
 		{MapFile close}
 	end
 
