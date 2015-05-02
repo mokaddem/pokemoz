@@ -20,6 +20,7 @@ export
 	DoTheBarAnimation
 	DoThePokeAttackAnimation
 	DoTheXpBarAnimation
+	DoTheFaintAnim
 
 define
 	UI_LENGTH = 255*2
@@ -252,6 +253,13 @@ define
 					{ExpBarTag setCoords(X1+I Y1 X2 Y2)}
 				end
 			end
+		end
+	end
+	
+	proc {DoTheFaintAnim PokeTag}
+		for I in 0..UI_HEIGHT do
+			{Delay 10}
+			{PokeTag move(0 I)}
 		end
 	end
 
