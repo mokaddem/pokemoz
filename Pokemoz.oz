@@ -24,8 +24,9 @@ define
 				local Hp L Xp=State.experience+X in
 					L = {GetLevel Xp}.l
 					Hp = {GetLevel Xp}.hp
+					{Show state(type:(State.type) num:(State.num) name:(State.name) maxlife:Hp currentLife:Hp experience:(State.experience)+X level:L)}
 					if L > State.level then
-						{Show State.name#' is now level '#State.level}
+						{Show State.name#' is now level '#State.level} 
 						state(type:(State.type) num:(State.num) name:(State.name) maxlife:Hp currentLife:Hp experience:(State.experience)+X level:L)
 					else state(type:(State.type) num:(State.num) name:(State.name) maxlife:(State.maxlife) currentLife:(State.maxlife) experience:(State.experience)+X level:(State.level))
 					end
@@ -43,6 +44,7 @@ define
 			[] getExp(X) then 
 				if State.level == 10 then X = 100
 				else X = {FloatToInt ({IntToFloat (State.experience - {GetExpNeeded State.level})}/{IntToFloat ({GetExpNeeded (State.level + 1)} - {GetExpNeeded State.level})})} end State
+			[] getExpNeeded(X) then X={GetExpNeeded State.level+1} State 
 			[] getNum(X) then X=State.num State
 			[] setNum(X) then state(type:(State.type) num:(X) name:(State.name) maxlife:(State.maxlife) currentLife:(State.currentLife - X) experience:(State.experience) level:(State.level))
 			end
@@ -72,6 +74,7 @@ define
 		[] 8 then 20
 		[] 9 then 30
 		[] 10 then 50
+		else {Show 'Error'#Lvl} 0
 		end
 	end
 end

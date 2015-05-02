@@ -17,7 +17,7 @@ export
 	HeroPosYDecal
 	
 	BAR_WIDTH
-	BAR_LENGTH
+	BAR_LENGTH	
 	
 define
 	SQUARE_LENGTH = 32 % length of a standard square
