@@ -28,7 +28,7 @@ define
 					Hp = {GetLevel Xp}.hp
 					{Show state(type:(State.type) num:(State.num) name:(State.name) maxlife:Hp currentLife:Hp experience:(State.experience)+X level:L)}
 					if L > State.level then
-						{Show State.name#' is now level '#State.level} 
+						{Show State.name#' is now level '#L} 
 						state(type:(State.type) num:(State.num) name:(State.name) maxlife:Hp currentLife:Hp experience:(State.experience)+X level:L)
 					else state(type:(State.type) num:(State.num) name:(State.name) maxlife:(State.maxlife) currentLife:(State.maxlife) experience:(State.experience)+X level:(State.level))
 					end

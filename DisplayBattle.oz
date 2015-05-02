@@ -12,6 +12,7 @@ import
 	Trainer(newTrainer:NewTrainer)
 	Pokemoz(newPokemoz:NewPokemoz)
 	Battle(runAutoBattle:RunAutoBattle attack:Attack)
+	Game(inBattle:InBattle)
 	
 export
 	PrepareBattle
@@ -96,7 +97,7 @@ define
 		OpBarLength
 		
 
-		XpHandler MiPvHandler MiPokeTextHandler MiPokeLvlHandler	MiPokeHPtxtHandler
+		XpHandler MiPvHandler MiPokeTextHandler MiPokeLvlHandler MiPokeHPtxtHandler
 		OpPvHandler OpPokeTextHandler OpPokeLvlHandler OpPokeHPtxtHandler
 		XpTag={UICanvasHandler newTag($)} 
 		MiPvBarTag={UICanvasHandler newTag($)}
@@ -146,7 +147,7 @@ define
 
 	
 	proc {PrepareBattle MiPoke OpPoke TrainerPort}
-		{TrainerPort setInCombat(true)}
+		{CellSet InBattle true}
 		{DrawBattleUI MiPoke OpPoke TrainerPort}
 	end
 	
@@ -187,7 +188,7 @@ define
 		thread
 			{Delay 500}
 			{UI_Control_Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke TrainerPort UI_Components HpRecord PokeTagsRecord} end)} %trying to bind to an action
-			{UI_Control_Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {TrainerPort setInCombat(false)} {UI_Control_Window close} {Window close} end)}
+			{UI_Control_Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {CellSet InBattle false} {UI_Control_Window close} {Window close} end)}
 			{UI_Control_Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
 			{UI_Control_Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
 			{UI_Control_Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke TrainerPort UI_Components HpRecord PokeTagsRecord} end)}

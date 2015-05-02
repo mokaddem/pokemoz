@@ -12,11 +12,13 @@ import
 	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH wild_Pokemon_proba:Wild_Pokemon_proba)
 	Pokemoz(newPokemoz:NewPokemoz generateRandomPokemon:GenerateRandomPokemon)
 	Battle(runAutoBattle:RunAutoBattle)
+	Game(inBattle:InBattle)
 	
 export
 	MovementHandle
 
 define	
+
 	
 
 %PROCEDURE THAT ANIMATE AND MOVE THE HERO
@@ -126,6 +128,7 @@ define
 /* ******************************** */
 
 	proc {MovementHandle M TrainerPort IsHero}
+		X in X = {CellGet InBattle} {Wait X} if {Not X} then
 		thread S X1 Y1 H Flag Field NextX NextY Type NextIsTrainer in
 			{TrainerPort getMovementStatus(S)}
 			{TrainerPort getHandler(H)}
@@ -197,6 +200,6 @@ define
 			else
 				skip
 			end
-	   	end
+	   	end end
 	end
 end

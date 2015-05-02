@@ -2,6 +2,8 @@ functor
 import
 	System(show:Show)
 	OS
+	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
+	Game(inBattle:InBattle)
 	DisplayBattle(drawHpBar:DrawHpBar computeBarLength:ComputeBarLength doTheBarAnimation:DoTheBarAnimation doThePokeAttackAnimation:DoThePokeAttackAnimation doTheXpBarAnimation:DoTheXpBarAnimation doTheFaintAnim:DoTheFaintAnim)
 export
 	RunAutoBattle
@@ -64,7 +66,7 @@ define
 				{Delay 1000}
 				{UI_Components.window close} 
 				{UI_Components.ui_control_window close}
-				{TrainerPort setInCombat(false)}
+				{CellSet InBattle false}
 			end
 		else
 			local PBarLen BarLen XpC XpP XpNeeded in 
@@ -85,7 +87,7 @@ define
 			{Delay 1000}
 			{UI_Components.window close} 
 			{UI_Components.ui_control_window close}
-			{TrainerPort setInCombat(false)}
+			{CellSet InBattle false}
 		end
 	end
 	
