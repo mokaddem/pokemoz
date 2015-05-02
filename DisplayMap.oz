@@ -26,6 +26,7 @@ export
 	MapRecord
 	AllowedPlace
 	PlaceAllowed
+	LookAround
 	DeplaceAllowedPlace
 	CreateAndDisplayHeroAndFollower
 	CreateAndDisplayTrainer
@@ -167,10 +168,28 @@ define
 		else if Y < 1  then null
 		else {CellGet AllowedPlace.Y.X} end end end end
 	end
+		
 	
-	proc {DeplaceAllowedPlace NewX NewY OldX OldY}
+	proc {DeplaceAllowedPlace NewX NewY OldX OldY Type}
 		{CellSet AllowedPlace.OldY.OldX 'free'}
-		{CellSet AllowedPlace.NewY.NewX 'occupied'}
+		{CellSet AllowedPlace.NewY.NewX Type}
+	end
+	
+	fun {LookAround X Y Type}
+		OtherType T1 T2 T3 T4 in
+		if Type == 'player' then OtherType = 'ia'
+		elseif Type == 'ia' then OtherType = 'player' end
+		
+		try {{PlaceAllowed X-1 Y} getType(T1)} catch error(1:X debug:D) then T1 = 'false' end
+		try {{PlaceAllowed X Y-1} getType(T2)} catch error(1:X debug:D) then T2 = 'false' end
+		try {{PlaceAllowed X Y+1} getType(T3)} catch error(1:X debug:D) then T3 = 'false' end
+		try {{PlaceAllowed X+1 Y} getType(T4)} catch error(1:X debug:D) then T4 = 'false' end
+		
+		if T1 == OtherType then {PlaceAllowed X-1 Y}
+		else if T2 == OtherType then {PlaceAllowed X Y-1}
+		else if T3 == OtherType then {PlaceAllowed X Y+1}
+		else if T4 == OtherType then {PlaceAllowed X+1 Y}
+		else 'false' end end end end
 	end
 	
 	/*

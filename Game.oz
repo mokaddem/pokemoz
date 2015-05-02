@@ -40,7 +40,7 @@ in
 	
 	HeroHandler = {CreateAndDisplayHeroAndFollower}
 	PokemOz = {NewPokemoz state(type:grass num:1 name:bulbozar maxlife:20 currentLife:20 experience:0 level:5)}
-	HeroTrainer = {NewTrainer state(x:StartX y:StartY pokemoz:PokemOz speed:5 movement:proc{$ P} 1=1 end handler:HeroHandler number:1 incombat:false movementStatus:idle())}
+	HeroTrainer = {NewTrainer state(x:StartX y:StartY pokemoz:PokemOz speed:5 movement:proc{$ P} 1=1 end handler:HeroHandler number:1 incombat:false movementStatus:idle() type:'player')}
 
 	
 /*trainer 1*/
@@ -53,7 +53,7 @@ in
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
 		PokeTrainer1 = {NewPokemoz state(type:grass num:7 name:squirtOz maxlife:20 currentLife:20 experience:0 level:5)}
-		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove Trainer1 TrainerFrames1} handler:TrainerHandle1 number:1 incombat:false movementStatus:idle())}
+		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove Trainer1 TrainerFrames1} handler:TrainerHandle1 number:1 incombat:false movementStatus:idle() type:'ia')}
 	end
 
 /*trainer 2*/
@@ -66,7 +66,7 @@ in
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
 		PokeTrainer1 = {NewPokemoz state(type:grass num:7 name:squirtOz maxlife:20 currentLife:20 experience:0 level:5)}
-		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove Trainer1 TrainerFrames1} handler:TrainerHandle1 number:2 incombat:false movementStatus:idle())}
+		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove Trainer1 TrainerFrames1} handler:TrainerHandle1 number:2 incombat:false movementStatus:idle() type:'ia')}
 	end
 	
 /*trainer 3*/
@@ -79,7 +79,7 @@ in
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
 		PokeTrainer1 = {NewPokemoz state(type:grass num:7 name:squirtOz maxlife:20 currentLife:20 experience:0 level:5)}
-		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove Trainer1 TrainerFrames1} handler:TrainerHandle1 number:3 incombat:false movementStatus:idle())}
+		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove Trainer1 TrainerFrames1} handler:TrainerHandle1 number:3 incombat:false movementStatus:idle() type:'ia')}
 	end
 
 /*trainer 4*/
@@ -92,7 +92,7 @@ in
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
 		PokeTrainer1 = {NewPokemoz state(type:grass num:7 name:squirtOz maxlife:20 currentLife:20 experience:0 level:5)}
-		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove Trainer1 TrainerFrames1} handler:TrainerHandle1 number:4 incombat:false movementStatus:idle())}
+		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove Trainer1 TrainerFrames1} handler:TrainerHandle1 number:4 incombat:false movementStatus:idle() type:'ia')}
 	end
 
 end
