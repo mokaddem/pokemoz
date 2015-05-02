@@ -1,8 +1,10 @@
 functor
 import
 	System(show:Show)
+	OS
 export
 	NewPokemoz
+	GenerateRandomPokemon
 define
 	% State = state(type:T num:Num name:N maxlife:Ml currentLife:Cl experience:E level:L)
 	fun {NewPokemoz Init}
@@ -77,4 +79,18 @@ define
 		else {Show 'Error'#Lvl} 0
 		end
 	end
+	
+	fun {GenerateRandomPokemon}
+		Type Num Name in
+		Num = ({OS.rand} mod 3)*3+1
+		if Num == 1 then 
+			Type=grass Name='Bulbasoz'
+		elseif Num==4 
+			then Type=fire  Name='Charmandoz'
+		else 
+			Type=water  Name='Oztirtle'
+		end
+		{NewPokemoz state(type:Type num:Num name:Name maxlife:20 currentLife:20 experience:0 level:5)}
+	end
+	
 end

@@ -25,7 +25,7 @@ define
 PathHeroTotal = 'Images/HGSS_143.gif'
 PathPokeTotal = 'Images/001_0.gif'
 PathPokeBattleSpritesBack = "Images/Pokemon-sprites-battle/own/sprite_B"
-PathPokeBattleSpritesOp = "Images/Pokemon-sprites-battle/opponent/sprite_"
+PathPokeBattleSpritesOp = "Images/Pokemon-sprites-battle/op-separeted/"
 Path
 
 L = 64
@@ -86,11 +86,14 @@ Road_Tile = {QTk.newImage photo()}
 
 %OpPoke
 	fun {GetSprite_frame_Op Num}
-		L=64 Sprites_Op_old Sprites_Op in
-		Sprites_Op_old = {QTk.newImage photo(file:{Append PathPokeBattleSpritesOp {Append Num ".gif"}})}
+/*		L=64 Sprites_Op_old Sprites_Op in
+		Sprites_Op_old = {QTk.newImage photo(file:{Append PathPokeBattleSpritesOp {Append Num ".gif"}})}*/
+		Frame1 Frame2 Frame1_old Frame2_old Sprites_Op in 
+		Frame1_old = {QTk.newImage photo(file:{Append PathPokeBattleSpritesOp {Append "frame1/" {Append Num ".png.gif"}}})}
+		Frame2_old = {QTk.newImage photo(file:{Append PathPokeBattleSpritesOp {Append "frame2/" {Append Num ".png.gif"}}})}
 		Sprites_Op = sprite_op({QTk.newImage photo()} {QTk.newImage photo()})
-		{Sprites_Op.1 copy(Sprites_Op_old 'from':o(0 0 L L)  zoom:o(POKE_ZOOM))}
-		{Sprites_Op.2 copy(Sprites_Op_old 'from':o(0 L L 2*L)  zoom:o(POKE_ZOOM))}
+		{Sprites_Op.1 copy(Frame1_old 'from':o(0 0 L L)  zoom:o(POKE_ZOOM))}
+		{Sprites_Op.2 copy(Frame2_old 'from':o(0 0 L L)  zoom:o(POKE_ZOOM))}
 		Sprites_Op
 	end
 	

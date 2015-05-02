@@ -59,6 +59,16 @@ define
 			Poke_Offset_Mi = 2*Mi_Offset.MiNumber
 			{UICanvasHandler create(image OpPokePosX OpPokePosY+Poke_Offset_Op image:AllSprites_Op.OpNumber.1 anchor:center tags:OpPokeTag)}
 			{UICanvasHandler create(image MiPokePosX MiPokePosY+Poke_Offset_Mi image:AllSprites_B.MiNumber anchor:se tags:MiPokeTag)}
+			{Delay 500}
+			{OpPokeTag set(image:AllSprites_Op.OpNumber.2)}
+			{Delay 150}
+			{OpPokeTag set(image:AllSprites_Op.OpNumber.1)}
+			{Delay 150}
+			{OpPokeTag set(image:AllSprites_Op.OpNumber.2)}
+			{Delay 150}
+			{OpPokeTag set(image:AllSprites_Op.OpNumber.1)}
+			{Delay 150}
+			{OpPokeTag set(image:AllSprites_Op.OpNumber.1)}
 		end
 		poketags(mi:MiPokeTag op:OpPokeTag)
 	end
@@ -114,7 +124,7 @@ define
       {UICanvasHandler create(rectangle MiStartX MiStartY MiEndX MiEndY+2 fill:white width:3.0)}
       {UICanvasHandler create(rectangle MiStartX+2 MiStartY+2 MiEndX-BAR_LENGTH+MiBarLength-1 MiEndY+2-1 fill:green outline:nil handle:MiPvHandler tags:MiPvBarTag)}
       %Texts
-      {UICanvasHandler create(text MiStartX MiStartY-28 text:MiName font:Font18 anchor:nw fill:black handle:MiPokeTextHandler)}
+      {UICanvasHandler create(text MiStartX MiStartY-28 text:MiName font:Font14 anchor:nw fill:black handle:MiPokeTextHandler)}
       {UICanvasHandler create(text MiEndX-30 MiStartY-23 text:"Lv." font:Font14 anchor:ne fill:black)}
 		{UICanvasHandler create(text MiEndX-8 MiStartY-28 text:MiLvl font:Font18 anchor:ne fill:black handle:MiPokeLvlHandler)}
 		{UICanvasHandler create(text MiEndX-(BAR_LENGTH div 2) MiStartY+1 text:Hp1Text font:Font8 anchor:n fill:black handle:MiPokeHPtxtHandler)}
@@ -123,7 +133,7 @@ define
       {UICanvasHandler create(rectangle OpStartX OpStartY OpEndX OpEndY+2 fill:white width:3.0)}
       {UICanvasHandler create(rectangle OpStartX+2 OpStartY+2 OpEndX-BAR_LENGTH+OpBarLength-1 OpEndY+2-1 fill:red outline:nil handle:OpPvHandler tags:OpPvBarTag)}
       %Texts
-      {UICanvasHandler create(text OpStartX OpStartY-28 text:OpName font:Font18 anchor:nw fill:black handle:OpPokeTextHandler)}
+      {UICanvasHandler create(text OpStartX OpStartY-28 text:OpName font:Font14 anchor:nw fill:black handle:OpPokeTextHandler)}
       {UICanvasHandler create(text OpEndX-30 OpStartY-23 text:"Lv." font:Font14 anchor:ne fill:black)}
 		{UICanvasHandler create(text OpEndX-8 OpStartY-28 text:OpLvl font:Font18 anchor:ne fill:black handle:OpPokeLvlHandler)}
 		{UICanvasHandler create(text OpStartX+(BAR_LENGTH div 2) OpStartY+1 text:Hp2Text font:Font8 anchor:n fill:black handle:OpPokeHPtxtHandler)}
@@ -170,7 +180,7 @@ define
 			{UI_Control_Handler configure(But_Attk_Handler But_Poke_Handler But_Fuite_Handler But_Capt_Handler padx:10 pady:10)}	 
 		local X Y in 
 			{Window winfo(geometry:X)} {UI_Control_Handler winfo(geometry:Y)}
-			{UI_Control_Window set(geometry:geometry(x:X.x+{FloatToInt {IntToFloat X.width}/2.0-{IntToFloat Y.width}/2.0} y:X.y+X.height))}
+			{UI_Control_Window set(geometry:geometry(x:X.x+{FloatToInt {IntToFloat X.width}/2.0-{IntToFloat Y.width}/2.0} y:X.y-X.height))}
 		end
 		{UI_Control_Window show(modal:true)}
 		thread
@@ -208,14 +218,18 @@ define
 	end
 	
 	%Poke Attack anim
-	proc {DoThePokeAttackAnimation PokeTag Mibool}
+	proc {DoThePokeAttackAnimation PokeTag OpNumber Mibool}
 		if (Mibool) then
 			{PokeTag move(30 0)}
 			{Delay PokeAttackDelay}
 			{PokeTag move(~30 0)}
 		else	
 			{PokeTag move(~30 15)}
-			{Delay DELAY}
+			{Delay PokeAttackDelay}
+			{PokeTag set(image:AllSprites_Op.OpNumber.2)}
+			{Delay PokeAttackDelay}
+			{PokeTag set(image:AllSprites_Op.OpNumber.1)}
+			{Delay PokeAttackDelay}
 			{PokeTag move(30 ~15)}
 		end
 		{Delay 3*PokeAttackDelay}

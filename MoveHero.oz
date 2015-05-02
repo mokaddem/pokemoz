@@ -10,7 +10,7 @@ import
 	DisplayBattle(prepareBattle:PrepareBattle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH wild_Pokemon_proba:Wild_Pokemon_proba)
-	Pokemoz(newPokemoz:NewPokemoz)
+	Pokemoz(newPokemoz:NewPokemoz generateRandomPokemon:GenerateRandomPokemon)
 	Battle(runAutoBattle:RunAutoBattle)
 	
 export
@@ -155,9 +155,7 @@ define
 						if(IsHero) then
 							if(Wild_Pokemon_proba >= {OS.rand} mod 100) then
 								local Pok1 Pok2 in
-									Pok2 = {NewPokemoz state(type:fire num:4 name:charmozer maxlife:10 currentLife:1 experience:0 level:5)}
-									%{RunBattle Bulba Charmo} 
-									local Pok in {TrainerPort getPokemoz(Pok)} {Wait Pok} {PrepareBattle Pok Pok2 TrainerPort} end
+									local Pok in {TrainerPort getPokemoz(Pok)} {Wait Pok} {PrepareBattle Pok {GenerateRandomPokemon} TrainerPort} end
 									%local Pok in {Send TrainerPort getPokemoz(Pok)} {Wait Pok} {RunAutoBattle Pok Pok2} end
 								end
 							end

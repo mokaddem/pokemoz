@@ -18,7 +18,7 @@ define
 	end
 	
 	proc {Attack Pok1 Pok2 TrainerPort UI_Components HpRecord PokeTagsRecord}
-		Name1 Name2 Type1 Type2 Damage Hp1C Hp1P Hp2C Hp2P Hp2Max Hp1Max Level1 Level2 
+		Name1 Name2 Type1 Type2 OpNumber Damage Hp1C Hp1P Hp2C Hp2P Hp2Max Hp1Max Level1 Level2 
 		MiPvBarTag = HpRecord.miBar	OpPvBarTag = HpRecord.opBar
 		MiPvTxtTag = HpRecord.miTxt	OpPvTxtTag = HpRecord.opTxt
 		MiPokeTag = PokeTagsRecord.mi	OpPokeTag = PokeTagsRecord.op
@@ -31,6 +31,7 @@ define
 		{Pok2 getType(Type2)}
 		{Pok1 getName(Name1)}
 		{Pok2 getName(Name2)}
+		{Pok2 getNum(OpNumber)}
 		{Pok1 getLevel(Level1)}
 		{Pok2 getLevel(Level2)}
 		Damage = {GetDamage Type1 Type2 Level1 Level2}
@@ -39,7 +40,7 @@ define
 		
 		{OpPvBarTag getCoords(1:CoordOp)}
 		{Pok2 getHp(Hp2C)} 
-		{DoThePokeAttackAnimation MiPokeTag true}
+		{DoThePokeAttackAnimation MiPokeTag OpNumber true}
 		local PBarLen BarLen in
 			PBarLen = {ComputeBarLength Hp2P Hp2Max}
 			BarLen = {ComputeBarLength Hp2C Hp2Max}
@@ -51,7 +52,7 @@ define
 			{Show Name2#' attacks'}
 			{Pok1 damage(Damage2)}			
 			{Pok1 getHp(Hp1C)}
-			{DoThePokeAttackAnimation OpPokeTag false}
+			{DoThePokeAttackAnimation OpPokeTag OpNumber false}
 			local PBarLen BarLen in 
 				PBarLen = {ComputeBarLength Hp1P Hp1Max}
 				BarLen = {ComputeBarLength Hp1C Hp1Max}
