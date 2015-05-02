@@ -20,4 +20,4 @@ open:
 edit: open
 
 kill:
-	kill -9 $(pidof /usr/bin/ozwish)
+	kill -9 $$(pidof /usr/bin/ozwish)
