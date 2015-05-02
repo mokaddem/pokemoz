@@ -21,6 +21,7 @@ import
 	
 export
 	HeroTrainer
+	
 define
 	HeroTrainer
 	HeroHandler
@@ -40,7 +41,7 @@ define
 in
 	{DrawMap MapRecord HeroTrainer} %	/!\ Concurrency! {DrawMap} need 'HeroHandler' that need the variables initialated in {DrawMap}
 	HeroHandler = {CreateAndDisplayHeroAndFollower}
-	PokemOz = {NewPokemoz state(type:grass num:1 name:bulbozar maxlife:20 currentLife:20 experience:0 level:5)}
+	PokemOz = {NewPokemoz state(type:grass num:1 name:bulbozar maxlife:10 currentLife:10 experience:0 level:5)}
 	HeroTrainer = {NewTrainer state(x:StartX y:StartY pokemoz:PokemOz speed:5 movement:proc{$ P} 1=1 end handler:HeroHandler number:1 incombat:false)}
 	
 /*trainer 1*/	

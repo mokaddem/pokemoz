@@ -8,7 +8,7 @@ import
 	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	QTk at 'x-oz://system/wp/QTk.ozf'
-	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM dELAY:DELAY bAR_WIDTH:BAR_WIDTH bAR_LENGTH:BAR_LENGTH)
+	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM dELAY:DELAY bAR_WIDTH:BAR_WIDTH bAR_LENGTH:BAR_LENGTH pokeAttackDelay:PokeAttackDelay	barRegressionDelay:BarRegressionDelay)
 	Trainer(newTrainer:NewTrainer)
 	Pokemoz(newPokemoz:NewPokemoz)
 	Battle(runAutoBattle:RunAutoBattle attack:Attack)
@@ -181,28 +181,18 @@ define
 	
 	%Bar Animation
 	proc {DoTheBarAnimation TxtTag BarTag X1 Y1 BarLen PBarLen X2 Y2 HpP HpC HpMax} 
-		IterNmb
-		in
-		thread 
-				for J in 0..(HpP-HpC) do
-					{Show J}
-					{Delay {FloatToInt {IntToFloat DELAY}/10.0}}
-					{TxtTag set(text:{Append "Hp: " {Append {IntToString HpP-J} {Append "/" {IntToString HpMax}}}})}
+		if HpP-HpC > 0 then
+			for I in 0..PBarLen-BarLen do
+				{Delay BarRegressionDelay}
+				if(X2-I < X1+1) then skip
+				else
+					{BarTag setCoords(X1 Y1 X2-I Y2)}
 				end
-		end
-%		IterNmb = X2-(X1 + BarLen)
-		{Show BarLen}
-		{Show PBarLen}
-		{Show BAR_LENGTH-BarLen+PBarLen}
-		for I in 0..PBarLen-BarLen do
-			{Show X2-I}
-			{Delay {FloatToInt {IntToFloat DELAY}/10.0}}
-			if(X2-I < X1+1) then skip
-			else
-				{BarTag setCoords(X1 Y1 X2-I Y2)}
+				local Factor = {IntToFloat (PBarLen-BarLen)} / {IntToFloat (HpP-HpC)} in
+				{Show Factor#{IntToFloat I}/Factor#HpP-{FloatToInt ({IntToFloat I}/Factor)}}
+					{TxtTag set(text:{Append "Hp: " {Append {IntToString HpP-{FloatToInt ({IntToFloat I}/Factor)}} {Append "/" {IntToString HpMax}}}})}
+				end
 			end
-%			{Show X2-X1-I#X2-X1#{IntToFloat X2-X1-I}/{IntToFloat X2-X1}#{IntToFloat X2-X1-I}/{IntToFloat X2-X1}*100.0}
-%			{TxtTag set(text:{Append {IntToString {FloatToInt ({IntToFloat X2-X1-I}/{IntToFloat X2-X1})*100.0}} "%"})}
 		end
 	end
 	
@@ -210,21 +200,14 @@ define
 	proc {DoThePokeAttackAnimation PokeTag Mibool}
 		if (Mibool) then
 			{PokeTag move(30 0)}
-			{Delay DELAY}
+			{Delay PokeAttackDelay}
 			{PokeTag move(~30 0)}
 		else	
 			{PokeTag move(~30 15)}
 			{Delay DELAY}
 			{PokeTag move(30 ~15)}
 		end
-		{Delay 3*DELAY}
+		{Delay 3*PokeAttackDelay}
 	end
-	
-/*	in
-		local Pok1 Pok2 in
-			Pok1 = {NewPokemoz state(type:grass num:1 name:bulbozar maxlife:20 currentLife:18 experience:0 level:5)}
-			Pok2 = {NewPokemoz state(type:fire num:4 name:charmozer maxlife:20 currentLife:2 experience:0 level:5)}
-			%{RunBattle Bulba Charmo} 
-			{PrepareBattle Pok1 Pok2}
-		end*/
+
 end
