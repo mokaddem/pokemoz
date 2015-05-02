@@ -21,6 +21,7 @@ import
 	
 export
 	HeroTrainer
+	
 define
 	HeroTrainer
 	HeroHandler
@@ -44,6 +45,7 @@ in
 	HeroHandler = {CreateAndDisplayHeroAndFollower}
 	PokemOz = {NewPokemoz state(type:grass num:1 name:bulbozar maxlife:20 currentLife:20 experience:0 level:5)}
 	HeroTrainer = {NewTrainer state(x:StartX y:StartY pokemoz:PokemOz speed:5 movement:proc{$ P} 1=1 end handler:HeroHandler number:1 incombat:false movementStatus:idle())}
+
 	
 /*trainer 1*/	
 	TrainerHandle1 = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1}
