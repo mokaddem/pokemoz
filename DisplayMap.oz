@@ -6,11 +6,11 @@ import
 	System(show:Show)
 	Open
 
-	CutImages(heroFace:HeroFace pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile)
+	CutImages(heroFace:HeroFace allHeroFrames:AllHeroFrames pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile createMovementImages:CreateMovementImages)
 	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	QTk at 'x-oz://system/wp/QTk.ozf'
-	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM heroPosYDecal:HeroPosYDecal heroPosXDecal:HeroPosXDecal)
+	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM heroPosYDecal:HeroPosYDecal heroPosXDecal:HeroPosXDecal pathTrainersTotal:PathTrainersTotal pathPokeTotal:PathPokeTotal)
 	Trainer(newTrainer:NewTrainer)
 	Pokemoz(newPokemoz:NewPokemoz)
 	Battle(runBattle:RunBattle)
@@ -147,10 +147,10 @@ define
 		{Window show}
 		{AddMapBlock MapRecord CanvasHandler}
 		
-		{Window bind(event:"<Up>" action:proc{$} {MovementHandle u HeroTrainer true} end)}
-		{Window bind(event:"<Down>" action:proc{$} {MovementHandle d HeroTrainer true} end)}
-		{Window bind(event:"<Left>" action:proc{$} {MovementHandle l HeroTrainer true} end)}
-		{Window bind(event:"<Right>" action:proc{$} {MovementHandle r HeroTrainer true} end)}
+		{Window bind(event:"<Up>" action:proc{$} {MovementHandle u HeroTrainer AllHeroFrames true} end)}
+		{Window bind(event:"<Down>" action:proc{$} {MovementHandle d HeroTrainer AllHeroFrames true} end)}
+		{Window bind(event:"<Left>" action:proc{$} {MovementHandle l HeroTrainer AllHeroFrames true} end)}
+		{Window bind(event:"<Right>" action:proc{$} {MovementHandle r HeroTrainer AllHeroFrames true} end)}
 	end
 	
 	fun {FieldType X Y}
@@ -212,12 +212,14 @@ define
 	*	result: Draw and display a trainer
 	*	return: the created trainer Handle
 	*/
-	fun {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1}
+	fun {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 Num}
 		TrainerHandle
+		TrainerFrames
 	in	
 		%TrainerPosition={CustomNewCell pos(x:{IntToFloat TrainerPosX1} y:{IntToFloat TrainerPosY1})}
-		{CanvasHandler create(image (TrainerPosX1)*SQUARE_LENGTH+HeroPosXDecal (TrainerPosY1-1)*SQUARE_LENGTH+HeroPosYDecal image:HeroFace anchor:nw handle:TrainerHandle)}
-		TrainerHandle
+		TrainerFrames = {CreateMovementImages {Append PathTrainersTotal {Append {IntToString Num} ".gif"}}}
+		{CanvasHandler create(image (TrainerPosX1)*SQUARE_LENGTH+HeroPosXDecal (TrainerPosY1-1)*SQUARE_LENGTH+HeroPosYDecal image:TrainerFrames.downFrame.1 anchor:nw handle:TrainerHandle)}
+		trainerCreation(handle:TrainerHandle frames:TrainerFrames)
 	end
 	
 	% State = state(type:T num:Num name:N maxlife:Ml currentLife:Cl experience:E level:L)

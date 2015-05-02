@@ -6,7 +6,6 @@ import
 	PokeConfig(dELAY:DELAY trainer_Move_Proba:Trainer_Move_Proba trainer_MoveS_Speed:Trainer_MoveS_Speed)
 	MoveHero(movementHandle:MovementHandle)
 	DisplayMap(deplaceAllowedPlace:DeplaceAllowedPlace)
-	Game(inBattle:InBattle)
 export
 	NewTrainer
 	RandomMove
@@ -61,7 +60,7 @@ define
 		proc {$ F} {Send P F} end
 	end
 
-	proc {RandomlyMoveTrainer Trainer HeroTrainer}
+	proc {RandomlyMoveTrainer Trainer Frames HeroTrainer}
 		MoveDir
 		Proba  
 		S 
@@ -76,11 +75,12 @@ define
 			elseif Proba*100<75*Trainer_Move_Proba then MoveDir=d
 			else MoveDir=u 
 			end
-			{MovementHandle MoveDir Trainer false}
+			{MovementHandle MoveDir Trainer Frames false}
 		end
+		{MovementHandle MoveDir Trainer false}
 	end
-	fun {RandomMove HeroTrainer}
-		proc {$ T} {RandomlyMoveTrainer T HeroTrainer} end
+	fun {RandomMove HeroTrainer Frames}
+		proc {$ T} {RandomlyMoveTrainer T Frames HeroTrainer} end
 	end
 	
 end

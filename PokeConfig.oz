@@ -19,6 +19,8 @@ export
 	BAR_WIDTH
 	BAR_LENGTH	
 	
+	PathTrainersTotal
+	PathPokeTotal
 define
 	SQUARE_LENGTH = 32 % length of a standard square
 	
@@ -38,4 +40,7 @@ define
 	
 	BAR_WIDTH = 12 % for Hp bars
 	BAR_LENGTH = 200
+	
+	PathTrainersTotal = "Images/Trainers/overworld/"
+	PathPokeTotal = "Images/Pokemon-overworld/"
 end

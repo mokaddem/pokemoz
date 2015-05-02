@@ -3,7 +3,7 @@ import
 	System(show:Show)
 	QTk at 'x-oz://system/wp/QTk.ozf'
 
-	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM pOKE_ZOOM:POKE_ZOOM)
+	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM pOKE_ZOOM:POKE_ZOOM pathTrainersTotal:PathTrainersTotal pathPokeTotal:PathPokeTotal)
 
 
 export 
@@ -20,10 +20,10 @@ export
 	AllSprites_B
 	AllSprites_Op
 	
+	CreateMovementImages
+	
 
 define
-PathHeroTotal = 'Images/HGSS_143.gif'
-PathPokeTotal = 'Images/001_0.gif'
 PathPokeBattleSpritesBack = "Images/Pokemon-sprites-battle/own/sprite_B"
 PathPokeBattleSpritesOp = "Images/Pokemon-sprites-battle/op-separeted/"
 Path
@@ -41,16 +41,16 @@ end
 
 %%%%% CREATE MOVEMENT IMAGES %%%%%   
 fun {CreateMovementImages Path}
-	PathHeroTotal = photo(file:Path)
-	HeroImage = {QTk.newImage PathHeroTotal}
+	PathTotal = photo(file:Path)
+	TrainerImage = {QTk.newImage PathTotal}
 
 	in
-	allFrames(upFrame:{GetFrame 3 HeroImage} rightFrame:{GetFrame 2 HeroImage} leftFrame:{GetFrame 1 HeroImage} downFrame:{GetFrame 0 HeroImage})
+	allFrames(upFrame:{GetFrame 3 TrainerImage} rightFrame:{GetFrame 2 TrainerImage} leftFrame:{GetFrame 1 TrainerImage} downFrame:{GetFrame 0 TrainerImage})
 end
 
-AllHeroFrames = {CreateMovementImages PathHeroTotal}
+AllHeroFrames = {CreateMovementImages {Append PathTrainersTotal "hero.gif"}}
 HeroFace = AllHeroFrames.downFrame.1
-AllPokeFrames = {CreateMovementImages PathPokeTotal}
+AllPokeFrames = {CreateMovementImages {Append PathPokeTotal "001_0.gif"}}
 PokeFace = AllPokeFrames.downFrame.1
 
 
