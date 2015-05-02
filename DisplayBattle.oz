@@ -184,9 +184,9 @@ define
 	end
 	
 	%Bar Animation
-	proc {DoTheBarAnimation TxtTag BarTag BarLen PBarLen HpP HpC HpMax OpPvBarTag} 
-		{MiPvBarTag getCoords(1:CoordMi)}
-		local X1 X2 Y1 Y2 BarLen PBarLen in
+	proc {DoTheBarAnimation TxtTag BarTag BarLen PBarLen HpP HpC HpMax PvBarTag} 
+		local X1 X2 Y1 Y2 CoordMi in
+			{PvBarTag getCoords(1:CoordMi)}
 			X1 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.1}}}
 			X2 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.2.2.1}}}
 			Y1 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.2.1}}}

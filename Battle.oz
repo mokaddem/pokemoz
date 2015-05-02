@@ -40,12 +40,11 @@ define
 		{OpPvBarTag getCoords(1:CoordOp)}
 		{Pok2 getHp(Hp2C)} 
 		{DoThePokeAttackAnimation MiPokeTag true}
-	
-		PBarLen = {ComputeBarLength Hp2P Hp2Max}
-		BarLen = {ComputeBarLength Hp2C Hp2Max}
-		{DoTheBarAnimation OpPvTxtTag OpPvBarTag BarLen PBarLen Hp2P Hp2C Hp2Max OpPvBarTag}
-
-
+		local PBarLen BarLen in
+			PBarLen = {ComputeBarLength Hp2P Hp2Max}
+			BarLen = {ComputeBarLength Hp2C Hp2Max}
+			{DoTheBarAnimation OpPvTxtTag OpPvBarTag BarLen PBarLen Hp2P Hp2C Hp2Max OpPvBarTag}
+		end
 		
 		if Hp2C > 0 then
 			Damage2 in Damage2 = {GetDamage Type2 Type1 Level2 Level1}
@@ -53,10 +52,11 @@ define
 			{Pok1 damage(Damage2)}			
 			{Pok1 getHp(Hp1C)}
 			{DoThePokeAttackAnimation OpPokeTag false}
-			PBarLen = {ComputeBarLength Hp1P Hp2Max}
-			BarLen = {ComputeBarLength Hp1C Hp1Max}
-			{DoTheBarAnimation MiPvTxtTag MiPvBarTag BarLen PBarLen Hp1P Hp1C Hp1Max OpPvBarTag}
-
+			local PBarLen BarLen in 
+				PBarLen = {ComputeBarLength Hp1P Hp2Max}
+				BarLen = {ComputeBarLength Hp1C Hp1Max}
+				{DoTheBarAnimation MiPvTxtTag MiPvBarTag BarLen PBarLen Hp1P Hp1C Hp1Max OpPvBarTag}
+			end
 			
 			if Hp1C =< 0 then
 				{Delay 1000}
