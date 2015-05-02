@@ -2,7 +2,7 @@ functor
 import
 	System(show:Show)
 	OS
-	DisplayBattle(drawHpBar:DrawHpBar computeBarLength:ComputeBarLength doTheBarAnimation:DoTheBarAnimation doThePokeAttackAnimation:DoThePokeAttackAnimation)
+	DisplayBattle(drawHpBar:DrawHpBar computeBarLength:ComputeBarLength doTheBarAnimation:DoTheBarAnimation doThePokeAttackAnimation:DoThePokeAttackAnimation doTheXpBarAnimation:DoTheXpBarAnimation)
 export
 	RunAutoBattle
 	Attack
@@ -25,6 +25,8 @@ define
 		CoordOp
 		CoordMi
 		in
+		{Pok2 getHp(Hp2P)} {Pok2 getHpMax(Hp2Max)}
+		{Pok1 getHp(Hp1P)} {Pok1 getHpMax(Hp1Max)}
 		{Pok1 getType(Type1)}
 		{Pok2 getType(Type2)}
 		{Pok1 getName(Name1)}
@@ -33,13 +35,10 @@ define
 		{Pok2 getLevel(Level2)}
 		Damage = {GetDamage Type1 Type2 Level1 Level2}
 		{Show Name1#' attacks'}
-		{Pok2 getHp(Hp2P)}
 		{Pok2 damage(Damage)}
 		
 		{OpPvBarTag getCoords(1:CoordOp)}
 		{Pok2 getHp(Hp2C)} 
-		{Pok2 getHpMax(Hp2Max)}
-		{Wait Hp2Max} 		{Wait Hp2C}
 		{DoThePokeAttackAnimation MiPokeTag true}
 		local X1 X2 Y1 Y2 BarLen PBarLen in
 			X1 = {FloatToInt {String.toFloat {VirtualString.toString CoordOp.1}}}
@@ -55,12 +54,9 @@ define
 		if Hp2C > 0 then
 			Damage2 in Damage2 = {GetDamage Type2 Type1 Level2 Level1}
 			{Show Name2#' attacks'}
-			{Pok1 getHp(Hp1P)}
 			{Pok1 damage(Damage2)}
 			{MiPvBarTag getCoords(1:CoordMi)}
 			{Pok1 getHp(Hp1C)}
-			{Pok1 getHpMax(Hp1Max)}
-			{Wait Hp1Max} 		{Wait Hp1C}
 			{DoThePokeAttackAnimation OpPokeTag false}
 			local X1 X2 Y1 Y2 BarLen PBarLen in
 				X1 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.1}}}
@@ -80,6 +76,7 @@ define
 			end
 		else
 			{Pok1 'exp'(Level2)}
+			{DoTheXpBarAnimation Pok1 Level2 HpRecord.expBar}
 			{Delay 1000}
 			{UI_Components.window close} 
 			{UI_Components.ui_control_window close}

@@ -19,6 +19,7 @@ export
 	ComputeBarLength
 	DoTheBarAnimation
 	DoThePokeAttackAnimation
+	DoTheXpBarAnimation
 
 define
 	UI_LENGTH = 255*2
@@ -91,7 +92,7 @@ define
 		
 		in
 		
-		local MiName OpName MiLvl OpLvl MiHp OpHp MiHpMax OpHpMax MiExp in 
+		local MiName OpName MiLvl OpLvl MiHp OpHp MiHpMax OpHpMax MiExp Hp1Text Hp2Text in 
 		{MiPoke getName(MiName)} {OpPoke getName(OpName)}
 		{MiPoke getLevel(MiLvl)} {OpPoke getLevel(OpLvl)}
 		{MiPoke getHp(MiHp)} {OpPoke getHp(OpHp)} 
@@ -102,17 +103,20 @@ define
 		MiBarLength = {ComputeBarLength MiHp MiHpMax}
 		OpBarLength = {ComputeBarLength OpHp OpHpMax}
 		
+		Hp1Text = set(text:{Append "Hp: " {Append {IntToString MiHp} {Append "/" {IntToString MiHpMax}}}})
+		Hp2Text = set(text:{Append "Hp: " {Append {IntToString OpHp} {Append "/" {IntToString OpHpMax}}}})
+		
 	%Mi
 		%Bars
 		{UICanvasHandler create(rectangle MiStartX+3 MiEndY MiEndX-2 MiEndY+7 fill:white width:2.0)}
-      {UICanvasHandler create(rectangle MiStartX+3 MiEndY MiEndX-2 MiEndY+7 fill:white outline:nil handle:XpHandler tags:XpTag)}
+      {UICanvasHandler create(rectangle MiStartX+3 MiEndY MiEndX-2 MiEndY+7 fill:blue outline:nil handle:XpHandler tags:XpTag)}
       {UICanvasHandler create(rectangle MiStartX MiStartY MiEndX MiEndY+2 fill:white width:3.0)}
       {UICanvasHandler create(rectangle MiStartX+2 MiStartY+2 MiEndX-BAR_LENGTH+MiBarLength-1 MiEndY+2-1 fill:green outline:nil handle:MiPvHandler tags:MiPvBarTag)}
       %Texts
       {UICanvasHandler create(text MiStartX MiStartY-28 text:MiName font:Font18 anchor:nw fill:black handle:MiPokeTextHandler)}
       {UICanvasHandler create(text MiEndX-30 MiStartY-23 text:"Lv." font:Font14 anchor:ne fill:black)}
 		{UICanvasHandler create(text MiEndX-8 MiStartY-28 text:MiLvl font:Font18 anchor:ne fill:black handle:MiPokeLvlHandler)}
-		{UICanvasHandler create(text MiEndX-(BAR_LENGTH div 2) MiStartY+1 text:"hp: 20/20" font:Font8 anchor:n fill:black handle:MiPokeHPtxtHandler)}
+		{UICanvasHandler create(text MiEndX-(BAR_LENGTH div 2) MiStartY+1 text:Hp1Text font:Font8 anchor:n fill:black handle:MiPokeHPtxtHandler)}
 	%Op	
 		%Bars
       {UICanvasHandler create(rectangle OpStartX OpStartY OpEndX OpEndY+2 fill:white width:3.0)}
@@ -121,10 +125,10 @@ define
       {UICanvasHandler create(text OpStartX OpStartY-28 text:OpName font:Font18 anchor:nw fill:black handle:OpPokeTextHandler)}
       {UICanvasHandler create(text OpEndX-30 OpStartY-23 text:"Lv." font:Font14 anchor:ne fill:black)}
 		{UICanvasHandler create(text OpEndX-8 OpStartY-28 text:OpLvl font:Font18 anchor:ne fill:black handle:OpPokeLvlHandler)}
-		{UICanvasHandler create(text OpStartX+(BAR_LENGTH div 2) OpStartY+1 text:"hp: 20/20" font:Font8 anchor:n fill:black handle:OpPokeHPtxtHandler)}
+		{UICanvasHandler create(text OpStartX+(BAR_LENGTH div 2) OpStartY+1 text:Hp2Text font:Font8 anchor:n fill:black handle:OpPokeHPtxtHandler)}
 		
 		
-		hpbar(miBar:MiPvBarTag opBar:OpPvBarTag miTxt:MiPokeHPtxtHandler opTxt:OpPokeHPtxtHandler)
+		hpbar(miBar:MiPvBarTag opBar:OpPvBarTag miTxt:MiPokeHPtxtHandler opTxt:OpPokeHPtxtHandler expBar:XpTag)
 		end %local
 	end
 
@@ -208,6 +212,10 @@ define
 			{PokeTag move(30 ~15)}
 		end
 		{Delay 3*PokeAttackDelay}
+	end
+	
+	proc {DoTheXpBarAnimation Pok1 Level2 ExpBarTag}
+		{ExpBarTag setCoords(50 50 150 150)}
 	end
 
 end
