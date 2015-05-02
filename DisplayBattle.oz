@@ -76,6 +76,7 @@ define
 		MiEndX = UI_LENGTH-25 
 		MiEndY = UI_HEIGHT-45 + BAR_WIDTH		
 		MiBarLength
+		ExpBarLength
 
 		OpStartX = 15
 		OpStartY = 65
@@ -92,16 +93,16 @@ define
 		
 		in
 		
-		local MiName OpName MiLvl OpLvl MiHp OpHp MiHpMax OpHpMax MiExp Hp1Text Hp2Text in 
+		local MiName OpName MiLvl OpLvl MiHp OpHp MiHpMax OpHpMax Exp XpNeeded Hp1Text Hp2Text in 
 		{MiPoke getName(MiName)} {OpPoke getName(OpName)}
 		{MiPoke getLevel(MiLvl)} {OpPoke getLevel(OpLvl)}
 		{MiPoke getHp(MiHp)} {OpPoke getHp(OpHp)} 
 		{MiPoke getHpMax(MiHpMax)} {OpPoke getHpMax(OpHpMax)} 
-		{MiPoke getHp(MiExp)} %TODO !!  --> Get Exp
-		{Wait MiExp}
-		
+		{MiPoke getExp(Exp)} 
+		{MiPoke getExpNeeded(XpNeeded)}
 		MiBarLength = {ComputeBarLength MiHp MiHpMax}
 		OpBarLength = {ComputeBarLength OpHp OpHpMax}
+		ExpBarLength = {ComputeBarLength Exp XpNeeded}
 		
 		Hp1Text = set(text:{Append "Hp: " {Append {IntToString MiHp} {Append "/" {IntToString MiHpMax}}}})
 		Hp2Text = set(text:{Append "Hp: " {Append {IntToString OpHp} {Append "/" {IntToString OpHpMax}}}})
@@ -109,7 +110,7 @@ define
 	%Mi
 		%Bars
 		{UICanvasHandler create(rectangle MiStartX+3 MiEndY MiEndX-2 MiEndY+7 fill:white width:2.0)}
-      {UICanvasHandler create(rectangle MiStartX+3 MiEndY MiEndX-2 MiEndY+7 fill:blue outline:nil handle:XpHandler tags:XpTag)}
+      {UICanvasHandler create(rectangle MiStartX+5 MiEndY MiStartX+5+ExpBarLength MiEndY+7 fill:blue outline:nil handle:XpHandler tags:XpTag)}
       {UICanvasHandler create(rectangle MiStartX MiStartY MiEndX MiEndY+2 fill:white width:3.0)}
       {UICanvasHandler create(rectangle MiStartX+2 MiStartY+2 MiEndX-BAR_LENGTH+MiBarLength-1 MiEndY+2-1 fill:green outline:nil handle:MiPvHandler tags:MiPvBarTag)}
       %Texts
@@ -184,13 +185,13 @@ define
 	end
 	
 	%Bar Animation
-	proc {DoTheBarAnimation TxtTag BarTag BarLen PBarLen HpP HpC HpMax PvBarTag} 
-		local X1 X2 Y1 Y2 CoordMi in
-			{PvBarTag getCoords(1:CoordMi)}
-			X1 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.1}}}
-			X2 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.2.2.1}}}
-			Y1 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.2.1}}}
-			Y2 = {FloatToInt {String.toFloat {VirtualString.toString CoordMi.2.2.2.1}}}
+	proc {DoTheBarAnimation TxtTag BarTag BarLen PBarLen HpP HpC HpMax} 
+		local X1 X2 Y1 Y2 Coord in
+			{BarTag getCoords(1:Coord)}
+			X1 = {FloatToInt {String.toFloat {VirtualString.toString Coord.1}}}
+			X2 = {FloatToInt {String.toFloat {VirtualString.toString Coord.2.2.1}}}
+			Y1 = {FloatToInt {String.toFloat {VirtualString.toString Coord.2.1}}}
+			Y2 = {FloatToInt {String.toFloat {VirtualString.toString Coord.2.2.2.1}}}
 			if HpP-HpC > 0 then
 				for I in 0..PBarLen-BarLen do
 					{Delay BarRegressionDelay}
@@ -199,7 +200,6 @@ define
 						{BarTag setCoords(X1 Y1 X2-I Y2)}
 					end
 					local Factor = {IntToFloat (PBarLen-BarLen)} / {IntToFloat (HpP-HpC)} in
-					{Show Factor#{IntToFloat I}/Factor#HpP-{FloatToInt ({IntToFloat I}/Factor)}}
 						{TxtTag set(text:{Append "Hp: " {Append {IntToString HpP-{FloatToInt ({IntToFloat I}/Factor)}} {Append "/" {IntToString HpMax}}}})}
 					end
 				end
@@ -221,8 +221,24 @@ define
 		{Delay 3*PokeAttackDelay}
 	end
 	
-	proc {DoTheXpBarAnimation Pok1 Level2 ExpBarTag}
-		{ExpBarTag setCoords(50 50 150 150)}
+	proc {DoTheXpBarAnimation Pok1 Level2 BarLen PBarLen ExpBarTag}
+		{Show 'doTheXpBarAnimation'}
+		local X1 X2 Y1 Y2 Coord in
+			{ExpBarTag getCoords(1:Coord)}
+			X1 = {FloatToInt {String.toFloat {VirtualString.toString Coord.1}}}
+			X2 = {FloatToInt {String.toFloat {VirtualString.toString Coord.2.2.1}}}
+			Y1 = {FloatToInt {String.toFloat {VirtualString.toString Coord.2.1}}}
+			Y2 = {FloatToInt {String.toFloat {VirtualString.toString Coord.2.2.2.1}}}
+			{Show BarLen#PBarLen}
+			for I in 0..BarLen-PBarLen do
+				{Show I}
+				{Delay BarRegressionDelay}
+				if(X1+I > X2) then skip
+				else
+					{ExpBarTag setCoords(X1+I Y1 X2 Y2)}
+				end
+			end
+		end
 	end
 
 end

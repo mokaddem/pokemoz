@@ -43,7 +43,7 @@ define
 		local PBarLen BarLen in
 			PBarLen = {ComputeBarLength Hp2P Hp2Max}
 			BarLen = {ComputeBarLength Hp2C Hp2Max}
-			{DoTheBarAnimation OpPvTxtTag OpPvBarTag BarLen PBarLen Hp2P Hp2C Hp2Max OpPvBarTag}
+			{DoTheBarAnimation OpPvTxtTag OpPvBarTag BarLen PBarLen Hp2P Hp2C Hp2Max}
 		end
 		
 		if Hp2C > 0 then
@@ -53,9 +53,9 @@ define
 			{Pok1 getHp(Hp1C)}
 			{DoThePokeAttackAnimation OpPokeTag false}
 			local PBarLen BarLen in 
-				PBarLen = {ComputeBarLength Hp1P Hp2Max}
+				PBarLen = {ComputeBarLength Hp1P Hp1Max}
 				BarLen = {ComputeBarLength Hp1C Hp1Max}
-				{DoTheBarAnimation MiPvTxtTag MiPvBarTag BarLen PBarLen Hp1P Hp1C Hp1Max OpPvBarTag}
+				{DoTheBarAnimation MiPvTxtTag MiPvBarTag BarLen PBarLen Hp1P Hp1C Hp1Max}
 			end
 			
 			if Hp1C =< 0 then
@@ -65,9 +65,21 @@ define
 				{TrainerPort setInCombat(false)}
 			end
 		else
-			{Pok1 'exp'(Level2)}
-			{DoTheXpBarAnimation Pok1 Level2 HpRecord.expBar}
-			{Delay 1000}
+			local PBarLen BarLen XpC XpP XpNeeded in 
+				{Pok1 getExp(XpP)}
+				{Pok1 'exp'(Level2)}
+				{Pok1 getExp(XpC)}
+				{Pok1 getExpNeeded(XpNeeded)}
+				{Wait XpNeeded}
+				PBarLen = {ComputeBarLength XpP XpNeeded}
+				BarLen = {ComputeBarLength XpC XpNeeded}
+				{Show 'xpneeded'#XpNeeded}
+				{Show XpP#XpC}
+				{Show PBarLen}
+				{Show BarLen}
+				{DoTheXpBarAnimation Pok1 Level2 BarLen PBarLen HpRecord.expBar}
+			end
+			{Delay 5000}
 			{UI_Components.window close} 
 			{UI_Components.ui_control_window close}
 			{TrainerPort setInCombat(false)}
