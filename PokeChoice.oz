@@ -32,7 +32,7 @@ define
 	local V1 V2 V3 V4 V5 V6 V7 in
 		V1= {Num1 get($)}
 		V2= {Num2 get($)}
-		V3= {Checkfight get($)}
+		V3= [{Checkfight1 get($)} {Checkfight2 get($)} {Checkfight3 get($)}]
 		V4= {CheckAll get($)}
 		V5= {CheckNormal get($)}
 		V6= {Name get($)}
@@ -50,8 +50,21 @@ define
 	NumEntry1 = numberentry(min:0 max:100 init:30 handle:Num1 action:proc{$} {Show {Num1 get($)}} end glue:w pady:10 padx:10)
 	Num2
 	NumEntry2 = numberentry(min:0 max:10 init:5 handle:Num2 action:proc{$} {Show {Num2 get($)}} end glue:w pady:10 padx:10)
-	Checkfight
-	CheckButtonfight = checkbutton(text:"Autofight" init:false handle:Checkfight action:proc{$} {Show {Checkfight get($)}} end glue:w pady:10 padx:10)
+	
+	%CheckButtonfight = checkbutton(text:"Autofight" init:false handle:Checkfight action:proc{$} {Show {Checkfight get($)}} end glue:w pady:10 padx:10)
+	Checkfight1 Checkfight2 Checkfight3
+	CheckButtonfight = lr(radiobutton(text:"Manual"
+                       init:true
+                       handle:Checkfight1
+                       group:radio1)
+         						radiobutton(text:"AutoFight"
+                     		handle:Checkfight2
+                      		group:radio1)
+		       						radiobutton(text:"AutoRun"
+		                		   handle:Checkfight3
+		                 		   group:radio1)
+                 		  glue:w pady:10 padx:10)
+	
 	CheckAutoMove
 	CheckButtonMove = checkbutton(text:"AutoMove" init:false handle:CheckAutoMove action:proc{$} {Show {CheckAutoMove get($)}} end glue:w pady:10 padx:10)
 	Name
@@ -67,7 +80,7 @@ define
 					NumEntry1 empty empty newline
 					label(text:"Speed of POKEMOZ trainers: [0,10]" font:Font16 glue:w pady:10 padx:10) newline
 					NumEntry2 empty empty newline
-					label(text:"Auto-pilote options:" font:Font10 glue:w pady:10 padx:10) label(text:"Press Here to play -->" font:Font10 glue:e) newline
+					label(text:"Auto-pilote options:" font:Font16 glue:w pady:10 padx:10) label(text:"Press Here to play -->" font:Font10 glue:e) newline
 					CheckButtonfight newline
 					CheckButtonMove newline
 					newline

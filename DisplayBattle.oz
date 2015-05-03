@@ -8,7 +8,7 @@ import
 	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	QTk at 'x-oz://system/wp/QTk.ozf'
-	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM dELAY:DELAY bAR_WIDTH:BAR_WIDTH bAR_LENGTH:BAR_LENGTH pokeAttackDelay:PokeAttackDelay	barRegressionDelay:BarRegressionDelay)
+	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM dELAY:DELAY bAR_WIDTH:BAR_WIDTH bAR_LENGTH:BAR_LENGTH pokeAttackDelay:PokeAttackDelay	barRegressionDelay:BarRegressionDelay autofight:Autofight)
 	Trainer(newTrainer:NewTrainer)
 	Pokemoz(newPokemoz:NewPokemoz)
 	Battle(runAutoBattle:RunAutoBattle attack:Attack)
@@ -81,6 +81,8 @@ define
 		PokeTagsRecord = {DrawPokemoz OpNumber MiNumber UICanvasHandler DialogText IsTrainer Number}
 		HpRecord = {DrawHpBar UICanvasHandler Window MiPoke OpPoke DialogText}
 		
+		if Autofight == 0 then 
+		
 		/* START UI CONTROL */
 
 				Button_Attack = button(text:"Attack" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} end handle:But_Attk_Handler)
@@ -95,16 +97,22 @@ define
 										handle:UI_Control_Handler)
 		
 		/* END UI CONTROL */
+
+			{GridHandler configure(UIControl column:2 row:2)}
+			{UI_Control_Handler configure(But_Attk_Handler But_Poke_Handler But_Fuite_Handler But_Capt_Handler padx:20 pady:10)}	
 		
-		{GridHandler configure(UIControl column:2 row:2)}
-		{UI_Control_Handler configure(But_Attk_Handler But_Poke_Handler But_Fuite_Handler But_Capt_Handler padx:20 pady:10)}	
+			thread
+				{Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} end)} %trying to bind to an action
+				{Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {CellSet InBattle false} {Window close} end)}
+				{Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
+				{Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
+				{Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} end)}
+			end
 		
-		thread
-			{Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} end)} %trying to bind to an action
-			{Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {CellSet InBattle false} {Window close} end)}
-			{Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
-			{Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
-			{Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} end)}
+		elseif Autofight==1 then
+			{RunAutoBattle MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText}
+		else
+			{CellSet InBattle false} {Window close}
 		end
 	end
 	
