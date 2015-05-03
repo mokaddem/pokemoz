@@ -47,7 +47,8 @@ define
 				if State.level == 10 then X = 100
 				else X = {FloatToInt ({IntToFloat (State.experience - {GetExpNeeded State.level})}/{IntToFloat ({GetExpNeeded (State.level + 1)} - {GetExpNeeded State.level})})} {Show 'experience '#X} end State
 			[] getExp(X) then X=State.experience State
-			[] getExpNeeded(X) then X={GetExpNeeded State.level+1} State 
+			[] getExpLevel(X) then X=({GetExpNeeded State.level}) State
+			[] getExpNeeded(X) then X=({GetExpNeeded State.level+1}) State 
 			[] getNum(X) then X=State.num State
 			[] setNum(X) then state(type:(State.type) num:(X) name:(State.name) maxlife:(State.maxlife) currentLife:(State.currentLife - X) experience:(State.experience) level:(State.level))
 			end

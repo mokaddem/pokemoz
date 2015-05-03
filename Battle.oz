@@ -78,18 +78,15 @@ define
 				GameOver=true
 			end
 		else
-			local PBarLen BarLen XpC XpP XpNeeded in 
+			local PBarLen BarLen XpC XpP XpNeeded XpProg1 XpProg2 in 
 				{Pok1 getExp(XpP)}
+				{Pok1 getExpNeeded(XpNeeded)}
 				{Pok1 'exp'(Level2)}
 				{Pok1 getExp(XpC)}
-				{Pok1 getExpNeeded(XpNeeded)}
-				{Wait XpNeeded}
+				{Show XpP#XpC#XpNeeded}
 				PBarLen = {ComputeBarLength XpP XpNeeded}
 				BarLen = {ComputeBarLength XpC XpNeeded}
-				{Show 'xpneeded'#XpNeeded}
-				{Show XpP#XpC}
-				{Show PBarLen}
-				{Show BarLen}
+				{Show PBarLen#BarLen}
 				{DoTheXpBarAnimation Pok1 Level2 BarLen PBarLen HpRecord.expBar}
 			end
 			{DialogText set(text:{Append "Enemy " {Append Name2 " fainted!"}})}

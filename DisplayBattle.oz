@@ -156,6 +156,12 @@ define
 		{FloatToInt ({IntToFloat Val}/{IntToFloat ValMax})*{IntToFloat BAR_LENGTH}}
 	end
 	
+	fun {ComputeXpBarLength Val ValMax}
+		Bar_Length = ((UI_LENGTH-25-2) - (UI_LENGTH-25 - BAR_LENGTH+3))
+		in
+		{FloatToInt ({IntToFloat Val}/{IntToFloat ValMax})*{IntToFloat Bar_Length}}
+	end
+	
 	fun {DrawHpBar UICanvasHandler Window MiPoke OpPoke DialogText}		
 		Font18={QTk.newFont font(size:18)} Font14={QTk.newFont font(size:14)} Font8={QTk.newFont font(size:8)}
 		MiStartX = UI_LENGTH-25 - BAR_LENGTH
@@ -180,16 +186,17 @@ define
 		
 		in
 		
-		local MiName OpName MiLvl OpLvl MiHp OpHp MiHpMax OpHpMax Exp XpNeeded Hp1Text Hp2Text in 
+		local MiName OpName MiLvl OpLvl MiHp OpHp MiHpMax OpHpMax Exp XpNeeded XpLevel Hp1Text Hp2Text in 
 		{MiPoke getName(MiName)} {OpPoke getName(OpName)}
 		{MiPoke getLevel(MiLvl)} {OpPoke getLevel(OpLvl)}
 		{MiPoke getHp(MiHp)} {OpPoke getHp(OpHp)} 
 		{MiPoke getHpMax(MiHpMax)} {OpPoke getHpMax(OpHpMax)} 
 		{MiPoke getExp(Exp)} 
 		{MiPoke getExpNeeded(XpNeeded)}
+		{MiPoke getExpLevel(XpLevel)}
 		MiBarLength = {ComputeBarLength MiHp MiHpMax}
 		OpBarLength = {ComputeBarLength OpHp OpHpMax}
-		ExpBarLength = {ComputeBarLength Exp XpNeeded}
+		ExpBarLength = {ComputeXpBarLength Exp-XpLevel XpNeeded}
 		
 		Hp1Text = set(text:{Append "Hp: " {Append {IntToString MiHp} {Append "/" {IntToString MiHpMax}}}})
 		Hp2Text = set(text:{Append "Hp: " {Append {IntToString OpHp} {Append "/" {IntToString OpHpMax}}}})
@@ -269,19 +276,20 @@ define
 	
 	proc {DoTheXpBarAnimation Pok1 Level2 BarLen PBarLen ExpBarTag}
 		{Show 'doTheXpBarAnimation'}
-		local X1 X2 Y1 Y2 Coord in
+		local X1 X2 Xend Y1 Y2 Coord in
 			{ExpBarTag getCoords(1:Coord)}
 			X1 = {FloatToInt {String.toFloat {VirtualString.toString Coord.1}}}
 			X2 = {FloatToInt {String.toFloat {VirtualString.toString Coord.2.2.1}}}
 			Y1 = {FloatToInt {String.toFloat {VirtualString.toString Coord.2.1}}}
 			Y2 = {FloatToInt {String.toFloat {VirtualString.toString Coord.2.2.2.1}}}
+			Xend = UI_LENGTH-25-2
 			{Show BarLen#PBarLen}
+			{Show X1#Xend}
 			for I in 0..BarLen-PBarLen do
-				{Show I}
 				{Delay BarRegressionDelay}
-				if(X1+I > X2) then skip
+				if(X2+I > Xend) then skip
 				else
-					{ExpBarTag setCoords(X1+I Y1 X2 Y2)}
+					{ExpBarTag setCoords(X1 Y1 X2+I Y2)}
 				end
 			end
 		end
