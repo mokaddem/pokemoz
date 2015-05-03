@@ -3,7 +3,7 @@ import
 	OS
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	System(show:Show)
-	PokeConfig(dELAY:DELAY trainer_Move_Proba:Trainer_Move_Proba trainer_MoveS_Speed:Trainer_MoveS_Speed)
+	PokeConfig(dELAY:DELAY trainer_Move_Proba:Trainer_Move_Proba trainer_MoveS_Speed:Trainer_MoveS_Speed rEAL_SPEED:REAL_SPEED trainer_Max_Foot_Number:Trainer_Max_Foot_Number)
 	MoveHero(movementHandle:MovementHandle)
 	DisplayMap(deplaceAllowedPlace:DeplaceAllowedPlace)
 export
@@ -23,7 +23,7 @@ define
 			{P getMovement(M)}
 			{Wait S}
 			{Wait M}
-			{Delay (10-S)*DELAY}
+			{Delay REAL_SPEED}
 			{M P}
 			{LoopMovement P}
 		end
@@ -63,6 +63,7 @@ define
 	proc {RandomlyMoveTrainer Trainer Frames}
 		MoveDir
 		Proba
+		Proba2 = {OS.rand} mod 100
 	in
 		Proba = {OS.rand} mod 100
 		if (Trainer_Move_Proba > Proba) then
@@ -71,7 +72,7 @@ define
 			elseif Proba*100<75*Trainer_Move_Proba then MoveDir=d
 			else MoveDir=u 
 			end
-			{MovementHandle MoveDir Trainer Frames false}
+			{MovementHandle MoveDir Trainer Frames false (Proba2 mod Trainer_Max_Foot_Number)}
 		end
 	end
 	fun {RandomMove Frames}

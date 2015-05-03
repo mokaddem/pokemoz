@@ -19,6 +19,7 @@ export
 	AllPokeFrames
 	AllSprites_B
 	AllSprites_Op
+	AllTrainerBattleFrames
 	
 	CreateMovementImages
 	
@@ -26,6 +27,7 @@ export
 define
 PathPokeBattleSpritesBack = "Images/Pokemon-sprites-battle/own/sprite_B"
 PathPokeBattleSpritesOp = "Images/Pokemon-sprites-battle/op-separeted/"
+PathTrainerBattleSprites = "Images/Trainers/"
 Path
 
 L = 64
@@ -48,7 +50,7 @@ fun {CreateMovementImages Path}
 	allFrames(upFrame:{GetFrame 3 TrainerImage} rightFrame:{GetFrame 2 TrainerImage} leftFrame:{GetFrame 1 TrainerImage} downFrame:{GetFrame 0 TrainerImage})
 end
 
-AllHeroFrames = {CreateMovementImages {Append PathTrainersTotal "hero.gif"}}
+AllHeroFrames = {CreateMovementImages {Append PathTrainersTotal "overworld/hero.gif"}}
 HeroFace = AllHeroFrames.downFrame.1
 AllPokeFrames = {CustomNewCell {CreateMovementImages {Append PathPokeTotal {Append {IntToString Starter} ".gif"}}}}
 PokeFace = {CellGet AllPokeFrames}.downFrame.1
@@ -64,8 +66,17 @@ Road_Tile = {QTk.newImage photo()}
 {Road_Tile copy(Road_Tile_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))}
 
 %%% Create Trainer Battle Sprites %%%
-Images/Trainers
-
+AllTrainerBattleFrames_temp = {CustomNewCell trainerbattleframes()}
+for I in 1..4 do
+	local TrainerImg TrainerImg_old in
+		TrainerImg_old = {QTk.newImage photo(file:{Append PathTrainersTotal {Append {IntToString I} ".gif"}})} %In the case if we need to adapt ground size
+		TrainerImg = {QTk.newImage photo()}	
+		{TrainerImg copy(TrainerImg_old zoom:o(POKE_ZOOM))}
+		{CellSet AllTrainerBattleFrames_temp {AdjoinAt {CellGet AllTrainerBattleFrames_temp} I TrainerImg}}
+	end
+end
+AllTrainerBattleFrames = {CellGet AllTrainerBattleFrames_temp}
+	
 %%% Create Pokemoz Battle Sprites %%%
 	Background_Battle_Grass_old = {QTk.newImage photo(file:'Images/Pokemon-sprites-battle/grass-background.gif')}
 	Background_Battle_Trainer_old = {QTk.newImage photo(file:'Images/Pokemon-sprites-battle/trainer-background.gif')}

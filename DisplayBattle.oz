@@ -4,7 +4,7 @@ import
 	Open
 
 	Offset_data(op_Offset:Op_Offset mi_Offset:Mi_Offset) at 'Data/Offset_data.ozf'
-	CutImages(heroFace:HeroFace pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile allSprites_B:AllSprites_B allSprites_Op:AllSprites_Op background_Battle_Trainer:Background_Battle_Trainer background_Battle_Grass:Background_Battle_Grass)
+	CutImages(heroFace:HeroFace pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile allSprites_B:AllSprites_B allSprites_Op:AllSprites_Op background_Battle_Trainer:Background_Battle_Trainer background_Battle_Grass:Background_Battle_Grass allTrainerBattleFrames:AllTrainerBattleFrames)
 	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	QTk at 'x-oz://system/wp/QTk.ozf'
@@ -33,7 +33,7 @@ define
 %	MiPokePosY = (143+24)*2
 	MiPokePosY = (143+8)*2
 
-	proc {DrawBattleUI MiPoke OpPoke IsTrainer}
+	proc {DrawBattleUI MiPoke OpPoke IsTrainer Number}
 		Font16={QTk.newFont font(size:16)}
 		
 		Grid GridHandler
@@ -78,7 +78,7 @@ define
 		%{GridHandler configure(label(image:DialogImg) column:2 row:1 rowspan:3 sticky:n)}
 		
 		{UICanvasHandler create(image 0 0 image:Background_Battle_Grass anchor:nw)}
-		PokeTagsRecord = {DrawPokemoz OpNumber MiNumber UICanvasHandler DialogText IsTrainer}
+		PokeTagsRecord = {DrawPokemoz OpNumber MiNumber UICanvasHandler DialogText IsTrainer Number}
 		HpRecord = {DrawHpBar UICanvasHandler Window MiPoke OpPoke DialogText}
 		
 		/* START UI CONTROL */
@@ -108,9 +108,10 @@ define
 		end
 	end
 	
-	fun {DrawPokemoz OpNumber MiNumber UICanvasHandler DialogText IsTrainer}
+	fun {DrawPokemoz OpNumber MiNumber UICanvasHandler DialogText IsTrainer Number}
 		OpPokeTag = {UICanvasHandler newTag($)}
 		MiPokeTag = {UICanvasHandler newTag($)}
+		TrainerTag = {UICanvasHandler newTag($)}
 	in
 		local Poke_Offset_Op Poke_Offset_Mi D in
 			D=250
@@ -118,15 +119,17 @@ define
 			Poke_Offset_Mi = 2*Mi_Offset.MiNumber
 			if(IsTrainer) then
 				{DialogText set(text:"A trainer want to chalenge you!")}
-				{Delay 2000}
-				
-				%create trainer img
-				
+				{UICanvasHandler create(image OpPokePosX OpPokePosY image:AllTrainerBattleFrames.Number anchor:center tags:TrainerTag)}
+				{Delay 3000}			
 				{DialogText set(text:"Opponent trainer send his POKEMOZ!")}
-				{Delay 2000}
+				for I in 0..100 do
+					{Delay 15}
+					{TrainerTag move(I*2 ~I)}
+				end
 			else
 				{DialogText set(text:"A wild POKEMOZ appeared!")}
 			end
+			
 				{UICanvasHandler create(image OpPokePosX OpPokePosY+Poke_Offset_Op image:AllSprites_Op.OpNumber.1 anchor:center tags:OpPokeTag)}
 				{UICanvasHandler create(image MiPokePosX MiPokePosY+Poke_Offset_Mi image:AllSprites_B.MiNumber anchor:se tags:MiPokeTag)}
 				
@@ -217,9 +220,9 @@ define
 	end
 
 	
-	proc {PrepareBattle MiPoke OpPoke IsTrainer}
+	proc {PrepareBattle MiPoke OpPoke IsTrainer Number}
 		{CellSet InBattle true}
-		{DrawBattleUI MiPoke OpPoke IsTrainer}
+		{DrawBattleUI MiPoke OpPoke IsTrainer Number}
 	end
 		
 	%Bar Animation

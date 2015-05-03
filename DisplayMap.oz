@@ -147,10 +147,10 @@ define
 		{Window show}
 		{AddMapBlock MapRecord CanvasHandler}
 		
-		{Window bind(event:"<Up>" action:proc{$} {MovementHandle u HeroTrainer AllHeroFrames true} end)}
-		{Window bind(event:"<Down>" action:proc{$} {MovementHandle d HeroTrainer AllHeroFrames true} end)}
-		{Window bind(event:"<Left>" action:proc{$} {MovementHandle l HeroTrainer AllHeroFrames true} end)}
-		{Window bind(event:"<Right>" action:proc{$} {MovementHandle r HeroTrainer AllHeroFrames true} end)}
+		{Window bind(event:"<Up>" action:proc{$} {MovementHandle u HeroTrainer AllHeroFrames true 0} end)}
+		{Window bind(event:"<Down>" action:proc{$} {MovementHandle d HeroTrainer AllHeroFrames true 0} end)}
+		{Window bind(event:"<Left>" action:proc{$} {MovementHandle l HeroTrainer AllHeroFrames true 0} end)}
+		{Window bind(event:"<Right>" action:proc{$} {MovementHandle r HeroTrainer AllHeroFrames true 0} end)}
 	end
 	
 	fun {FieldType X Y}
@@ -217,7 +217,7 @@ define
 		TrainerFrames
 	in	
 		%TrainerPosition={CustomNewCell pos(x:{IntToFloat TrainerPosX1} y:{IntToFloat TrainerPosY1})}
-		TrainerFrames = {CreateMovementImages {Append PathTrainersTotal {Append {IntToString Num} ".gif"}}}
+		TrainerFrames = {CreateMovementImages {Append {Append PathTrainersTotal "overworld/"} {Append {IntToString Num} ".gif"}}}
 		{CanvasHandler create(image (TrainerPosX1)*SQUARE_LENGTH+HeroPosXDecal (TrainerPosY1-1)*SQUARE_LENGTH+HeroPosYDecal image:TrainerFrames.downFrame.1 anchor:nw handle:TrainerHandle)}
 		trainerCreation(handle:TrainerHandle frames:TrainerFrames)
 	end

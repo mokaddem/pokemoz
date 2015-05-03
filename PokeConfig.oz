@@ -10,11 +10,13 @@ export
 	POKE_ZOOM
 	
 	DELAY
+	REAL_SPEED
 	PokeAttackDelay
 	BarRegressionDelay
 	
 	Wild_Pokemon_proba
 	Trainer_Move_Proba
+	Trainer_Max_Foot_Number
 	
 	HeroPosXDecal
 	HeroPosYDecal
@@ -43,13 +45,15 @@ define
 	REAL_SPEED
 	thread REAL_SPEED = ((10-Speed)*DELAY) end
 	Trainer_Move_Proba = 70 % move probability (%)
+	Trainer_Max_Foot_Number = 3
+	
 	HeroPosXDecal=~14
 	HeroPosYDecal=0
 	
 	BAR_WIDTH = 12 % for Hp bars
 	BAR_LENGTH = 200
 	
-	PathTrainersTotal = "Images/Trainers/overworld/"
+	PathTrainersTotal = "Images/Trainers/"
 	PathPokeTotal = "Images/Pokemon-overworld/"
 	
 	%Parameter
