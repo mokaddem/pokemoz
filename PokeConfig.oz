@@ -1,6 +1,7 @@
 functor
 import 
 	System(show:Show)
+	Util(customNewCell:CustomNewCell)
 	
 export
 	SQUARE_LENGTH
@@ -11,6 +12,7 @@ export
 	
 	DELAY
 	REAL_SPEED
+	Combat_Speed
 	PokeAttackDelay
 	BarRegressionDelay
 	
@@ -44,6 +46,7 @@ define
 	DELAY = 200 % delay between the moves
 	
 	PokeAttackDelay = DELAY div 2
+	PokeAttackDelayCell = {CustomNewCell (DELAY div 2)}
 	BarRegressionDelay = DELAY div 15
 	REAL_SPEED
 	thread REAL_SPEED = ((10-Speed)*DELAY) end
@@ -62,6 +65,7 @@ define
 	%Parameter
 	Wild_Pokemon_proba % encounter probability (%)
 	Speed
+	Combat_Speed
 	Autofight	%0=manual 1=autofight 2=autorun
 	CheckAutoMove
 	UnlockAllPok
@@ -69,7 +73,7 @@ define
 	PlayerName
 	Starter
 	
-	proc {SaveValue FWild_Pokemon_proba FSpeed FAutofight FUnlockAllPok FNormalTypeActivated FPlayerName FCheckAutoMove}
+	proc {SaveValue FWild_Pokemon_proba FSpeed FAutofight FUnlockAllPok FNormalTypeActivated FPlayerName FCheckAutoMove FCombat_Speed}
 		Wild_Pokemon_proba = FWild_Pokemon_proba
 		Speed = FSpeed
 		if FAutofight.1 then Autofight=0 elseif FAutofight.2.1 then Autofight=1 else Autofight=2 end
@@ -79,6 +83,7 @@ define
 		NormalTypeActivated = FNormalTypeActivated
 		PlayerName = FPlayerName
 		CheckAutoMove = FCheckAutoMove
+		if FCombat_Speed == 0 then Combat_Speed=200 else Combat_Speed = FCombat_Speed*40 end
 	end
 	
 	proc {SaveStarter X}

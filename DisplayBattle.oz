@@ -8,7 +8,7 @@ import
 	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	QTk at 'x-oz://system/wp/QTk.ozf'
-	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM dELAY:DELAY bAR_WIDTH:BAR_WIDTH bAR_LENGTH:BAR_LENGTH pokeAttackDelay:PokeAttackDelay	barRegressionDelay:BarRegressionDelay autofight:Autofight)
+	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM dELAY:DELAY bAR_WIDTH:BAR_WIDTH bAR_LENGTH:BAR_LENGTH pokeAttackDelay:PokeAttackDelay	barRegressionDelay:BarRegressionDelay autofight:Autofight combat_Speed:Combat_Speed)
 	Trainer(newTrainer:NewTrainer)
 	Pokemoz(newPokemoz:NewPokemoz)
 	Battle(runAutoBattle:RunAutoBattle attack:Attack)
@@ -57,6 +57,7 @@ define
 		But_Fuite_Handler	Button_Fuite
 		But_Capt_Handler	Button_Capture
 		But_Auto_Handler	Button_AutoBattle
+		Scale_handler		Scale					
 	in
 			
 		{MiPoke getNum(MiNumber)} {OpPoke getNum(OpNumber)}
@@ -77,7 +78,10 @@ define
 		{GridHandler configure(label(text:"" font:Font16 bg:grey handle:DialogText) column:2 row:1 ipadx:10 ipady:10)}
 		%{GridHandler configure(label(image:DialogImg) column:2 row:1 rowspan:3 sticky:n)}
 		
-		{UICanvasHandler create(image 0 0 image:Background_Battle_Grass anchor:nw)}
+		if IsTrainer then {UICanvasHandler create(image 0 0 image:Background_Battle_Trainer anchor:nw)} 
+		else
+			{UICanvasHandler create(image 0 0 image:Background_Battle_Grass anchor:nw)}
+		end
 		PokeTagsRecord = {DrawPokemoz OpNumber MiNumber UICanvasHandler DialogText IsTrainer Number}
 		HpRecord = {DrawHpBar UICanvasHandler Window MiPoke OpPoke DialogText}
 		
@@ -90,10 +94,12 @@ define
 				Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} {CellSet InBattle false} {Window close} end handle:But_Capt_Handler)
 				Button_Capture = button(text:"Capture" action:proc{$} {Show 'Capture'} end handle:But_Fuite_Handler)
 				Button_AutoBattle = button(text:"Auto-Battle" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} end handle:But_Auto_Handler)
-	
+				
+
+               
 				UIControl = grid(empty Button_Attack  empty newline
 										Button_PokemOz Button_AutoBattle Button_Capture newline
-										empty Button_Fuite empty
+										empty Button_Fuite empty newline
 										handle:UI_Control_Handler)
 		
 		/* END UI CONTROL */
@@ -101,19 +107,17 @@ define
 			{GridHandler configure(UIControl column:2 row:2)}
 			{UI_Control_Handler configure(But_Attk_Handler But_Poke_Handler But_Fuite_Handler But_Capt_Handler padx:20 pady:10)}	
 		
-			thread
-				{Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} end)} %trying to bind to an action
+				{Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} end)}
 				{Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {CellSet InBattle false} {Window close} end)}
 				{Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
 				{Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
 				{Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} end)}
-			end
 		
 		elseif Autofight==1 then
 			{RunAutoBattle MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText}
 		else
 			{CellSet InBattle false} {Window close}
-		end
+		end	
 	end
 	
 	fun {DrawPokemoz OpNumber MiNumber UICanvasHandler DialogText IsTrainer Number}
@@ -238,7 +242,12 @@ define
 	
 	proc {PrepareBattle MiPoke OpPoke IsTrainer Number}
 		{CellSet InBattle true}
-		{DrawBattleUI MiPoke OpPoke IsTrainer Number}
+	%	local E1 E2 in
+	%		{MiPoke getEvolution(E1)}
+			{DrawBattleUI MiPoke OpPoke IsTrainer Number}
+	%		{MiPoke getEvolution(E2)}
+	%		if E2>E1 then {DoTheEvolution MiPoke E2} end
+	%	end
 	end
 		
 	%Bar Animation
@@ -251,7 +260,7 @@ define
 			Y2 = {FloatToInt {String.toFloat {VirtualString.toString Coord.2.2.2.1}}}
 			if HpP-HpC > 0 then
 				for I in 0..PBarLen-BarLen do
-					{Delay BarRegressionDelay}
+					{Delay BarRegressionDelay-(500 div Combat_Speed)}
 					if(X2-I < X1+1) then skip
 					else
 						{BarTag setCoords(X1 Y1 X2-I Y2)}
@@ -268,18 +277,18 @@ define
 	proc {DoThePokeAttackAnimation PokeTag OpNumber Mibool}
 		if (Mibool) then
 			{PokeTag move(30 0)}
-			{Delay PokeAttackDelay*2}
+			{Delay Combat_Speed*2}
 			{PokeTag move(~30 0)}
 		else	
 			{PokeTag move(~30 15)}
-			{Delay PokeAttackDelay}
+			{Delay Combat_Speed}
 			{PokeTag set(image:AllSprites_Op.OpNumber.2)}
-			{Delay PokeAttackDelay*2}
+			{Delay Combat_Speed*2}
 			{PokeTag set(image:AllSprites_Op.OpNumber.1)}
-			{Delay PokeAttackDelay}
+			{Delay Combat_Speed}
 			{PokeTag move(30 ~15)}
 		end
-		{Delay 3*PokeAttackDelay}
+		{Delay 3*Combat_Speed}
 	end
 	
 	proc {DoTheXpBarAnimation Pok1 Level2 BarLen PBarLen ExpBarTag}
@@ -294,7 +303,7 @@ define
 			{Show BarLen#PBarLen}
 			{Show X1#Xend}
 			for I in 0..BarLen-PBarLen do
-				{Delay BarRegressionDelay}
+				{Delay BarRegressionDelay-(500 div Combat_Speed)}
 				if(X2+I > Xend) then skip
 				else
 					{ExpBarTag setCoords(X1 Y1 X2+I Y2)}
@@ -309,5 +318,10 @@ define
 			{PokeTag move(0 I)}
 		end
 	end
+	
+%	proc {DoTheEvolution Poke Lvl}
+%		{Poke setNum(Lvl)}
+%		{Show 'POKEMOZ EVOLVED'}
+%	end
 
 end

@@ -3,7 +3,7 @@ import
 	System(show:Show)
 	OS
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
-	PokeConfig(pokeAttackDelay:PokeAttackDelay)
+	PokeConfig(combat_Speed:Combat_Speed)
 	Game(inBattle:InBattle gameOver:GameOver)
 	DisplayBattle(drawHpBar:DrawHpBar computeBarLength:ComputeBarLength doTheBarAnimation:DoTheBarAnimation doThePokeAttackAnimation:DoThePokeAttackAnimation doTheXpBarAnimation:DoTheXpBarAnimation doTheFaintAnim:DoTheFaintAnim)
 export
@@ -46,7 +46,7 @@ define
 		{OpPvBarTag getCoords(1:CoordOp)}
 		{Pok2 getHp(Hp2C)} 
 		{DialogText set(text:{Append Name1 " Attack!"})}
-		{Delay PokeAttackDelay*5}
+		{Delay Combat_Speed*5}
 		{DoThePokeAttackAnimation MiPokeTag OpNumber true}
 		local PBarLen BarLen in
 			PBarLen = {ComputeBarLength Hp2P Hp2Max}
@@ -60,7 +60,7 @@ define
 			{Pok1 damage(Damage2)}			
 			{Pok1 getHp(Hp1C)}
 			{DialogText set(text:{Append "Enemy " {Append Name2 " Attack!"}})}
-			{Delay PokeAttackDelay*5}
+			{Delay Combat_Speed*5}
 			{DoThePokeAttackAnimation OpPokeTag OpNumber false}
 			local PBarLen BarLen in 
 				PBarLen = {ComputeBarLength Hp1P Hp1Max}
@@ -70,7 +70,7 @@ define
 			
 			if Hp1C =< 0 then
 				{DialogText set(text:{Append "Your " {Append Name1 " fainted!"}})}
-				{Delay PokeAttackDelay*5}
+				{Delay Combat_Speed*5}
 				{DoTheFaintAnim MiPokeTag}
 
 				{Window close} 
@@ -90,7 +90,7 @@ define
 				{DoTheXpBarAnimation Pok1 Level2 BarLen PBarLen HpRecord.expBar}
 			end
 			{DialogText set(text:{Append "Enemy " {Append Name2 " fainted!"}})}
-			{Delay PokeAttackDelay*5}
+			{Delay Combat_Speed*5}
 			{DoTheFaintAnim OpPokeTag}
 			{Window close} 
 			{CellSet InBattle false}

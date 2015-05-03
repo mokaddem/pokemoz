@@ -29,7 +29,7 @@ define
 	Button_Pok2 = button(action:proc{$} {Show 'Pok2'} {SaveStarter 4} {Window close} Ok=1 end image:Pok2 handle:But_2_Handler)
 	Button_Pok3 = button(action:proc{$} {Show 'Pok3'} {SaveStarter 7} {Window close} Ok=1 end image:Pok3 handle:But_3_Handler)
 	Button_Prof = button(action:proc{$} {Show 'Ouch!'}
-	local V1 V2 V3 V4 V5 V6 V7 in
+	local V1 V2 V3 V4 V5 V6 V7 V8 in
 		V1= {Num1 get($)}
 		V2= {Num2 get($)}
 		V3= [{Checkfight1 get($)} {Checkfight2 get($)} {Checkfight3 get($)}]
@@ -37,7 +37,8 @@ define
 		V5= {CheckNormal get($)}
 		V6= {Name get($)}
 		V7= {CheckAutoMove get($)}
-	 	{SaveValue V1 V2 V3 V4 V5 V6 V7}
+		V8= {Scale_handler get(firstselection:$)}
+	 	{SaveValue V1 V2 V3 V4 V5 V6 V7 V8}
  	end
  	{MakeTheChoice}
  	end image:Prof handle:But_prof_Handler)
@@ -74,6 +75,10 @@ define
 	CheckNormal
 	CheckButtonNormal = checkbutton(text:"Set the type of new POKEMOZ to type NORMAL" init:false handle:CheckNormal action:proc{$} {Show {CheckNormal get($)}} end glue:w pady:10 padx:10)
 	
+	Scale_handler
+	Scale = listbox(init:[10 9 8 7 6 5 4 3 2 1]
+    handle:Scale_handler action:proc{$} {Show {Scale_handler get(firstselection:$)}} end tdscrollbar:false glue:w)
+	
 	Grid1 = grid(newline
 					empty newline
 					label(text:"Wild POKEMOZ probability: [0,100]" font:Font16 glue:w pady:10 padx:10) empty NameEntry newline
@@ -87,6 +92,8 @@ define
 					label(text:"Custom Option" font:Font22 glue:w pady:10 padx:10) newline
 					CheckButtonAll newline
 					CheckButtonNormal newline
+					label(text:"Speed of combat:" font:Font16 glue:w pady:10 padx:10) newline
+					Scale
 					handle:Grid_Handler1)
 			
 	Placeholder_handler G1 G2
@@ -105,7 +112,6 @@ in
 	  	{Grid_Handler1 configure(label(text:"Hello! Enter your game's parameters below." font:Font22 glue:w) column:1 columnspan:3 row:1 pady:5)}
 		{Grid_Handler1 configure(tdspace(glue:w width:10) column:1 columnspan:3 row:2 pady:10)}
 		{Grid_Handler1 configure(Button_Prof column:3 rowspan:25 row:4 pady:5 padx:5)}
-
 		{Window show}
 		Ok
 	end

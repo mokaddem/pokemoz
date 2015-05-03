@@ -55,15 +55,15 @@ HeroFace = AllHeroFrames.downFrame.1
 AllPokeFrames = {CustomNewCell {CreateMovementImages {Append PathPokeTotal {Append {IntToString Starter} ".gif"}}}}
 PokeFace = {CellGet AllPokeFrames}.downFrame.1
 
-
 %%%% Create Ground Tile %%%%%
 Grass_Tile_old = {QTk.newImage photo(file:'Images/Ground/grass-modif.gif')} %In the case if we need to adapt ground size
 Grass_Tile = {QTk.newImage photo()}	
 {Grass_Tile copy(Grass_Tile_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))}
 
+
 Road_Tile_old = {QTk.newImage photo(file:'Images/Ground/dirt-modif.gif')}
 Road_Tile = {QTk.newImage photo()}	
-{Road_Tile copy(Road_Tile_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))}
+{Road_Tile copy(Road_Tile_old 'from':o(0 0 16 16) zoom:o(2 2))}
 
 %%% Create Trainer Battle Sprites %%%
 AllTrainerBattleFrames_temp = {CustomNewCell trainerbattleframes()}

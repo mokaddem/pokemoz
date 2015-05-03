@@ -124,7 +124,7 @@ define
 		{Handler Movement}
 		{Delay D}
 		{Handler Movement}
-%		{Delay D}
+		{Delay D}
 		{Handler set(image:NiceFramesDirection.1)}
 		{Handler Movement}
 	end
