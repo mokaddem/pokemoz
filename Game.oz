@@ -5,7 +5,7 @@ import
 	Open
 	QTk at 'x-oz://system/wp/QTk.ozf'
 
-	CutImages(heroFace:HeroFace pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile)
+	CutImages(heroFace:HeroFace pokeFace:PokeFace allHeroFrames:AllHeroFrames grass_Tile:Grass_Tile road_Tile:Road_Tile)
 	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	PokeChoice(launchTheIntro:LaunchTheIntro)
@@ -16,7 +16,7 @@ import
 					startX:StartX startY:StartY launchGameOver:LaunchGameOver)
 	
 	DisplayBattle(prepareBattle:PrepareBattle)
-	Trainer(newTrainer:NewTrainer randomMove:RandomMove)
+	Trainer(newTrainer:NewTrainer randomMove:RandomMove goTo:GoTo)
 	Pokemoz(newPokemoz:NewPokemoz)
 	Battle(runBattle:RunBattle)
 	
@@ -56,7 +56,7 @@ in
 		else Num=7 Name="OZTIRTLE" Type=water
 		end
 		PokemOz = {NewPokemoz state(type:Type num:Num name:Name maxlife:20 currentLife:20 experience:0 level:5)}
-		HeroTrainer = {NewTrainer state(x:StartX y:StartY pokemoz:PokemOz speed:5 movement:proc{$ P} 1=1 end handler:HeroHandler number:1 movementStatus:idle() type:'player')}
+		HeroTrainer = {NewTrainer state(x:StartX y:StartY pokemoz:PokemOz speed:5 movement:{GoTo 9 1 AllHeroFrames} handler:HeroHandler number:1 movementStatus:idle() type:'player')}
 		end
 
 	
