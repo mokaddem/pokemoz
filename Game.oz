@@ -6,7 +6,7 @@ import
 	QTk at 'x-oz://system/wp/QTk.ozf'
 
 	CutImages(heroFace:HeroFace pokeFace:PokeFace allHeroFrames:AllHeroFrames grass_Tile:Grass_Tile road_Tile:Road_Tile)
-	MoveHero(movementHandle:MovementHandle)
+	MoveHero(movementHandle:MovementHandle randomMove:RandomMove goTo:GoTo)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	PokeChoice(launchTheIntro:LaunchTheIntro)
 	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM dELAY:DELAY wild_Pokemon_proba:Wild_Pokemon_proba pathPokeTotal:PathPokeTotal pathTrainersTotal:PathTrainersTotal starter:Starter autofight:Autofight checkAutoMove:CheckAutoMove)
@@ -16,7 +16,7 @@ import
 					startX:StartX startY:StartY endX:EndX endY:EndY launchGameOver:LaunchGameOver)
 	
 	DisplayBattle(prepareBattle:PrepareBattle)
-	Trainer(newTrainer:NewTrainer randomMove:RandomMove goTo:GoTo)
+	Trainer(newTrainer:NewTrainer)
 	Pokemoz(newPokemoz:NewPokemoz)
 	Battle(runBattle:RunBattle)
 	

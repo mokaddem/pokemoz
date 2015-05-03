@@ -9,14 +9,15 @@ import
 	DisplayMap(heroTrainer:HeroTrainer heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat fieldType:FieldType placeAllowed:PlaceAllowed deplaceAllowedPlace:DeplaceAllowedPlace lookAround:LookAround)
 	DisplayBattle(prepareBattle:PrepareBattle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
-	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH wild_Pokemon_proba:Wild_Pokemon_proba rEAL_SPEED:REAL_SPEED)
+	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH wild_Pokemon_proba:Wild_Pokemon_proba rEAL_SPEED:REAL_SPEED trainer_Max_Foot_Number:Trainer_Max_Foot_Number trainer_Move_Proba:Trainer_Move_Proba)
 	Pokemoz(newPokemoz:NewPokemoz generateRandomPokemon:GenerateRandomPokemon)
 	Battle(runAutoBattle:RunAutoBattle)
 	Game(inBattle:InBattle)
 	
 export
 	MovementHandle
-
+	RandomMove
+	GoTo
 define	
 
 	
@@ -217,5 +218,43 @@ define
 					Waiter=1
 		   	end
 		   end
+	end
+	
+	
+	
+
+	proc {RandomlyMoveTrainer Trainer Frames}
+		MoveDir
+		Proba
+		Proba2 = {OS.rand} mod 100
+	in
+		Proba = {OS.rand} mod 100
+		if (Trainer_Move_Proba > Proba) then
+			if Proba*100<25*Trainer_Move_Proba then MoveDir=l
+			elseif Proba*100<50*Trainer_Move_Proba then MoveDir=r
+			elseif Proba*100<75*Trainer_Move_Proba then MoveDir=d
+			else MoveDir=u 
+			end
+			{MovementHandle MoveDir Trainer Frames false (Proba2 mod Trainer_Max_Foot_Number)}
+		end
+	end
+	fun {RandomMove Frames}
+		proc {$ T} {RandomlyMoveTrainer T Frames} end
+	end
+	
+	proc {GotoMove Trainer X Y Frames}
+		Xc Yc M
+	in 
+		{Trainer getPosition(x:Xc y:Yc)}
+		if Xc < X then M=r
+		elseif Xc > X then M=l
+		elseif Yc < Y then M=d
+		else M=u
+		end
+		{MovementHandle M Trainer Frames true 0}
+	end
+	
+	fun {GoTo X Y Frames}
+		proc {$ T} {GotoMove T X Y Frames} end
 	end
 end
