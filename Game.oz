@@ -9,11 +9,11 @@ import
 	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	PokeChoice(launchTheIntro:LaunchTheIntro)
-	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM dELAY:DELAY wild_Pokemon_proba:Wild_Pokemon_proba pathPokeTotal:PathPokeTotal pathTrainersTotal:PathTrainersTotal starter:Starter)
+	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM dELAY:DELAY wild_Pokemon_proba:Wild_Pokemon_proba pathPokeTotal:PathPokeTotal pathTrainersTotal:PathTrainersTotal starter:Starter autofight:Autofight checkAutoMove:CheckAutoMove)
 	
 	DisplayMap(heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat fieldType:FieldType
 					createAndDisplayHeroAndFollower:CreateAndDisplayHeroAndFollower createAndDisplayTrainer:CreateAndDisplayTrainer initMap:InitMap mapRecord:MapRecord drawMap:DrawMap
-					startX:StartX startY:StartY launchGameOver:LaunchGameOver)
+					startX:StartX startY:StartY endX:EndX endY:EndY launchGameOver:LaunchGameOver)
 	
 	DisplayBattle(prepareBattle:PrepareBattle)
 	Trainer(newTrainer:NewTrainer randomMove:RandomMove goTo:GoTo)
@@ -49,22 +49,23 @@ in
 	{DrawMap MapRecord HeroTrainer} %	/!\ Concurrency! {DrawMap} need 'HeroHandler' that need the variables initialated in {DrawMap}
 	HeroHandler = {CreateAndDisplayHeroAndFollower}
 	
-	local Num Name Type in
+	local Num Name Type MvtType in
+		if CheckAutoMove then MvtType={GoTo EndX EndY AllHeroFrames} else MvtType=(proc{$ P} 1=1 end) end
 		case Starter
 		of 1 then Num=1 Name="BULBASOZ" Type=grass
 		[]4 then Num=4 Name="CHARMADOZ" Type=fire
 		else Num=7 Name="OZTIRTLE" Type=water
 		end
 		PokemOz = {NewPokemoz state(type:Type num:Num name:Name maxlife:20 currentLife:20 experience:0 level:5)}
-		HeroTrainer = {NewTrainer state(x:StartX y:StartY pokemoz:PokemOz speed:5 movement:{GoTo 9 1 AllHeroFrames} handler:HeroHandler number:1 movementStatus:idle() type:'player')}
-		end
+		HeroTrainer = {NewTrainer state(x:StartX y:StartY pokemoz:PokemOz speed:5 movement:MvtType handler:HeroHandler number:1 movementStatus:idle() type:'player')}
+	end
 
 	
 /*trainer 1*/
 	local 
 		Trainer1 TrainerHandle1 TrainerFrames1 TrainerCreation PokeTrainer1
-		TrainerPosX1=5
-		TrainerPosY1=5
+		TrainerPosX1=1
+		TrainerPosY1=1
 	in 
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 1} 
 		TrainerHandle1 = TrainerCreation.handle
@@ -76,8 +77,8 @@ in
 /*trainer 2*/
 	local 
 		Trainer1 TrainerHandle1 TrainerFrames1 TrainerCreation PokeTrainer1
-		TrainerPosX1=10
-		TrainerPosY1=10
+		TrainerPosX1=2
+		TrainerPosY1=2
 	in 
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 2} 
 		TrainerHandle1 = TrainerCreation.handle
@@ -89,8 +90,8 @@ in
 /*trainer 3*/
 	local 
 		Trainer1 TrainerHandle1 TrainerFrames1 TrainerCreation PokeTrainer1
-		TrainerPosX1=7
-		TrainerPosY1=7
+		TrainerPosX1=3
+		TrainerPosY1=3
 	in 
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 3} 
 		TrainerHandle1 = TrainerCreation.handle
@@ -102,8 +103,8 @@ in
 /*trainer 4*/
 	local 
 		Trainer1 TrainerHandle1 TrainerFrames1 TrainerCreation PokeTrainer1
-		TrainerPosX1=10
-		TrainerPosY1=5
+		TrainerPosX1=4
+		TrainerPosY1=4
 	in 
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 4} 
 		TrainerHandle1 = TrainerCreation.handle

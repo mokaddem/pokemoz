@@ -32,16 +32,16 @@ export
 	CreateAndDisplayTrainer
 	DrawMap
 %	HeroHandle
-	StartX
-	StartY
+	StartX EndX
+	StartY EndY
 	
 define
 																/* CONSTANTS */
 	SquareLengthFloat = {IntToFloat SQUARE_LENGTH}
 																	/* GLOBAL_VARIABLES */
 	%Key_positions
-	StartX 
-	StartY
+	StartX EndX
+	StartY EndY
 
 	%Canvas
 	CanvasHandler 
@@ -118,6 +118,8 @@ define
 					of 1 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Grass_Tile anchor:nw)}
 					[]0 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Road_Tile anchor:nw)}
 					[]e then {Canvas create(rect PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH (PosX+1)*SQUARE_LENGTH (PosY+1)*SQUARE_LENGTH fill:red outline:nil)}
+						EndX=PosX
+						EndY=PosY
 					[]s then 
 						{Canvas create(rect PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH (PosX+1)*SQUARE_LENGTH (PosY+1)*SQUARE_LENGTH fill:blue outline:nil)}
 						StartX=PosX

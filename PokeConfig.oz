@@ -18,6 +18,9 @@ export
 	Trainer_Move_Proba
 	Trainer_Max_Foot_Number
 	
+	Autofight
+	CheckAutoMove
+	
 	HeroPosXDecal
 	HeroPosYDecal
 	
@@ -60,18 +63,20 @@ define
 	Wild_Pokemon_proba % encounter probability (%)
 	Speed
 	Autofight
+	CheckAutoMove
 	UnlockAllPok
 	NormalTypeActivated
 	PlayerName
 	Starter
 	
-	proc {SaveValue FWild_Pokemon_proba FSpeed FAutofight FUnlockAllPok FNormalTypeActivated FPlayerName}
+	proc {SaveValue FWild_Pokemon_proba FSpeed FAutofight FUnlockAllPok FNormalTypeActivated FPlayerName FCheckAutoMove}
 		Wild_Pokemon_proba = FWild_Pokemon_proba
 		Speed = FSpeed
 		Autofight = FAutofight
 		UnlockAllPok = FUnlockAllPok
 		NormalTypeActivated = FNormalTypeActivated
 		PlayerName = FPlayerName
+		CheckAutoMove = FCheckAutoMove
 	end
 	
 	proc {SaveStarter X}
