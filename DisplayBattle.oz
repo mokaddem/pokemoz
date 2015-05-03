@@ -61,7 +61,7 @@ define
 		Scale_handler		Scale					
 	in
 			
-		{MiPoke getNum(MiNumber)} {OpPoke getNum(OpNumber)}
+		{MiPoke getNum(MiNumber)} {OpPoke getAdjustedNum(OpNumber)}
 		UICanvas = canvas(handle:UICanvasHandler width:UI_LENGTH height:UI_HEIGHT)
 		
 		DialogImg_old = {QTk.newImage photo(file:"Images/dialogbar.gif")} 
