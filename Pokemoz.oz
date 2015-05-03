@@ -2,6 +2,7 @@ functor
 import
 	System(show:Show)
 	OS
+	PokeConfig(mAX_ENNEMY_EXP:MAX_ENNEMY_EXP)
 export
 	NewPokemoz
 	GenerateRandomPokemon
@@ -30,7 +31,7 @@ define
 					if L > State.level then
 						{Show State.name#' is now level '#L} 
 						state(type:(State.type) num:(State.num) name:(State.name) maxlife:Hp currentLife:Hp experience:(State.experience)+X level:L)
-					else state(type:(State.type) num:(State.num) name:(State.name) maxlife:(State.maxlife) currentLife:(State.maxlife) experience:(State.experience)+X level:(State.level))
+					else state(type:(State.type) num:(State.num) name:(State.name) maxlife:(State.maxlife) currentLife:(State.currentLife) experience:(State.experience)+X level:(State.level))
 					end
 				end
 			[] getEvolution(X) then
@@ -49,7 +50,11 @@ define
 			[] getExp(X) then X=State.experience State
 			[] getExpLevel(X) then X=({GetExpNeeded State.level}) State
 			[] getExpNeeded(X) then X=({GetExpNeeded State.level+1} - {GetExpNeeded State.level}) State 
-			[] getNum(X) then X=State.num State
+			[] getNum(X) then 
+				if State.level < 7 then X = State.num
+				elseif State.level < 9 then X = State.num+1
+				else X = State.num+2 end 
+				State
 			[] setNum(X) then state(type:(State.type) num:(X) name:(State.name) maxlife:(State.maxlife) currentLife:(State.currentLife - X) experience:(State.experience) level:(State.level))
 			end
 		end
@@ -83,8 +88,9 @@ define
 	end
 	
 	fun {GenerateRandomPokemon}
-		Type Rand Name Num in
+		Type Rand Name Num R Exp in
 		Rand = ({OS.rand} mod 100)
+		Exp = ({OS.rand} mod MAX_ENNEMY_EXP)
 		if Rand < 33 then 
 			Num=1 Type=grass Name="Bulbasoz"
 		elseif Rand < 66 
@@ -92,7 +98,9 @@ define
 		else 
 			Type=water Num=7 Name="Oztirtle"
 		end
-		{NewPokemoz state(type:Type num:Num name:Name maxlife:20 currentLife:20 experience:0 level:5)}
+		R = {NewPokemoz state(type:Type num:Num name:Name maxlife:20 currentLife:20 experience:0 level:5)}
+		{R 'exp'(Exp)}
+		R
 	end
 	
 end
