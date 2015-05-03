@@ -126,6 +126,7 @@ define
 					{Delay 15}
 					{TrainerTag move(I*2 ~I)}
 				end
+				{Delay 750}
 			else
 				{DialogText set(text:"A wild POKEMOZ appeared!")}
 			end

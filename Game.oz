@@ -69,7 +69,7 @@ in
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 1} 
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
-		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE" maxlife:20 currentLife:20 experience:0 level:5)}
+		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE1" maxlife:20 currentLife:20 experience:0 level:5)}
 		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:1 movementStatus:idle() type:'ia')}
 	end
 
@@ -82,7 +82,7 @@ in
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 2} 
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
-		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE" maxlife:20 currentLife:20 experience:0 level:5)}
+		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE2" maxlife:20 currentLife:20 experience:0 level:5)}
 		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:2 movementStatus:idle() type:'ia')}
 	end
 	
@@ -95,7 +95,7 @@ in
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 3} 
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
-		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE" maxlife:20 currentLife:20 experience:0 level:5)}
+		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE3" maxlife:20 currentLife:20 experience:0 level:5)}
 		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:3 movementStatus:idle() type:'ia')}
 	end
 
@@ -108,7 +108,7 @@ in
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 4} 
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
-		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE" maxlife:20 currentLife:20 experience:0 level:5)}
+		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE4" maxlife:20 currentLife:20 experience:0 level:5)}
 		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:4 movementStatus:idle() type:'ia')}
 	end
 
