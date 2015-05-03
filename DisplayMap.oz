@@ -16,7 +16,7 @@ import
 	Battle(runBattle:RunBattle)
 %	Game(heroTrainer:HeroTrainer)
 export
-	
+	LaunchGameOver
 	HeroPosition
 	PokeHandle 
 	PokePosition
@@ -122,6 +122,9 @@ define
 						{Canvas create(rect PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH (PosX+1)*SQUARE_LENGTH (PosY+1)*SQUARE_LENGTH fill:blue outline:nil)}
 						StartX=PosX
 						StartY=PosY
+					[]9 then %9 for game over
+						{Canvas create(rect PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH (PosX+1)*SQUARE_LENGTH (PosY+1)*SQUARE_LENGTH fill:black outline:nil)}
+						{Wait 75}
 					end
 					{Recurs CurrRow CurrCol+1  PosX+1 PosY} %recurse increasing the collumn number
 				end
@@ -239,6 +242,17 @@ define
 			end
 		end
 		{MapFile close}
+	end
+	
+	proc {LaunchGameOver}
+		Font30={QTk.newFont font(size:30)}
+		RowLength = {Length {Arity MapRecord}}
+		ColumnLength = {Length {Arity MapRecord.1}}
+		GameOverRecord in
+		GameOverRecord = {Record.mapInd MapRecord fun {$ I A} {Record.mapInd MapRecord.I fun {$ I A} 9 end} end}
+     {AddMapBlock GameOverRecord CanvasHandler}
+     {Wait 1000}
+     {CanvasHandler create(text(ColumnLength*SQUARE_LENGTH div 2)  (RowLength*SQUARE_LENGTH div 2) fill:white text:"Game Over" font:Font30)}
 	end
 
 end

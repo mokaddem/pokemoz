@@ -170,7 +170,7 @@ define
 				   	end
 					if Flag==1 then 
 						{MoveHero M H Frames IsHero} 
-						if FootNumber > 0 then thread {Wait Waiter} {MovementHandle M TrainerPort Frames IsHero FootNumber-1} end end
+						if FootNumber > 0 andthen {Not X} then thread {Wait Waiter} {MovementHandle M TrainerPort Frames IsHero FootNumber-1} end end
 						case Field 
 						of 0 then 
 							if {LookAround NextX NextY Type} \= 'false' then 

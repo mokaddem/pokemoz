@@ -120,7 +120,7 @@ define
 			if(IsTrainer) then
 				{DialogText set(text:"A trainer want to chalenge you!")}
 				{UICanvasHandler create(image OpPokePosX OpPokePosY image:AllTrainerBattleFrames.Number anchor:center tags:TrainerTag)}
-				{Delay 3000}			
+				{Delay 1000}			
 				{DialogText set(text:"Opponent trainer send his POKEMOZ!")}
 				for I in 0..100 do
 					{Delay 15}

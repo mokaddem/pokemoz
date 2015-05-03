@@ -4,7 +4,7 @@ import
 	OS
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	PokeConfig(pokeAttackDelay:PokeAttackDelay)
-	Game(inBattle:InBattle)
+	Game(inBattle:InBattle gameOver:GameOver)
 	DisplayBattle(drawHpBar:DrawHpBar computeBarLength:ComputeBarLength doTheBarAnimation:DoTheBarAnimation doThePokeAttackAnimation:DoThePokeAttackAnimation doTheXpBarAnimation:DoTheXpBarAnimation doTheFaintAnim:DoTheFaintAnim)
 export
 	RunAutoBattle
@@ -75,7 +75,7 @@ define
 
 				{Window close} 
 				{CellSet InBattle false}
-
+				GameOver=true
 			end
 		else
 			local PBarLen BarLen XpC XpP XpNeeded in 

@@ -13,7 +13,7 @@ import
 	
 	DisplayMap(heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat fieldType:FieldType
 					createAndDisplayHeroAndFollower:CreateAndDisplayHeroAndFollower createAndDisplayTrainer:CreateAndDisplayTrainer initMap:InitMap mapRecord:MapRecord drawMap:DrawMap
-					startX:StartX startY:StartY)
+					startX:StartX startY:StartY launchGameOver:LaunchGameOver)
 	
 	DisplayBattle(prepareBattle:PrepareBattle)
 	Trainer(newTrainer:NewTrainer randomMove:RandomMove)
@@ -23,9 +23,11 @@ import
 export
 	HeroTrainer
 	InBattle
+	GameOver
 	
 define
 	IntroFinish
+	GameOver
 
 	HeroTrainer
 	HeroHandler
@@ -42,9 +44,9 @@ define
 in
 	IntroFinish = {LaunchTheIntro}
 	{Wait IntroFinish}
+	thread if GameOver then {Show 'GAME OVER'} {CellSet InBattle true} {LaunchGameOver} end end
 	{InitMap}
 	{DrawMap MapRecord HeroTrainer} %	/!\ Concurrency! {DrawMap} need 'HeroHandler' that need the variables initialated in {DrawMap}
-	
 	HeroHandler = {CreateAndDisplayHeroAndFollower}
 	
 	local Num Name Type in
@@ -67,7 +69,7 @@ in
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 1} 
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
-		PokeTrainer1 = {NewPokemoz state(type:grass num:7 name:squirtOz maxlife:20 currentLife:20 experience:0 level:5)}
+		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE" maxlife:20 currentLife:20 experience:0 level:5)}
 		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:1 movementStatus:idle() type:'ia')}
 	end
 
@@ -80,7 +82,7 @@ in
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 2} 
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
-		PokeTrainer1 = {NewPokemoz state(type:grass num:7 name:squirtOz maxlife:20 currentLife:20 experience:0 level:5)}
+		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE" maxlife:20 currentLife:20 experience:0 level:5)}
 		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:2 movementStatus:idle() type:'ia')}
 	end
 	
@@ -93,7 +95,7 @@ in
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 3} 
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
-		PokeTrainer1 = {NewPokemoz state(type:grass num:7 name:squirtOz maxlife:20 currentLife:20 experience:0 level:5)}
+		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE" maxlife:20 currentLife:20 experience:0 level:5)}
 		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:3 movementStatus:idle() type:'ia')}
 	end
 
@@ -106,7 +108,7 @@ in
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 4} 
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
-		PokeTrainer1 = {NewPokemoz state(type:grass num:7 name:squirtOz maxlife:20 currentLife:20 experience:0 level:5)}
+		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE" maxlife:20 currentLife:20 experience:0 level:5)}
 		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:4 movementStatus:idle() type:'ia')}
 	end
 
