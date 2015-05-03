@@ -36,6 +36,8 @@ export
 	
 	SaveValue
 	SaveStarter
+	
+	MAX_ENNEMY_EXP
 define
 	SQUARE_LENGTH = 32 % length of a standard square
 	
@@ -58,6 +60,8 @@ define
 	
 	BAR_WIDTH = 12 % for Hp bars
 	BAR_LENGTH = 200
+	
+	MAX_ENNEMY_EXP = 51
 	
 	PathTrainersTotal = "Images/Trainers/"
 	PathPokeTotal = "Images/Pokemon-overworld/"
