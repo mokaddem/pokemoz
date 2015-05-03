@@ -22,6 +22,7 @@ export
 	DoThePokeAttackAnimation
 	DoTheXpBarAnimation
 	DoTheFaintAnim
+	DoTheEvolution
 
 define
 	UI_LENGTH = 255*2
@@ -220,7 +221,7 @@ define
       {UICanvasHandler create(rectangle MiStartX MiStartY MiEndX MiEndY+2 fill:white width:3.0)}
       {UICanvasHandler create(rectangle MiStartX+2 MiStartY+2 MiEndX-BAR_LENGTH+MiBarLength-1 MiEndY+2-1 fill:green outline:nil handle:MiPvHandler tags:MiPvBarTag)}
       %Texts
-      {UICanvasHandler create(text MiStartX MiStartY-26 text:MiName font:Font14 anchor:nw fill:black handle:MiPokeTextHandler)}
+      {UICanvasHandler create(text MiStartX MiStartY-23 text:MiName font:Font14 anchor:nw fill:black handle:MiPokeTextHandler)}
       {UICanvasHandler create(text MiEndX-30 MiStartY-23 text:"Lv." font:Font14 anchor:ne fill:black)}
 		{UICanvasHandler create(text MiEndX-8 MiStartY-28 text:MiLvl font:Font18 anchor:ne fill:black handle:MiPokeLvlHandler)}
 		{UICanvasHandler create(text MiEndX-(BAR_LENGTH div 2) MiStartY+1 text:Hp1Text font:Font8 anchor:n fill:black handle:MiPokeHPtxtHandler)}
@@ -229,7 +230,7 @@ define
       {UICanvasHandler create(rectangle OpStartX OpStartY OpEndX OpEndY+2 fill:white width:3.0)}
       {UICanvasHandler create(rectangle OpStartX+2 OpStartY+2 OpEndX-BAR_LENGTH+OpBarLength-1 OpEndY+2-1 fill:red outline:nil handle:OpPvHandler tags:OpPvBarTag)}
       %Texts
-      {UICanvasHandler create(text OpStartX OpStartY-26 text:OpName font:Font14 anchor:nw fill:black handle:OpPokeTextHandler)}
+      {UICanvasHandler create(text OpStartX OpStartY-23 text:OpName font:Font14 anchor:nw fill:black handle:OpPokeTextHandler)}
       {UICanvasHandler create(text OpEndX-30 OpStartY-23 text:"Lv." font:Font14 anchor:ne fill:black)}
 		{UICanvasHandler create(text OpEndX-8 OpStartY-28 text:OpLvl font:Font18 anchor:ne fill:black handle:OpPokeLvlHandler)}
 		{UICanvasHandler create(text OpStartX+(BAR_LENGTH div 2) OpStartY+1 text:Hp2Text font:Font8 anchor:n fill:black handle:OpPokeHPtxtHandler)}
@@ -241,13 +242,8 @@ define
 
 	
 	proc {PrepareBattle MiPoke OpPoke IsTrainer Number}
-		{CellSet InBattle true}
-		local E1 E2 in
-			{MiPoke getEvolution(E1)}
-			{DrawBattleUI MiPoke OpPoke IsTrainer Number}
-			{MiPoke getEvolution(E2)}
-			if E2>E1 then {DoTheEvolution MiPoke E2} end
-		end
+		{CellSet InBattle true}	
+		{DrawBattleUI MiPoke OpPoke IsTrainer Number}
 	end
 		
 	%Bar Animation
@@ -319,9 +315,61 @@ define
 		end
 	end
 	
-	proc {DoTheEvolution Poke Lvl}
-		{Poke setNum(Lvl)}
-		{Show 'POKEMOZ EVOLVED'}
+	proc {DoTheEvolution Pok}
+		CanvasEvolHandler 
+		CanvasEvol= canvas(handle:CanvasEvolHandler width:500 height:300 bg:black)
+		WindowEvol PokN1 PokN2 PokE1 PokE2 PokTag SpritesEvo N
+	in
+		{Pok getNum(N)}
+		WindowEvol = {QTk.build td(title:'PokemOz evolution!' CanvasEvol)}
+		{WindowEvol show}
+		
+		PokTag = {CanvasEvolHandler newTag($)}
+
+		PokN1=AllSprites_Op.N.1
+		PokN2=AllSprites_Op.N.2
+		PokE1=AllSprites_Op.(N+1).1
+		PokE2=AllSprites_Op.(N+1).2
+		SpritesEvo=sprites(PokN1 PokE1)
+
+		{CanvasEvolHandler create(image 250 150 image:PokN1 anchor:center tags:PokTag)}
+		{Delay 200}
+		{CanvasEvolHandler set(bg:white)}
+		{Delay 75}
+		{CanvasEvolHandler set(bg:black)}
+		{Delay 200}
+		{CanvasEvolHandler set(bg:white)}
+		{Delay 75}
+		{CanvasEvolHandler set(bg:black)}
+		{Delay 200}
+		{CanvasEvolHandler set(bg:white)}
+		{Delay 75}
+		{CanvasEvolHandler set(bg:black)}
+		{Delay 200}
+		{PokTag set(image:PokN2)}
+		{Delay 500}
+		{PokTag set(image:PokN1)}
+		{Delay 100}
+		{PokTag set(image:PokN2)}
+		{Delay 200}
+		{PokTag set(image:PokN1)}
+		{Delay 2000}
+		for I in 0..50 do
+			{PokTag set(image:SpritesEvo.((I mod 2)+1))}	
+			{Delay (50-I)*(7)}
+		end
+		{PokTag set(image:PokE1)}
+		{Delay 200}
+		{PokTag set(image:PokE2)}
+		{Delay 500}
+		{PokTag set(image:PokE1)}
+		{Delay 200}
+		{PokTag set(image:PokE2)}
+		{Delay 1000}
+		{PokTag set(image:PokE1)}
+		{Delay 2000}
+		{Pok setNum(N+1)}
+		{WindowEvol close}
 	end
 
 end
