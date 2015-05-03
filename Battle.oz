@@ -5,7 +5,7 @@ import
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	PokeConfig(combat_Speed:Combat_Speed)
 	Game(inBattle:InBattle gameOver:GameOver)
-	DisplayBattle(drawHpBar:DrawHpBar computeBarLength:ComputeBarLength doTheBarAnimation:DoTheBarAnimation doThePokeAttackAnimation:DoThePokeAttackAnimation doTheXpBarAnimation:DoTheXpBarAnimation doTheFaintAnim:DoTheFaintAnim)
+	DisplayBattle(drawHpBar:DrawHpBar computeBarLength:ComputeBarLength doTheBarAnimation:DoTheBarAnimation doThePokeAttackAnimation:DoThePokeAttackAnimation doTheXpBarAnimation:DoTheXpBarAnimation doTheFaintAnim:DoTheFaintAnim doTheEvolution:DoTheEvolution)
 export
 	RunAutoBattle
 	Attack
@@ -78,16 +78,19 @@ define
 				GameOver=true
 			end
 		else
-			local PBarLen BarLen XpC XpP XpNeeded XpProg1 XpProg2 in 
+			local PBarLen BarLen XpC XpP XpNeeded XpProg1 XpProg2 E1 E2 in 
 				{Pok1 getExp(XpP)}
+				{Pok1 getEvolution(E1)}
 				{Pok1 getExpNeeded(XpNeeded)}
 				{Pok1 'exp'(Level2)}
 				{Pok1 getExp(XpC)}
-				{Show XpP#XpC#XpNeeded}
+				{Pok1 getEvolution(E2)}
+				{Show 'bla'#E1#E2}
 				PBarLen = {ComputeBarLength XpP XpNeeded}
 				BarLen = {ComputeBarLength XpC XpNeeded}
 				{Show PBarLen#BarLen}
 				{DoTheXpBarAnimation BarLen PBarLen HpRecord.expBar}
+				if E2>E1 then {DoTheEvolution Pok1} end
 			end
 			{DialogText set(text:{Append "Enemy " {Append Name2 " fainted!"}})}
 			{Delay Combat_Speed*5}

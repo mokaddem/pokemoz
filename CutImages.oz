@@ -22,7 +22,7 @@ export
 	AllTrainerBattleFrames
 	
 	CreateMovementImages
-	
+	GetSprite_frame_Op
 
 define
 PathPokeBattleSpritesBack = "Images/Pokemon-sprites-battle/own/sprite_B"
