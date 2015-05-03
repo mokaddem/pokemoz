@@ -10,14 +10,14 @@ define
 	/* 
 	 * Pok1 attacks first
 	 */
-	proc {RunAutoBattle Pok1 Pok2 TrainerPort UI_Components HpRecord PokeTagsRecord}
+	proc {RunAutoBattle Pok1 Pok2 TrainerPort Window HpRecord PokeTagsRecord}
 		Hp1 Hp2 in
 		{Pok1 getHp(Hp1)}
 		{Pok2 getHp(Hp2)}
-		if Hp1 > 0 then if Hp2 > 0 then {Attack Pok1 Pok2 TrainerPort UI_Components HpRecord PokeTagsRecord} {RunAutoBattle Pok1 Pok2 TrainerPort UI_Components HpRecord PokeTagsRecord} end end
+		if Hp1 > 0 then if Hp2 > 0 then {Attack Pok1 Pok2 TrainerPort Window HpRecord PokeTagsRecord} {RunAutoBattle Pok1 Pok2 TrainerPort Window HpRecord PokeTagsRecord} end end
 	end
 	
-	proc {Attack Pok1 Pok2 TrainerPort UI_Components HpRecord PokeTagsRecord}
+	proc {Attack Pok1 Pok2 TrainerPort Window HpRecord PokeTagsRecord}
 		Name1 Name2 Type1 Type2 OpNumber Damage Hp1C Hp1P Hp2C Hp2P Hp2Max Hp1Max Level1 Level2 
 		MiPvBarTag = HpRecord.miBar	OpPvBarTag = HpRecord.opBar
 		MiPvTxtTag = HpRecord.miTxt	OpPvTxtTag = HpRecord.opTxt
@@ -61,9 +61,7 @@ define
 			
 			if Hp1C =< 0 then
 				{DoTheFaintAnim MiPokeTag}
-				{Delay 1000}
-				{UI_Components.window close} 
-				{UI_Components.ui_control_window close}
+				{Window close} 
 				{TrainerPort setInCombat(false)}
 			end
 		else
@@ -82,9 +80,7 @@ define
 				{DoTheXpBarAnimation Pok1 Level2 BarLen PBarLen HpRecord.expBar}
 			end
 			{DoTheFaintAnim OpPokeTag}
-			{Delay 1000}
-			{UI_Components.window close} 
-			{UI_Components.ui_control_window close}
+			{Window close} 
 			{TrainerPort setInCombat(false)}
 		end
 	end

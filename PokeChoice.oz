@@ -85,7 +85,7 @@ in
              Grid1))} 
              		                 
 	%The parameters window
-	  	{Grid_Handler1 configure(label(text:"Hello! Enter your game's parameter below." font:Font22 glue:w) column:1 columnspan:3 row:1 pady:5)}
+	  	{Grid_Handler1 configure(label(text:"Hello! Enter your game's parameters below." font:Font22 glue:w) column:1 columnspan:3 row:1 pady:5)}
 		{Grid_Handler1 configure(tdspace(glue:w width:10) column:1 columnspan:3 row:2 pady:10)}
 		{Grid_Handler1 configure(Button_Prof column:3 rowspan:25 row:4 pady:5 padx:5)}
 
