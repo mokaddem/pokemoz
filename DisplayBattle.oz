@@ -81,7 +81,7 @@ define
 		PokeTagsRecord = {DrawPokemoz OpNumber MiNumber UICanvasHandler DialogText IsTrainer Number}
 		HpRecord = {DrawHpBar UICanvasHandler Window MiPoke OpPoke DialogText}
 		
-		if {Not Autofight} then 
+		if Autofight == 0 then 
 		
 		/* START UI CONTROL */
 
@@ -109,8 +109,10 @@ define
 				{Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} end)}
 			end
 		
-		else 
+		elseif Autofight==1 then
 			{RunAutoBattle MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText}
+		else
+			{CellSet InBattle false} {Window close}
 		end
 	end
 	

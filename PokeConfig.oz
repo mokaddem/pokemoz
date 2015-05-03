@@ -62,7 +62,7 @@ define
 	%Parameter
 	Wild_Pokemon_proba % encounter probability (%)
 	Speed
-	Autofight
+	Autofight	%0=manual 1=autofight 2=autorun
 	CheckAutoMove
 	UnlockAllPok
 	NormalTypeActivated
@@ -72,7 +72,9 @@ define
 	proc {SaveValue FWild_Pokemon_proba FSpeed FAutofight FUnlockAllPok FNormalTypeActivated FPlayerName FCheckAutoMove}
 		Wild_Pokemon_proba = FWild_Pokemon_proba
 		Speed = FSpeed
-		Autofight = FAutofight
+		if FAutofight.1 then Autofight=0 elseif FAutofight.2.1 then Autofight=1 else Autofight=2 end
+		{Show FAutofight}
+		{Show Autofight}
 		UnlockAllPok = FUnlockAllPok
 		NormalTypeActivated = FNormalTypeActivated
 		PlayerName = FPlayerName
