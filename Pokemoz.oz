@@ -50,7 +50,11 @@ define
 			[] getExp(X) then X=State.experience State
 			[] getExpLevel(X) then X=({GetExpNeeded State.level}) State
 			[] getExpNeeded(X) then X=({GetExpNeeded State.level+1} - {GetExpNeeded State.level}) State 
-			[] getNum(X) then X=State.num State
+			[] getNum(X) then 
+				if State.level < 7 then X = State.num
+				elseif State.level < 9 then X = State.num+1
+				else X = State.num+2 end 
+				State
 			[] setNum(X) then state(type:(State.type) num:(X) name:(State.name) maxlife:(State.maxlife) currentLife:(State.currentLife - X) experience:(State.experience) level:(State.level))
 			end
 		end
