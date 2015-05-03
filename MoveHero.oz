@@ -177,26 +177,26 @@ define
 							if {LookAround NextX NextY Type} \= 'false' then 
 								if(IsHero) then
 									{Show 'Battle with Other Trainer !'}
-									local Pok1 Pok2 in {TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok1 Pok2 TrainerPort} end
+									local Pok1 Pok2 in {TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok1 Pok2}  end
 								else
 									{Show 'Battle with Other Trainer !'}
-									local Pok1 Pok2 in {TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok2 Pok1 TrainerPort} end
+									local Pok1 Pok2 in {TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok2 Pok1}  end
 								end 
 							end
 						[] 1 then 
 							if(IsHero) then
 								if {LookAround NextX NextY Type} \= 'false' then 
 									{Show 'Battle with Other Trainer !'}
-									local Pok1 Pok2 in {TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok1 Pok2 TrainerPort} end
+									local Pok1 Pok2 in {TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok1 Pok2 true}  end
 								elseif(Wild_Pokemon_proba > {OS.rand} mod 100) then
 									local Pok1 Pok2 in
-										local Pok in {TrainerPort getPokemoz(Pok)} {Wait Pok} {PrepareBattle Pok {GenerateRandomPokemon} TrainerPort} end
+										local Pok in {TrainerPort getPokemoz(Pok)} {Wait Pok} {PrepareBattle Pok {GenerateRandomPokemon} false} end
 									end
 								end
 							else
 								if {LookAround NextX NextY Type} \= 'false' then 
 									{Show 'Battle with Other Trainer !'}
-									local Pok1 Pok2 in {TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok2 Pok1 TrainerPort} end
+									local Pok1 Pok2 in {TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok2 Pok1 true} end
 								end
 							end
 						else

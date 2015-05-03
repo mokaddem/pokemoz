@@ -49,9 +49,9 @@ in
 	
 	local Num Name Type in
 		case Starter
-		of 1 then Num=1 Name=bulbasoz Type=grass
-		[]4 then Num=4 Name=charmandoz Type=fire
-		else Num=7 Name=oztirtle Type=water
+		of 1 then Num=1 Name="BULBASOZ" Type=grass
+		[]4 then Num=4 Name="CHARMADOZ" Type=fire
+		else Num=7 Name="OZTIRTLE" Type=water
 		end
 		PokemOz = {NewPokemoz state(type:Type num:Num name:Name maxlife:20 currentLife:20 experience:0 level:5)}
 		HeroTrainer = {NewTrainer state(x:StartX y:StartY pokemoz:PokemOz speed:5 movement:proc{$ P} 1=1 end handler:HeroHandler number:1 movementStatus:idle() type:'player')}

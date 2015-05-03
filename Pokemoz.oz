@@ -84,11 +84,11 @@ define
 		Type Rand Name Num in
 		Rand = ({OS.rand} mod 100)
 		if Rand < 33 then 
-			Num=1 Type=grass Name='Bulbasoz'
+			Num=1 Type=grass Name="Bulbasoz"
 		elseif Rand < 66 
-			then Num=4 Type=fire  Name='Charmandoz'
+			then Num=4 Type=fire  Name="Charmandoz"
 		else 
-			Type=water Num=7 Name='Oztirtle'
+			Type=water Num=7 Name="Oztirtle"
 		end
 		{NewPokemoz state(type:Type num:Num name:Name maxlife:20 currentLife:20 experience:0 level:5)}
 	end

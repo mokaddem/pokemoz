@@ -38,7 +38,7 @@ define
 	
 	DELAY = 200 % delay between the moves
 	
-	PokeAttackDelay = DELAY div 3
+	PokeAttackDelay = DELAY div 2
 	BarRegressionDelay = DELAY div 15
 	REAL_SPEED
 	thread REAL_SPEED = ((10-Speed)*DELAY) end

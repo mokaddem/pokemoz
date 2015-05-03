@@ -63,6 +63,9 @@ Road_Tile_old = {QTk.newImage photo(file:'Images/Ground/dirt-modif.gif')}
 Road_Tile = {QTk.newImage photo()}	
 {Road_Tile copy(Road_Tile_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))}
 
+%%% Create Trainer Battle Sprites %%%
+Images/Trainers
+
 %%% Create Pokemoz Battle Sprites %%%
 	Background_Battle_Grass_old = {QTk.newImage photo(file:'Images/Pokemon-sprites-battle/grass-background.gif')}
 	Background_Battle_Trainer_old = {QTk.newImage photo(file:'Images/Pokemon-sprites-battle/trainer-background.gif')}

@@ -3,6 +3,7 @@ import
 	System(show:Show)
 	OS
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
+	PokeConfig(pokeAttackDelay:PokeAttackDelay)
 	Game(inBattle:InBattle)
 	DisplayBattle(drawHpBar:DrawHpBar computeBarLength:ComputeBarLength doTheBarAnimation:DoTheBarAnimation doThePokeAttackAnimation:DoThePokeAttackAnimation doTheXpBarAnimation:DoTheXpBarAnimation doTheFaintAnim:DoTheFaintAnim)
 export
@@ -12,14 +13,14 @@ define
 	/* 
 	 * Pok1 attacks first
 	 */
-	proc {RunAutoBattle Pok1 Pok2 Window HpRecord PokeTagsRecord}
+	proc {RunAutoBattle Pok1 Pok2 Window HpRecord PokeTagsRecord DialogText}
 		Hp1 Hp2 in
 		{Pok1 getHp(Hp1)}
 		{Pok2 getHp(Hp2)}
-		if Hp1 > 0 then if Hp2 > 0 then {Attack Pok1 Pok2 Window HpRecord PokeTagsRecord} {RunAutoBattle Pok1 Pok2 Window HpRecord PokeTagsRecord} end end
+		if Hp1 > 0 then if Hp2 > 0 then {Attack Pok1 Pok2 Window HpRecord PokeTagsRecord DialogText} {RunAutoBattle Pok1 Pok2 Window HpRecord PokeTagsRecord DialogText} end end
 	end
 	
-	proc {Attack Pok1 Pok2 Window HpRecord PokeTagsRecord}
+	proc {Attack Pok1 Pok2 Window HpRecord PokeTagsRecord DialogText}
 		Name1 Name2 Type1 Type2 OpNumber Damage Hp1C Hp1P Hp2C Hp2P Hp2Max Hp1Max Level1 Level2 
 		MiPvBarTag = HpRecord.miBar	OpPvBarTag = HpRecord.opBar
 		MiPvTxtTag = HpRecord.miTxt	OpPvTxtTag = HpRecord.opTxt
@@ -40,8 +41,12 @@ define
 		{Show Name1#' attacks'}
 		{Pok2 damage(Damage)}
 		
+%		{DialogText set(text:"A")}
+		
 		{OpPvBarTag getCoords(1:CoordOp)}
 		{Pok2 getHp(Hp2C)} 
+		{DialogText set(text:{Append Name1 " Attack!"})}
+		{Delay PokeAttackDelay*5}
 		{DoThePokeAttackAnimation MiPokeTag OpNumber true}
 		local PBarLen BarLen in
 			PBarLen = {ComputeBarLength Hp2P Hp2Max}
@@ -54,6 +59,8 @@ define
 			{Show Name2#' attacks'}
 			{Pok1 damage(Damage2)}			
 			{Pok1 getHp(Hp1C)}
+			{DialogText set(text:{Append "Enemy " {Append Name2 " Attack!"}})}
+			{Delay PokeAttackDelay*5}
 			{DoThePokeAttackAnimation OpPokeTag OpNumber false}
 			local PBarLen BarLen in 
 				PBarLen = {ComputeBarLength Hp1P Hp1Max}
@@ -62,6 +69,8 @@ define
 			end
 			
 			if Hp1C =< 0 then
+				{DialogText set(text:{Append "Your " {Append Name1 " fainted!"}})}
+				{Delay PokeAttackDelay*5}
 				{DoTheFaintAnim MiPokeTag}
 
 				{Window close} 
@@ -83,6 +92,8 @@ define
 				{Show BarLen}
 				{DoTheXpBarAnimation Pok1 Level2 BarLen PBarLen HpRecord.expBar}
 			end
+			{DialogText set(text:{Append "Enemy " {Append Name2 " fainted!"}})}
+			{Delay PokeAttackDelay*5}
 			{DoTheFaintAnim OpPokeTag}
 			{Window close} 
 			{CellSet InBattle false}

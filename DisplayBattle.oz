@@ -33,7 +33,7 @@ define
 %	MiPokePosY = (143+24)*2
 	MiPokePosY = (143+8)*2
 
-	proc {DrawBattleUI MiPoke OpPoke TrainerPort}
+	proc {DrawBattleUI MiPoke OpPoke IsTrainer}
 		Font16={QTk.newFont font(size:16)}
 		
 		Grid GridHandler
@@ -46,6 +46,7 @@ define
 		HpRecord
 		PokeTagsRecord
 		DialogImg DialogImg_old
+		DialogText
 		
 		/* UI CONTROL */
 		UI_Control_Handler
@@ -73,20 +74,20 @@ define
 		{Window show}
 		
 		{GridHandler configure(UICanvas column:1 row:1 rowspan:2 sticky:nw)}
-		{GridHandler configure(label(text:"A wild POKEMOZ has appear!" font:Font16 bg:white) column:2 row:1 ipadx:10 ipady:10)}
+		{GridHandler configure(label(text:"" font:Font16 bg:grey handle:DialogText) column:2 row:1 ipadx:10 ipady:10)}
 		%{GridHandler configure(label(image:DialogImg) column:2 row:1 rowspan:3 sticky:n)}
 		
-		{UICanvasHandler create(image 0 0 image:Background_Battle_Grass anchor:nw)}	
-		PokeTagsRecord = {DrawPokemoz OpNumber MiNumber UICanvasHandler}
-		HpRecord = {DrawHpBar UICanvasHandler Window MiPoke OpPoke}
+		{UICanvasHandler create(image 0 0 image:Background_Battle_Grass anchor:nw)}
+		PokeTagsRecord = {DrawPokemoz OpNumber MiNumber UICanvasHandler DialogText IsTrainer}
+		HpRecord = {DrawHpBar UICanvasHandler Window MiPoke OpPoke DialogText}
 		
 		/* START UI CONTROL */
 
-				Button_Attack = button(text:"Attack" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke TrainerPort Window HpRecord PokeTagsRecord} end handle:But_Attk_Handler)
+				Button_Attack = button(text:"Attack" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} end handle:But_Attk_Handler)
 				Button_PokemOz = button(text:"PokemOz" action:proc{$} {Show 'PokemOz'} end handle:But_Poke_Handler)
 				Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} {CellSet InBattle false} {Window close} end handle:But_Capt_Handler)
 				Button_Capture = button(text:"Capture" action:proc{$} {Show 'Capture'} end handle:But_Fuite_Handler)
-				Button_AutoBattle = button(text:"Auto-Battle" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke TrainerPort Window HpRecord PokeTagsRecord} end handle:But_Auto_Handler)
+				Button_AutoBattle = button(text:"Auto-Battle" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} end handle:But_Auto_Handler)
 	
 				UIControl = grid(empty Button_Attack  empty newline
 										Button_PokemOz Button_AutoBattle Button_Capture newline
@@ -96,36 +97,51 @@ define
 		/* END UI CONTROL */
 		
 		{GridHandler configure(UIControl column:2 row:2)}
-		{UI_Control_Handler configure(But_Attk_Handler But_Poke_Handler But_Fuite_Handler But_Capt_Handler padx:10 pady:10)}	
+		{UI_Control_Handler configure(But_Attk_Handler But_Poke_Handler But_Fuite_Handler But_Capt_Handler padx:20 pady:10)}	
 		
 		thread
-			{Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke TrainerPort Window HpRecord PokeTagsRecord} end)} %trying to bind to an action
+			{Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} end)} %trying to bind to an action
 			{Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {CellSet InBattle false} {Window close} end)}
 			{Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
 			{Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
-			{Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke TrainerPort Window HpRecord PokeTagsRecord} end)}
+			{Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} end)}
 		end
 	end
 	
-	fun {DrawPokemoz OpNumber MiNumber UICanvasHandler}
+	fun {DrawPokemoz OpNumber MiNumber UICanvasHandler DialogText IsTrainer}
 		OpPokeTag = {UICanvasHandler newTag($)}
 		MiPokeTag = {UICanvasHandler newTag($)}
 	in
-		local Poke_Offset_Op Poke_Offset_Mi in
+		local Poke_Offset_Op Poke_Offset_Mi D in
+			D=250
 			Poke_Offset_Op = 2*Op_Offset.OpNumber
 			Poke_Offset_Mi = 2*Mi_Offset.MiNumber
-			{UICanvasHandler create(image OpPokePosX OpPokePosY+Poke_Offset_Op image:AllSprites_Op.OpNumber.1 anchor:center tags:OpPokeTag)}
-			{UICanvasHandler create(image MiPokePosX MiPokePosY+Poke_Offset_Mi image:AllSprites_B.MiNumber anchor:se tags:MiPokeTag)}
-			{Delay 500}
-			{OpPokeTag set(image:AllSprites_Op.OpNumber.2)}
-			{Delay 150}
-			{OpPokeTag set(image:AllSprites_Op.OpNumber.1)}
-			{Delay 150}
-			{OpPokeTag set(image:AllSprites_Op.OpNumber.2)}
-			{Delay 150}
-			{OpPokeTag set(image:AllSprites_Op.OpNumber.1)}
-			{Delay 150}
-			{OpPokeTag set(image:AllSprites_Op.OpNumber.1)}
+			if(IsTrainer) then
+				{DialogText set(text:"A trainer want to chalenge you!")}
+				{Delay 2000}
+				
+				%create trainer img
+				
+				{DialogText set(text:"Opponent trainer send his POKEMOZ!")}
+				{Delay 2000}
+			else
+				{DialogText set(text:"A wild POKEMOZ appeared!")}
+			end
+				{UICanvasHandler create(image OpPokePosX OpPokePosY+Poke_Offset_Op image:AllSprites_Op.OpNumber.1 anchor:center tags:OpPokeTag)}
+				{UICanvasHandler create(image MiPokePosX MiPokePosY+Poke_Offset_Mi image:AllSprites_B.MiNumber anchor:se tags:MiPokeTag)}
+				
+				{Delay 2*D}
+				{OpPokeTag set(image:AllSprites_Op.OpNumber.2)}
+				{Delay D}
+				{OpPokeTag set(image:AllSprites_Op.OpNumber.1)}
+				{Delay D}
+				{OpPokeTag set(image:AllSprites_Op.OpNumber.2)}
+				{Delay D}
+				{OpPokeTag set(image:AllSprites_Op.OpNumber.1)}
+				{Delay D}
+				{OpPokeTag set(image:AllSprites_Op.OpNumber.1)}
+				{Delay 3*D}
+			
 		end
 		poketags(mi:MiPokeTag op:OpPokeTag)
 	end
@@ -136,7 +152,7 @@ define
 		{FloatToInt ({IntToFloat Val}/{IntToFloat ValMax})*{IntToFloat BAR_LENGTH}}
 	end
 	
-	fun {DrawHpBar UICanvasHandler Window MiPoke OpPoke}		
+	fun {DrawHpBar UICanvasHandler Window MiPoke OpPoke DialogText}		
 		Font18={QTk.newFont font(size:18)} Font14={QTk.newFont font(size:14)} Font8={QTk.newFont font(size:8)}
 		MiStartX = UI_LENGTH-25 - BAR_LENGTH
 		MiStartY = UI_HEIGHT-45 
@@ -201,9 +217,9 @@ define
 	end
 
 	
-	proc {PrepareBattle MiPoke OpPoke TrainerPort}
+	proc {PrepareBattle MiPoke OpPoke IsTrainer}
 		{CellSet InBattle true}
-		{DrawBattleUI MiPoke OpPoke TrainerPort}
+		{DrawBattleUI MiPoke OpPoke IsTrainer}
 	end
 		
 	%Bar Animation
@@ -233,13 +249,13 @@ define
 	proc {DoThePokeAttackAnimation PokeTag OpNumber Mibool}
 		if (Mibool) then
 			{PokeTag move(30 0)}
-			{Delay PokeAttackDelay}
+			{Delay PokeAttackDelay*2}
 			{PokeTag move(~30 0)}
 		else	
 			{PokeTag move(~30 15)}
 			{Delay PokeAttackDelay}
 			{PokeTag set(image:AllSprites_Op.OpNumber.2)}
-			{Delay PokeAttackDelay}
+			{Delay PokeAttackDelay*2}
 			{PokeTag set(image:AllSprites_Op.OpNumber.1)}
 			{Delay PokeAttackDelay}
 			{PokeTag move(30 ~15)}
