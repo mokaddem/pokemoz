@@ -9,6 +9,7 @@ import
 export
 	NewTrainer
 	RandomMove
+	GoTo
 define
 	
 	% State = state(x:X y:Y pokemoz:P speed:S movement:M handler:H number:N movementStatus:MovementStatus incombat:IC)
@@ -78,5 +79,22 @@ define
 	fun {RandomMove Frames}
 		proc {$ T} {RandomlyMoveTrainer T Frames} end
 	end
+	
+	proc {GotoMove Trainer X Y Frames}
+		Xc Yc M
+	in 
+		{Trainer getPosition(x:Xc y:Yc)}
+		if Xc < X then M=r
+		elseif Xc > X then M=l
+		elseif Yc < Y then M=d
+		else M=u
+		end
+		{MovementHandle M Trainer Frames true 0}
+	end
+	
+	fun {GoTo X Y Frames}
+		proc {$ T} {GotoMove T X Y Frames} end
+	end
+		
 	
 end
