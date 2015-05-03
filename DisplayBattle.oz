@@ -242,12 +242,12 @@ define
 	
 	proc {PrepareBattle MiPoke OpPoke IsTrainer Number}
 		{CellSet InBattle true}
-	%	local E1 E2 in
-	%		{MiPoke getEvolution(E1)}
+		local E1 E2 in
+			{MiPoke getEvolution(E1)}
 			{DrawBattleUI MiPoke OpPoke IsTrainer Number}
-	%		{MiPoke getEvolution(E2)}
-	%		if E2>E1 then {DoTheEvolution MiPoke E2} end
-	%	end
+			{MiPoke getEvolution(E2)}
+			if E2>E1 then {DoTheEvolution MiPoke E2} end
+		end
 	end
 		
 	%Bar Animation
@@ -319,9 +319,9 @@ define
 		end
 	end
 	
-%	proc {DoTheEvolution Poke Lvl}
-%		{Poke setNum(Lvl)}
-%		{Show 'POKEMOZ EVOLVED'}
-%	end
+	proc {DoTheEvolution Poke Lvl}
+		{Poke setNum(Lvl)}
+		{Show 'POKEMOZ EVOLVED'}
+	end
 
 end

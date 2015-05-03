@@ -34,8 +34,8 @@ define
 					end
 				end
 			[] getEvolution(X) then
-				if State.level < 7 then X = 1 end
-				if State.level < 9 then X = 2
+				if State.level < 7 then X = 1
+				elseif State.level < 9 then X = 2
 				else X = 3 end
 				State
 			[] getType(X) then X=State.type State
