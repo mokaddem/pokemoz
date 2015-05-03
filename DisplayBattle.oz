@@ -4,7 +4,7 @@ import
 	Open
 
 	Offset_data(op_Offset:Op_Offset mi_Offset:Mi_Offset) at 'Data/Offset_data.ozf'
-	CutImages(heroFace:HeroFace pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile allSprites_B:AllSprites_B allSprites_Op:AllSprites_Op background_Battle_Trainer:Background_Battle_Trainer background_Battle_Grass:Background_Battle_Grass allTrainerBattleFrames:AllTrainerBattleFrames)
+	CutImages(heroFace:HeroFace pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile allSprites_B:AllSprites_B allSprites_Op:AllSprites_Op background_Battle_Trainer:Background_Battle_Trainer background_Battle_Grass:Background_Battle_Grass allTrainerBattleFrames:AllTrainerBattleFrames getNewPokeFrames:GetNewPokeFrames)
 	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	QTk at 'x-oz://system/wp/QTk.ozf'
@@ -369,6 +369,7 @@ define
 		{PokTag set(image:PokE1)}
 		{Delay 2000}
 		{Pok setNum(N+1)}
+		{GetNewPokeFrames N+1}
 		{WindowEvol close}
 	end
 

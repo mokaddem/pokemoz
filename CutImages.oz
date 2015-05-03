@@ -23,6 +23,7 @@ export
 	
 	CreateMovementImages
 	GetSprite_frame_Op
+	GetNewPokeFrames
 
 define
 PathPokeBattleSpritesBack = "Images/Pokemon-sprites-battle/own/sprite_B"
@@ -48,6 +49,10 @@ fun {CreateMovementImages Path}
 
 	in
 	allFrames(upFrame:{GetFrame 3 TrainerImage} rightFrame:{GetFrame 2 TrainerImage} leftFrame:{GetFrame 1 TrainerImage} downFrame:{GetFrame 0 TrainerImage})
+end
+
+proc {GetNewPokeFrames N}
+	{CellSet AllPokeFrames {CreateMovementImages {Append PathPokeTotal {Append {IntToString N} ".gif"}}}}
 end
 
 AllHeroFrames = {CreateMovementImages {Append PathTrainersTotal "overworld/hero.gif"}}
