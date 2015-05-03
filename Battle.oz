@@ -87,7 +87,7 @@ define
 				PBarLen = {ComputeBarLength XpP XpNeeded}
 				BarLen = {ComputeBarLength XpC XpNeeded}
 				{Show PBarLen#BarLen}
-				{DoTheXpBarAnimation Pok1 Level2 BarLen PBarLen HpRecord.expBar}
+				{DoTheXpBarAnimation BarLen PBarLen HpRecord.expBar}
 			end
 			{DialogText set(text:{Append "Enemy " {Append Name2 " fainted!"}})}
 			{Delay Combat_Speed*5}
