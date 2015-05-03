@@ -274,7 +274,7 @@ define
 		{Delay 3*PokeAttackDelay}
 	end
 	
-	proc {DoTheXpBarAnimation Pok1 Level2 BarLen PBarLen ExpBarTag}
+	proc {DoTheXpBarAnimation BarLen PBarLen ExpBarTag}
 		{Show 'doTheXpBarAnimation'}
 		local X1 X2 Xend Y1 Y2 Coord in
 			{ExpBarTag getCoords(1:Coord)}
