@@ -2,6 +2,8 @@ functor
 import
 	System(show:Show)
 	OS
+	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
+	Game(inBattle:InBattle)
 	DisplayBattle(drawHpBar:DrawHpBar computeBarLength:ComputeBarLength doTheBarAnimation:DoTheBarAnimation doThePokeAttackAnimation:DoThePokeAttackAnimation doTheXpBarAnimation:DoTheXpBarAnimation doTheFaintAnim:DoTheFaintAnim)
 export
 	RunAutoBattle
@@ -10,14 +12,14 @@ define
 	/* 
 	 * Pok1 attacks first
 	 */
-	proc {RunAutoBattle Pok1 Pok2 TrainerPort Window HpRecord PokeTagsRecord}
+	proc {RunAutoBattle Pok1 Pok2 Window HpRecord PokeTagsRecord}
 		Hp1 Hp2 in
 		{Pok1 getHp(Hp1)}
 		{Pok2 getHp(Hp2)}
-		if Hp1 > 0 then if Hp2 > 0 then {Attack Pok1 Pok2 TrainerPort Window HpRecord PokeTagsRecord} {RunAutoBattle Pok1 Pok2 TrainerPort Window HpRecord PokeTagsRecord} end end
+		if Hp1 > 0 then if Hp2 > 0 then {Attack Pok1 Pok2 Window HpRecord PokeTagsRecord} {RunAutoBattle Pok1 Pok2 Window HpRecord PokeTagsRecord} end end
 	end
 	
-	proc {Attack Pok1 Pok2 TrainerPort Window HpRecord PokeTagsRecord}
+	proc {Attack Pok1 Pok2 Window HpRecord PokeTagsRecord}
 		Name1 Name2 Type1 Type2 OpNumber Damage Hp1C Hp1P Hp2C Hp2P Hp2Max Hp1Max Level1 Level2 
 		MiPvBarTag = HpRecord.miBar	OpPvBarTag = HpRecord.opBar
 		MiPvTxtTag = HpRecord.miTxt	OpPvTxtTag = HpRecord.opTxt
@@ -61,8 +63,10 @@ define
 			
 			if Hp1C =< 0 then
 				{DoTheFaintAnim MiPokeTag}
+
 				{Window close} 
-				{TrainerPort setInCombat(false)}
+				{CellSet InBattle false}
+
 			end
 		else
 			local PBarLen BarLen XpC XpP XpNeeded in 
@@ -81,7 +85,7 @@ define
 			end
 			{DoTheFaintAnim OpPokeTag}
 			{Window close} 
-			{TrainerPort setInCombat(false)}
+			{CellSet InBattle false}
 		end
 	end
 	

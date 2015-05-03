@@ -12,6 +12,7 @@ import
 	Trainer(newTrainer:NewTrainer)
 	Pokemoz(newPokemoz:NewPokemoz)
 	Battle(runAutoBattle:RunAutoBattle attack:Attack)
+	Game(inBattle:InBattle)
 	
 export
 	PrepareBattle
@@ -83,7 +84,7 @@ define
 
 				Button_Attack = button(text:"Attack" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke TrainerPort Window HpRecord PokeTagsRecord} end handle:But_Attk_Handler)
 				Button_PokemOz = button(text:"PokemOz" action:proc{$} {Show 'PokemOz'} end handle:But_Poke_Handler)
-				Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} {Window close} end handle:But_Capt_Handler)
+				Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} {CellSet InBattle false} {Window close} end handle:But_Capt_Handler)
 				Button_Capture = button(text:"Capture" action:proc{$} {Show 'Capture'} end handle:But_Fuite_Handler)
 				Button_AutoBattle = button(text:"Auto-Battle" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke TrainerPort Window HpRecord PokeTagsRecord} end handle:But_Auto_Handler)
 	
@@ -99,7 +100,7 @@ define
 		
 		thread
 			{Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke TrainerPort Window HpRecord PokeTagsRecord} end)} %trying to bind to an action
-			{Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {TrainerPort setInCombat(false)} {Window close} end)}
+			{Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {CellSet InBattle false} {Window close} end)}
 			{Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
 			{Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
 			{Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke TrainerPort Window HpRecord PokeTagsRecord} end)}
@@ -151,7 +152,7 @@ define
 		OpBarLength
 		
 
-		XpHandler MiPvHandler MiPokeTextHandler MiPokeLvlHandler	MiPokeHPtxtHandler
+		XpHandler MiPvHandler MiPokeTextHandler MiPokeLvlHandler MiPokeHPtxtHandler
 		OpPvHandler OpPokeTextHandler OpPokeLvlHandler OpPokeHPtxtHandler
 		XpTag={UICanvasHandler newTag($)} 
 		MiPvBarTag={UICanvasHandler newTag($)}
@@ -201,51 +202,10 @@ define
 
 	
 	proc {PrepareBattle MiPoke OpPoke TrainerPort}
-		{TrainerPort setInCombat(true)}
+		{CellSet InBattle true}
 		{DrawBattleUI MiPoke OpPoke TrainerPort}
 	end
-	
-/*
-	fun {DrawUI_Control Window MiPoke OpPoke TrainerPort HpRecord PokeTagsRecord}		
-		UI_Control
-		UI_Control_Handler
-		UI_Control_Window
-		UI_Components = components(window:Window ui_control_window:UI_Control_Window)
 		
-		But_Attk_Handler
-		But_Poke_Handler
-		But_Fuite_Handler
-		But_Capt_Handler
-		But_Auto_Handler
-
-		{Show 1}
-		Button_Attack = button(text:"Attack" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke TrainerPort UI_Components HpRecord PokeTagsRecord} end handle:But_Attk_Handler)
-		Button_PokemOz = button(text:"PokemOz" action:proc{$} {Show 'PokemOz'} end handle:But_Poke_Handler)
-		Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} {UI_Control_Window close} {Window close} end handle:But_Capt_Handler)
-		Button_Capture = button(text:"Capture" action:proc{$} {Show 'Capture'} end handle:But_Fuite_Handler)
-		Button_AutoBattle = button(text:"Auto-Battle" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke TrainerPort UI_Components HpRecord PokeTagsRecord} end handle:But_Auto_Handler)
-	
-			{Show 2}
-		UI_Control = grid(empty Button_Attack  empty newline
-								Button_PokemOz Button_AutoBattle Button_Capture newline
-								empty Button_Fuite empty
-								handle:UI_Control_Handler)
-	
-		in
-			
-			% Get info about window and place the dialog ont the right place
-			UI_Control_Window = {QTk.build td(title:'PokemOz battle!' UI_Control)}
-			{UI_Control_Handler configure(But_Attk_Handler But_Poke_Handler But_Fuite_Handler But_Capt_Handler padx:10 pady:10)}	 
-		local X Y in 
-			{Window winfo(geometry:X)} {UI_Control_Handler winfo(geometry:Y)}
-			{UI_Control_Window set(geometry:geometry(x:X.x+{FloatToInt {IntToFloat X.width}/2.0-{IntToFloat Y.width}/2.0} y:X.y-X.height))}
-		end 
-		{UI_Control_Window show(modal:true)}
-		
-		UI_Control
-	end
-	*/
-	
 	%Bar Animation
 	proc {DoTheBarAnimation TxtTag BarTag BarLen PBarLen HpP HpC HpMax} 
 		local X1 X2 Y1 Y2 Coord in
