@@ -83,7 +83,7 @@ define
 		NormalTypeActivated = FNormalTypeActivated
 		PlayerName = FPlayerName
 		CheckAutoMove = FCheckAutoMove
-		if FCombat_Speed == 0 then Combat_Speed=200 else Combat_Speed = FCombat_Speed*40 end
+		if FCombat_Speed == 0 then Combat_Speed=100 else Combat_Speed = FCombat_Speed*40 end
 	end
 	
 	proc {SaveStarter X}
