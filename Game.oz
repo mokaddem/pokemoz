@@ -2,45 +2,39 @@ functor
 
 import
 	System(show:Show)
-	Open
-	QTk at 'x-oz://system/wp/QTk.ozf'
-
-	CutImages(heroFace:HeroFace pokeFace:PokeFace allHeroFrames:AllHeroFrames grass_Tile:Grass_Tile road_Tile:Road_Tile)
-	MoveHero(movementHandle:MovementHandle randomMove:RandomMove goTo:GoTo)
-	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
+	Open OS
+	CutImages(allHeroFrames:AllHeroFrames)
+	MoveHero(randomMove:RandomMove goTo:GoTo)
+	Util(customNewCell:CustomNewCell cellGet:CellGet)
 	PokeChoice(launchTheIntro:LaunchTheIntro)
-	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM dELAY:DELAY wild_Pokemon_proba:Wild_Pokemon_proba pathPokeTotal:PathPokeTotal pathTrainersTotal:PathTrainersTotal starter:Starter autofight:Autofight checkAutoMove:CheckAutoMove checkMap:CheckMap)
+	PokeConfig(starter:Starter checkAutoMove:CheckAutoMove checkMap:CheckMap)
 	
-	DisplayMap(heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat fieldType:FieldType
-					createAndDisplayHeroAndFollower:CreateAndDisplayHeroAndFollower createAndDisplayTrainer:CreateAndDisplayTrainer initMap:InitMap mapRecord:MapRecord drawMap:DrawMap
-					startX:StartX startY:StartY endX:EndX endY:EndY)
-	
-	DisplayBattle(prepareBattle:PrepareBattle)
+	DisplayMap(createAndDisplayHeroAndFollower:CreateAndDisplayHeroAndFollower createAndDisplayTrainer:CreateAndDisplayTrainer initMap:InitMap mapRecord:MapRecord drawMap:DrawMap startX:StartX startY:StartY endX:EndX endY:EndY allowedPlace:AllowedPlace)
 	Trainer(newTrainer:NewTrainer)
-	Pokemoz(newPokemoz:NewPokemoz)
-	Battle(runBattle:RunBattle)
+	Pokemoz(newPokemoz:NewPokemoz generateRandomPokemon:GenerateRandomPokemon)
 	
 export
 	HeroTrainer
 	InBattle
-	GameOver
 	
 define
 	IntroFinish
-	GameOver
 
 	HeroTrainer
 	HeroHandler
 	PokemOz
 	MapRecord
 	
-	Trainer2
-	TrainerHandle2
-	TrainerPosX2=9
-	TrainerPosY2=9
-	PokeTrainer2
-	
 	InBattle = {CustomNewCell false}
+	
+	proc {CreateTrainersPos X}
+		N M 
+	in 
+		N = {OS.rand} mod {Width AllowedPlace} + 1
+		M = {OS.rand} mod {Width AllowedPlace.1} + 1
+		if {CellGet AllowedPlace.N.M} == 'occupied' then {CreateTrainersPos X} else X=pos(x:M y:N) end
+	end
+		
 in
 	IntroFinish = {LaunchTheIntro}
 	{Wait IntroFinish}
@@ -62,54 +56,63 @@ in
 	
 /*trainer 1*/
 	local 
-		Trainer1 TrainerHandle1 TrainerFrames1 TrainerCreation PokeTrainer1
-		TrainerPosX1=1
-		TrainerPosY1=1
+		Trainer1 TrainerHandle1 TrainerFrames1 TrainerCreation RandPos
+		{CreateTrainersPos RandPos}
+		{Show RandPos}
+		TrainerPosX1
+		TrainerPosY1
 	in 
+		TrainerPosX1=RandPos.x
+		TrainerPosY1=RandPos.y
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 1} 
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
-		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE1" maxlife:20 currentLife:20 experience:0 level:5)}
-		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:1 movementStatus:idle() type:'ia')}
+		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:{GenerateRandomPokemon} speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:1 movementStatus:idle() type:'ia')}
 	end
 
 /*trainer 2*/
 	local 
-		Trainer1 TrainerHandle1 TrainerFrames1 TrainerCreation PokeTrainer1
-		TrainerPosX1=2
-		TrainerPosY1=2
+		Trainer1 TrainerHandle1 TrainerFrames1 TrainerCreation RandPos
+		{CreateTrainersPos RandPos}
+		TrainerPosX1
+		TrainerPosY1
 	in 
+		TrainerPosX1=RandPos.x
+		TrainerPosY1=RandPos.y
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 2} 
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
-		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE2" maxlife:20 currentLife:20 experience:0 level:5)}
-		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:2 movementStatus:idle() type:'ia')}
+		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:{GenerateRandomPokemon} speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:2 movementStatus:idle() type:'ia')}
 	end
 	
 /*trainer 3*/
 	local 
-		Trainer1 TrainerHandle1 TrainerFrames1 TrainerCreation PokeTrainer1
-		TrainerPosX1=3
-		TrainerPosY1=3
+		Trainer1 TrainerHandle1 TrainerFrames1 TrainerCreation RandPos
+		{CreateTrainersPos RandPos}
+		TrainerPosX1
+		TrainerPosY1
 	in 
+		TrainerPosX1=RandPos.x
+		TrainerPosY1=RandPos.y
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 3} 
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
-		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE3" maxlife:20 currentLife:20 experience:0 level:5)}
-		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:3 movementStatus:idle() type:'ia')}
+		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:{GenerateRandomPokemon} speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:3 movementStatus:idle() type:'ia')}
 	end
 
 /*trainer 4*/
 	local 
-		Trainer1 TrainerHandle1 TrainerFrames1 TrainerCreation PokeTrainer1
-		TrainerPosX1=4
-		TrainerPosY1=4
+		Trainer1 TrainerHandle1 TrainerFrames1 TrainerCreation RandPos
+		{CreateTrainersPos RandPos}
+		TrainerPosX1
+		TrainerPosY1
 	in 
+		TrainerPosX1=RandPos.x
+		TrainerPosY1=RandPos.y
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 4} 
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
-		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE4" maxlife:20 currentLife:20 experience:0 level:5)}
-		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:4 movementStatus:idle() type:'ia')}
+		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:{GenerateRandomPokemon} speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:4 movementStatus:idle() type:'ia')}
 	end
 
 end

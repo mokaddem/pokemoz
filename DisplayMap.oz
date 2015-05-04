@@ -3,7 +3,7 @@
 */
 functor
 import
-	CutImages(heroFace:HeroFace allHeroFrames:AllHeroFrames pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile stone_Tile_Grass:Stone_Tile_Grass stone_Tile_Dirt:Stone_Tile_Dirt start_Tile:Start_Tile end_Tile:End_Tile createMovementImages:CreateMovementImages)
+	CutImages(heroFace:HeroFace allHeroFrames:AllHeroFrames pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile stone_Tile_Grass:Stone_Tile_Grass stone_Tile_Dirt:Stone_Tile_Dirt start_Tile:Start_Tile end_Tile:End_Tile createMovementImages:CreateMovementImages tree_Cont:Tree_Cont tree_End:Tree_End tree_Grass:Tree_Grass houseAll:HouseAll)
 	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	QTk at 'x-oz://system/wp/QTk.ozf'
@@ -113,8 +113,24 @@ define
 					[]0 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Road_Tile anchor:nw)}
 					[]2 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Stone_Tile_Grass anchor:nw)}
 					[]3 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Stone_Tile_Dirt anchor:nw)}
+					[]6 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Tree_Cont anchor:nw)}
+					[]7 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Tree_End anchor:nw)}
+					[]8 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Tree_Grass anchor:nw)}
+					
+					[]a then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:HouseAll.1 anchor:nw)}
+					[]b then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:HouseAll.2 anchor:nw)}
+					[]c then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:HouseAll.3 anchor:nw)}
+					[]d then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:HouseAll.4 anchor:nw)}
+					[]f then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:HouseAll.5 anchor:nw)}
+					[]g then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:HouseAll.6 anchor:nw)}
+					[]h then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:HouseAll.7 anchor:nw)}
+					[]i then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:HouseAll.8 anchor:nw)}
+					[]j then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:HouseAll.9 anchor:nw)}
+					[]k then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:HouseAll.10 anchor:nw)}
+					[]l then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:HouseAll.11 anchor:nw)}
+					[]m then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:HouseAll.12 anchor:nw)}
+					
 					[]e then 
-						%{Canvas create(rect PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH (PosX+1)*SQUARE_LENGTH (PosY+1)*SQUARE_LENGTH fill:red outline:nil)}
 						{Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:End_Tile anchor:nw)}
 						{CellSet EndX PosX}
 						{CellSet EndY PosY}
@@ -256,6 +272,23 @@ define
 				AllowedPlace.N.M = {CustomNewCell MapRecord.N.M}
 				if {CellGet AllowedPlace.N.M} == 2 then {CellSet AllowedPlace.N.M 'occupied'} end
 				if {CellGet AllowedPlace.N.M} == 3 then {CellSet AllowedPlace.N.M 'occupied'} end
+				if {CellGet AllowedPlace.N.M} == 6 then {CellSet AllowedPlace.N.M 'occupied'} end
+				if {CellGet AllowedPlace.N.M} == 7 then {CellSet AllowedPlace.N.M 'occupied'} end
+				if {CellGet AllowedPlace.N.M} == 8 then {CellSet AllowedPlace.N.M 'occupied'} end
+
+				if {CellGet AllowedPlace.N.M} == a then {CellSet AllowedPlace.N.M 'occupied'} end
+				if {CellGet AllowedPlace.N.M} == b then {CellSet AllowedPlace.N.M 'occupied'} end
+				if {CellGet AllowedPlace.N.M} == c then {CellSet AllowedPlace.N.M 'occupied'} end
+				if {CellGet AllowedPlace.N.M} == d then {CellSet AllowedPlace.N.M 'occupied'} end
+				if {CellGet AllowedPlace.N.M} == f then {CellSet AllowedPlace.N.M 'occupied'} end
+				if {CellGet AllowedPlace.N.M} == g then {CellSet AllowedPlace.N.M 'occupied'} end
+				if {CellGet AllowedPlace.N.M} == h then {CellSet AllowedPlace.N.M 'occupied'} end
+				if {CellGet AllowedPlace.N.M} == i then {CellSet AllowedPlace.N.M 'occupied'} end
+				if {CellGet AllowedPlace.N.M} == j then {CellSet AllowedPlace.N.M 'occupied'} end
+				if {CellGet AllowedPlace.N.M} == k then {CellSet AllowedPlace.N.M 'occupied'} end
+				if {CellGet AllowedPlace.N.M} == l then {CellSet AllowedPlace.N.M 'occupied'} end
+				if {CellGet AllowedPlace.N.M} == m then {CellSet AllowedPlace.N.M 'occupied'} end
+								
 			end
 		end
 		{MapFile close}

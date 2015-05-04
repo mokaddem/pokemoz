@@ -152,7 +152,6 @@ define
 				   	[] u then NextX = X1 NextY = Y1-1
 				   	[] d then NextX = X1 NextY = Y1+1
 				   	end
-				   	{Show coucou}
 				   	if {FieldType NextX NextY} \= 'null' then X in
 				   		try {{PlaceAllowed NextX NextY} getPokemoz(X)} {Wait X} NextIsTrainer = 'true' catch error(1:O debug:D) then NextIsTrainer = 'false' end
 				   	
@@ -167,7 +166,6 @@ define
 				   	else 
 				   		Flag=0  
 				   	end
-				   	{Show coucou2}
 					if Flag==1 then 
 						{MoveHero M H Frames IsHero} 
 						if FootNumber > 0 andthen {Not X} then thread {Wait Waiter} {MovementHandle M TrainerPort Frames IsHero FootNumber-1} end end
@@ -209,8 +207,10 @@ define
 								end
 							end
 						[] e then
-							{CellSet InBattle true}
-							{LaunchGameOver true}
+							if IsHero then
+								{CellSet InBattle true}
+								{LaunchGameOver true}
+							end
 						else
 							skip	
 						end
