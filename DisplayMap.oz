@@ -3,18 +3,11 @@
 */
 functor
 import
-	System(show:Show)
-	Open
-
 	CutImages(heroFace:HeroFace allHeroFrames:AllHeroFrames pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile stone_Tile_Grass:Stone_Tile_Grass stone_Tile_Dirt:Stone_Tile_Dirt start_Tile:Start_Tile end_Tile:End_Tile createMovementImages:CreateMovementImages)
 	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	QTk at 'x-oz://system/wp/QTk.ozf'
-	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM heroPosYDecal:HeroPosYDecal heroPosXDecal:HeroPosXDecal pathTrainersTotal:PathTrainersTotal pathPokeTotal:PathPokeTotal customMap:CustomMap)
-	Trainer(newTrainer:NewTrainer)
-	Pokemoz(newPokemoz:NewPokemoz)
-	Battle(runBattle:RunBattle)
-%	Game(heroTrainer:HeroTrainer)
+	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH heroPosYDecal:HeroPosYDecal heroPosXDecal:HeroPosXDecal pathTrainersTotal:PathTrainersTotal customMap:CustomMap)
 export
 	LaunchGameOver
 	HeroPosition
@@ -50,16 +43,11 @@ define
 	Window
 
 	%Map_variables
-	MapFile		%The map.txt file to read
 	MapRecord	%Record 
 	MapParsed	%List readed from map.txt
 	AllowedPlace    %Record = occupied if not allowed
 
-	%Hero_variables
-%	HeroHandle	%The Hero handler
 	HeroPosition	%The Hero's position cell
-	%HeroPosXDecal=~14
-	%HeroPosYDecal=0
 	
 	%Poke_variables
 	PokeHandle
@@ -197,10 +185,10 @@ define
 		elseif Type == 'ia' then OtherType = 'player' 
 		elseif Type == 'dead' then OtherType = 'dea' end
 		
-		try {{PlaceAllowed X-1 Y} getType(T1)} catch error(1:X debug:D) then T1 = 'false' end
-		try {{PlaceAllowed X Y-1} getType(T2)} catch error(1:X debug:D) then T2 = 'false' end
-		try {{PlaceAllowed X Y+1} getType(T3)} catch error(1:X debug:D) then T3 = 'false' end
-		try {{PlaceAllowed X+1 Y} getType(T4)} catch error(1:X debug:D) then T4 = 'false' end
+		try {{PlaceAllowed X-1 Y} getType(T1)} catch error(1:O debug:D) then T1 = 'false' end
+		try {{PlaceAllowed X Y-1} getType(T2)} catch error(1:O debug:D) then T2 = 'false' end
+		try {{PlaceAllowed X Y+1} getType(T3)} catch error(1:O debug:D) then T3 = 'false' end
+		try {{PlaceAllowed X+1 Y} getType(T4)} catch error(1:O debug:D) then T4 = 'false' end
 		
 		if T1 == OtherType then {PlaceAllowed X-1 Y}
 		else if T2 == OtherType then {PlaceAllowed X Y-1}
@@ -252,10 +240,10 @@ define
 		if (CustomMap) then %Check if CustomMap
 			MapRecord={List.toTuple map {Scan MapParsed}}
 		else
-			local Length Heigth MapRecordTemp MapRecordModif1 MapRecordModif2 in 
+			local Length Heigth MapRecordTemp MapRecordModif1 in 
 				MapRecordTemp = {List.toTuple map {Scan MapParsed}}
-   			Length = {Width MapRecordTemp.1}
-   			Heigth = {Width MapRecordTemp}
+   				Length = {Width MapRecordTemp.1}
+   				Heigth = {Width MapRecordTemp}
 				MapRecordModif1 = {Record.adjoinAt MapRecordTemp Heigth {Record.adjoinAt MapRecordTemp.Heigth Length s}}
 				MapRecord = {Record.adjoinAt MapRecordModif1 1 {Record.adjoinAt MapRecordModif1.1 Length e}}
 			end

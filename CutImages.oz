@@ -1,9 +1,7 @@
 functor
 import
-	System(show:Show)
 	QTk at 'x-oz://system/wp/QTk.ozf'
-
-	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM pOKE_ZOOM:POKE_ZOOM pathTrainersTotal:PathTrainersTotal pathPokeTotal:PathPokeTotal starter:Starter)
+	PokeConfig(hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM pOKE_ZOOM:POKE_ZOOM pathTrainersTotal:PathTrainersTotal pathPokeTotal:PathPokeTotal starter:Starter)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 
 export 
@@ -33,8 +31,6 @@ export
 define
 PathPokeBattleSpritesBack = "Images/Pokemon-sprites-battle/own/sprite_B"
 PathPokeBattleSpritesOp = "Images/Pokemon-sprites-battle/op-separeted/"
-PathTrainerBattleSprites = "Images/Trainers/"
-Path
 
 L = 64
 
@@ -126,7 +122,7 @@ AllTrainerBattleFrames = {CellGet AllTrainerBattleFrames_temp}
 	fun {GetSprite_frame_Op Num}
 /*		L=64 Sprites_Op_old Sprites_Op in
 		Sprites_Op_old = {QTk.newImage photo(file:{Append PathPokeBattleSpritesOp {Append Num ".gif"}})}*/
-		Frame1 Frame2 Frame1_old Frame2_old Sprites_Op in 
+		Frame1_old Frame2_old Sprites_Op in 
 		Frame1_old = {QTk.newImage photo(file:{Append PathPokeBattleSpritesOp {Append "frame1/" {Append {IntToString Num} ".png.gif"}}})}
 		Frame2_old = {QTk.newImage photo(file:{Append PathPokeBattleSpritesOp {Append "frame2/" {Append {IntToString Num} ".png.gif"}}})}
 		Sprites_Op = sprite_op({QTk.newImage photo()} {QTk.newImage photo()})

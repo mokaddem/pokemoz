@@ -1,16 +1,11 @@
 functor
 import
 	System(show:Show)
-	Open
-
 	Offset_data(op_Offset:Op_Offset mi_Offset:Mi_Offset) at 'Data/Offset_data.ozf'
-	CutImages(heroFace:HeroFace pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile allSprites_B:AllSprites_B allSprites_Op:AllSprites_Op background_Battle_Trainer:Background_Battle_Trainer background_Battle_Grass:Background_Battle_Grass allTrainerBattleFrames:AllTrainerBattleFrames getNewPokeFrames:GetNewPokeFrames getSprite_frame_Op:GetSprite_frame_Op)
-	MoveHero(movementHandle:MovementHandle)
-	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
+	CutImages(allSprites_B:AllSprites_B background_Battle_Trainer:Background_Battle_Trainer background_Battle_Grass:Background_Battle_Grass allTrainerBattleFrames:AllTrainerBattleFrames getNewPokeFrames:GetNewPokeFrames getSprite_frame_Op:GetSprite_frame_Op)
+	Util(cellSet:CellSet)
 	QTk at 'x-oz://system/wp/QTk.ozf'
-	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM dELAY:DELAY bAR_WIDTH:BAR_WIDTH bAR_LENGTH:BAR_LENGTH pokeAttackDelay:PokeAttackDelay	barRegressionDelay:BarRegressionDelay autofight:Autofight combat_Speed:Combat_Speed)
-	Trainer(newTrainer:NewTrainer)
-	Pokemoz(newPokemoz:NewPokemoz)
+	PokeConfig(bAR_WIDTH:BAR_WIDTH bAR_LENGTH:BAR_LENGTH barRegressionDelay:BarRegressionDelay autofight:Autofight combat_Speed:Combat_Speed)
 	Battle(runAutoBattle:RunAutoBattle attack:Attack)
 	Game(inBattle:InBattle)
 	
@@ -52,14 +47,12 @@ define
 		
 		/* UI CONTROL */
 		UI_Control_Handler
-		UI_Control_Window
 
 		But_Attk_Handler	Button_Attack
 		But_Poke_Handler	Button_PokemOz
 		But_Fuite_Handler	Button_Fuite
 		But_Capt_Handler	Button_Capture
-		But_Auto_Handler	Button_AutoBattle
-		Scale_handler		Scale					
+		But_Auto_Handler	Button_AutoBattle		
 	in
 			
 		{MiPoke getNum(MiNumber)} {OpPoke getAdjustedNum(OpNumber)}
@@ -206,8 +199,8 @@ define
 		OpBarLength
 		
 
-		XpHandler MiPvHandler MiPokeTextHandler MiPokeLvlHandler MiPokeHPtxtHandler
-		OpPvHandler OpPokeTextHandler OpPokeLvlHandler OpPokeHPtxtHandler
+		MiPokeLvlHandler MiPokeHPtxtHandler
+		OpPokeHPtxtHandler
 		XpTag={UICanvasHandler newTag($)} 
 		MiPvBarTag={UICanvasHandler newTag($)}
 		OpPvBarTag={UICanvasHandler newTag($)}
@@ -232,22 +225,22 @@ define
 	%Mi
 		%Bars
 		{UICanvasHandler create(rectangle MiStartX+3 MiEndY MiEndX-2 MiEndY+7 fill:white width:2.0)}
-      {UICanvasHandler create(rectangle MiStartX+4 MiEndY MiStartX+5+ExpBarLength MiEndY+7 fill:blue outline:nil handle:XpHandler tags:XpTag)}
+      {UICanvasHandler create(rectangle MiStartX+4 MiEndY MiStartX+5+ExpBarLength MiEndY+7 fill:blue outline:nil tags:XpTag)}
       {UICanvasHandler create(rectangle MiStartX MiStartY MiEndX MiEndY+2 fill:white width:3.0)}
-      {UICanvasHandler create(rectangle MiStartX+2 MiStartY+2 MiEndX-BAR_LENGTH+MiBarLength-1 MiEndY+2-1 fill:green outline:nil handle:MiPvHandler tags:MiPvBarTag)}
+      {UICanvasHandler create(rectangle MiStartX+2 MiStartY+2 MiEndX-BAR_LENGTH+MiBarLength-1 MiEndY+2-1 fill:green outline:nil tags:MiPvBarTag)}
       %Texts
-      {UICanvasHandler create(text MiStartX MiStartY-23 text:MiName font:Font14 anchor:nw fill:black handle:MiPokeTextHandler)}
+      {UICanvasHandler create(text MiStartX MiStartY-23 text:MiName font:Font14 anchor:nw fill:black)}
       {UICanvasHandler create(text MiEndX-30 MiStartY-23 text:"Lv." font:Font14 anchor:ne fill:black)}
 		{UICanvasHandler create(text MiEndX-8 MiStartY-28 text:MiLvl font:Font18 anchor:ne fill:black handle:MiPokeLvlHandler)}
 		{UICanvasHandler create(text MiEndX-(BAR_LENGTH div 2) MiStartY+1 text:Hp1Text font:Font8 anchor:n fill:black handle:MiPokeHPtxtHandler)}
 	%Op	
 		%Bars
       {UICanvasHandler create(rectangle OpStartX OpStartY OpEndX OpEndY+2 fill:white width:3.0)}
-      {UICanvasHandler create(rectangle OpStartX+2 OpStartY+2 OpEndX-BAR_LENGTH+OpBarLength-1 OpEndY+2-1 fill:red outline:nil handle:OpPvHandler tags:OpPvBarTag)}
+      {UICanvasHandler create(rectangle OpStartX+2 OpStartY+2 OpEndX-BAR_LENGTH+OpBarLength-1 OpEndY+2-1 fill:red outline:nil tags:OpPvBarTag)}
       %Texts
-      {UICanvasHandler create(text OpStartX OpStartY-23 text:OpName font:Font14 anchor:nw fill:black handle:OpPokeTextHandler)}
+      {UICanvasHandler create(text OpStartX OpStartY-23 text:OpName font:Font14 anchor:nw fill:black)}
       {UICanvasHandler create(text OpEndX-30 OpStartY-23 text:"Lv." font:Font14 anchor:ne fill:black)}
-		{UICanvasHandler create(text OpEndX-8 OpStartY-28 text:OpLvl font:Font18 anchor:ne fill:black handle:OpPokeLvlHandler)}
+		{UICanvasHandler create(text OpEndX-8 OpStartY-28 text:OpLvl font:Font18 anchor:ne fill:black)}
 		{UICanvasHandler create(text OpStartX+(BAR_LENGTH div 2) OpStartY+1 text:Hp2Text font:Font8 anchor:n fill:black handle:OpPokeHPtxtHandler)}
 		
 		

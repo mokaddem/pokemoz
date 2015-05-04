@@ -2,16 +2,13 @@
 functor
 import
 	System(show:Show)
-	Open
 	OS
-	QTk at 'x-oz://system/wp/QTk.ozf'
-	CutImages(allHeroFrames:AllHeroFrames allPokeFrames:AllPokeFrames)
-	DisplayMap(heroTrainer:HeroTrainer heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat fieldType:FieldType placeAllowed:PlaceAllowed deplaceAllowedPlace:DeplaceAllowedPlace lookAround:LookAround launchGameOver:LaunchGameOver)
+	CutImages(allPokeFrames:AllPokeFrames)
+	DisplayMap(heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat fieldType:FieldType placeAllowed:PlaceAllowed lookAround:LookAround launchGameOver:LaunchGameOver)
 	DisplayBattle(prepareBattle:PrepareBattle)
-	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
-	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH wild_Pokemon_proba:Wild_Pokemon_proba rEAL_SPEED:REAL_SPEED trainer_Max_Foot_Number:Trainer_Max_Foot_Number trainer_Move_Proba:Trainer_Move_Proba)
-	Pokemoz(newPokemoz:NewPokemoz generateRandomPokemon:GenerateRandomPokemon)
-	Battle(runAutoBattle:RunAutoBattle)
+	Util(cellSet:CellSet cellGet:CellGet)
+	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH wild_Pokemon_proba:Wild_Pokemon_proba trainer_Max_Foot_Number:Trainer_Max_Foot_Number trainer_Move_Proba:Trainer_Move_Proba)
+	Pokemoz(generateRandomPokemon:GenerateRandomPokemon)
 	Game(inBattle:InBattle)
 	
 export
@@ -134,7 +131,7 @@ define
 /* ******************************** */
 
 	proc {MovementHandle M TrainerPort Frames IsHero FootNumber}
-		X X2
+		X
 	in 
 		X = {CellGet InBattle} {Wait X}
 		if {Not X} then
@@ -155,8 +152,9 @@ define
 				   	[] u then NextX = X1 NextY = Y1-1
 				   	[] d then NextX = X1 NextY = Y1+1
 				   	end
-				   	if {FieldType NextX NextY} \= 'null' then E D X in
-				   		try {{PlaceAllowed NextX NextY} getPokemoz(X)} {Wait X} NextIsTrainer = 'true' catch error(1:E debug:D) then NextIsTrainer = 'false' end
+				   	{Show coucou}
+				   	if {FieldType NextX NextY} \= 'null' then X in
+				   		try {{PlaceAllowed NextX NextY} getPokemoz(X)} {Wait X} NextIsTrainer = 'true' catch error(1:O debug:D) then NextIsTrainer = 'false' end
 				   	
 				   		if {PlaceAllowed NextX NextY} \= 'occupied' then 
 				   			if NextIsTrainer == 'false' then
@@ -169,6 +167,7 @@ define
 				   	else 
 				   		Flag=0  
 				   	end
+				   	{Show coucou2}
 					if Flag==1 then 
 						{MoveHero M H Frames IsHero} 
 						if FootNumber > 0 andthen {Not X} then thread {Wait Waiter} {MovementHandle M TrainerPort Frames IsHero FootNumber-1} end end
@@ -198,9 +197,7 @@ define
 									{TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok1 Pok2 true N}
 									if {Pok2 getHp(Hp)} {Wait Hp} Hp == 0 then {{LookAround NextX NextY Type} setDead()} end end
 								elseif(Wild_Pokemon_proba > {OS.rand} mod 100) then
-									local Pok1 Pok2 in
-										local Pok in {TrainerPort getPokemoz(Pok)} {Wait Pok} {PrepareBattle Pok {GenerateRandomPokemon} false 0} end
-									end
+									local Pok in {TrainerPort getPokemoz(Pok)} {Wait Pok} {PrepareBattle Pok {GenerateRandomPokemon} false 0} end
 								end
 							elseif {Not {CellGet InBattle $}} then
 								if {LookAround NextX NextY Type} \= 'false' then 

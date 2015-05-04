@@ -1,8 +1,4 @@
-functor
-import 
-	System(show:Show)
-	Util(customNewCell:CustomNewCell)
-	
+functor	
 export
 	SQUARE_LENGTH
 	
@@ -54,7 +50,6 @@ define
 	MAXPOKENUMBER = 386 % total number of availbe pokemoz 
 	
 	PokeAttackDelay = DELAY div 2
-	PokeAttackDelayCell = {CustomNewCell (DELAY div 2)}
 	BarRegressionDelay = DELAY div 15
 	REAL_SPEED
 	thread REAL_SPEED = ((10-Speed)*DELAY) end
