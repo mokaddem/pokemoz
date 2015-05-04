@@ -9,7 +9,8 @@ import
 export 
 	Grass_Tile
 	Road_Tile
-	Stone_Tile
+	Stone_Tile_Grass
+	Stone_Tile_Dirt
 	Tomb
 	Background_Battle_Trainer
 	Background_Battle_Grass
@@ -67,14 +68,17 @@ Grass_Tile_old = {QTk.newImage photo(file:'Images/Ground/grass-modif.gif')} %In 
 Grass_Tile = {QTk.newImage photo()}	
 {Grass_Tile copy(Grass_Tile_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))}
 
-
 Road_Tile_old = {QTk.newImage photo(file:'Images/Ground/dirt-modif.gif')}
 Road_Tile = {QTk.newImage photo()}	
-{Road_Tile copy(Road_Tile_old 'from':o(0 0 16 16) zoom:o(2 2))}
+{Road_Tile copy(Road_Tile_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))}
 
-Stone_Tile_old = {QTk.newImage photo(file:'Images/Ground/dirt-modif.gif')}
-Stone_Tile = {QTk.newImage photo()}	
-{Stone_Tile copy(Road_Tile_old 'from':o(0 0 16 16) zoom:o(2 2))}
+Stone_Tile_Grass_old = {QTk.newImage photo(file:'Images/Ground/stone.gif')}
+Stone_Tile_Grass = {QTk.newImage photo()}	
+{Stone_Tile_Grass copy(Stone_Tile_Grass_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))}
+
+Stone_Tile_Dirt_old = {QTk.newImage photo(file:'Images/Ground/stone-dirt.gif')}
+Stone_Tile_Dirt = {QTk.newImage photo()}	
+{Stone_Tile_Dirt copy(Stone_Tile_Dirt_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))}
 
 Tomb = {QTk.newImage photo(file:'Images/Ground/tomb.gif')}
 

@@ -31,7 +31,7 @@ define
 	Button_Pok2 = button(action:proc{$} {Show 'Pok2'} {SaveStarter 4} {Window close} Ok=1 end image:Pok2 handle:But_2_Handler)
 	Button_Pok3 = button(action:proc{$} {Show 'Pok3'} {SaveStarter 7} {Window close} Ok=1 end image:Pok3 handle:But_3_Handler)
 	Button_Prof = button(action:proc{$} {Show 'Ouch!'}
-	local V1 V2 V3 V4 V5 V6 V7 V8 in
+	local V1 V2 V3 V4 V5 V6 V7 V8 V9 in
 		V1= {Num1 get($)}
 		V2= {Num2 get($)}
 		V3= [{Checkfight1 get($)} {Checkfight2 get($)} {Checkfight3 get($)}]
@@ -40,7 +40,8 @@ define
 		V6= {CheckTrain get($)}
 		V7= {CheckAutoMove get($)}
 		V8= {Scale_handler get(firstselection:$)}
-	 	{SaveValue V1 V2 V3 V4 V5 V6 V7 V8}
+		V9= {Num3 get($)}
+	 	{SaveValue V1 V2 V3 V4 V5 V6 V7 V8 V9}
  	end
  	{MakeTheChoice}
  	end image:Prof handle:But_prof_Handler)
@@ -54,6 +55,8 @@ define
 	NumEntry1 = numberentry(min:0 max:100 init:30 handle:Num1 action:proc{$} {Show {Num1 get($)}} end glue:w pady:10 padx:10)
 	Num2
 	NumEntry2 = numberentry(min:0 max:10 init:5 handle:Num2 action:proc{$} {Show {Num2 get($)}} end glue:w pady:10 padx:10)
+	Num3
+	NumEntry3 = numberentry(min:0 max:3 init:1 handle:Num3 action:proc{$} {Show {Num3 get($)}} end glue:w pady:10 padx:10)
 	
 	%CheckButtonfight = checkbutton(text:"Autofight" init:false handle:Checkfight action:proc{$} {Show {Checkfight get($)}} end glue:w pady:10 padx:10)
 	Checkfight1 Checkfight2 Checkfight3
@@ -98,6 +101,8 @@ define
 					newline %Scale + CheckButtonAll - 14
 					newline %Map choice - 15
 					newline %trainer move choice - 16
+					newline %Game difficulty - 17
+					newline %diffi - 118
 					handle:Grid_Handler1)
 			
 	Placeholder_handler G1 G2
@@ -126,6 +131,8 @@ in
 		{Grid_Handler1 configure(CheckButtonAll column:2 row:14 sticky:nw)}
 		{Grid_Handler1 configure(CheckButtonMap column:2 row:15 sticky:nw)}
 		{Grid_Handler1 configure(CheckButtonTrain column:2 row:16 sticky:nw)}
+		{Grid_Handler1 configure(label(text:"Game difficulty:[0 3]" font:Font12 glue:w pady:5 padx:5) column:2 row:17 sticky:nw pady:5 padx:5)}
+		{Grid_Handler1 configure(NumEntry3 column:2 columnspan:3 row:18 pady:5 sticky:w)}
 		
 	  	{Grid_Handler1 configure(label(text:"Speed of POKEMOZ trainers: [0,10]" font:Font12 glue:w pady:5 padx:5)  pady:10 padx:10 column:1 columnspan:2 row:5 sticky:w)}
 		{Grid_Handler1 configure(tdspace(glue:w width:10) column:1 columnspan:3 row:2 pady:5)}
