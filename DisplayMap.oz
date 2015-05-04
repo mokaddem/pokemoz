@@ -40,8 +40,10 @@ define
 	SquareLengthFloat = {IntToFloat SQUARE_LENGTH}
 																	/* GLOBAL_VARIABLES */
 	%Key_positions
-	StartX EndX
-	StartY EndY
+	StartX = {CustomNewCell 0}
+	EndX = {CustomNewCell 0}
+	StartY = {CustomNewCell 0}
+	EndY = {CustomNewCell 0}
 
 	%Canvas
 	CanvasHandler 
@@ -108,6 +110,10 @@ define
 	proc {AddMapBlock MapRecord Canvas}
 		RowLength = {Length {Arity MapRecord}}
 		ColumnLength = {Length {Arity MapRecord.1}}
+		{CellSet StartX RowLength}
+		{CellSet EndX RowLength}
+		{CellSet StartY 1}
+		{CellSet EndY ColumnLength}
 		proc {Recurs CurrRow CurrCol PosX PosY} %construct the map recursively
 			GroundType in
 			if CurrRow<RowLength+1 then  % not EOF
@@ -118,12 +124,12 @@ define
 					of 1 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Grass_Tile anchor:nw)}
 					[]0 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Road_Tile anchor:nw)}
 					[]e then {Canvas create(rect PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH (PosX+1)*SQUARE_LENGTH (PosY+1)*SQUARE_LENGTH fill:red outline:nil)}
-						EndX=PosX
-						EndY=PosY
+						{CellSet EndX PosX}
+						{CellSet EndY PosY}
 					[]s then 
 						{Canvas create(rect PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH (PosX+1)*SQUARE_LENGTH (PosY+1)*SQUARE_LENGTH fill:blue outline:nil)}
-						StartX=PosX
-						StartY=PosY
+						{CellSet StartX PosX}
+						{CellSet StartY PosY}
 					[]9 then %9 for game over
 						{Canvas create(rect PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH (PosX+1)*SQUARE_LENGTH (PosY+1)*SQUARE_LENGTH fill:black outline:nil)}
 						{Wait 75}
@@ -206,11 +212,14 @@ define
 		PosXPokDecal=~14
 		PosYPokDecal={FloatToInt ~1.0*SquareLengthFloat}
 		HeroHandle
+		SX SY
 	in	
-		PokePosition={CustomNewCell pos(x:{IntToFloat StartX} y:({IntToFloat StartY}-SquareLengthFloat/5.0))}
-		{CanvasHandler create(image (StartX)*SQUARE_LENGTH+PosXPokDecal (StartY-1)*SQUARE_LENGTH+PosYPokDecal image:PokeFace anchor:nw handle:PokeHandle)}
-		HeroPosition={CustomNewCell pos(x:{IntToFloat StartX} y:{IntToFloat StartY})}
-		{CanvasHandler create(image (StartX)*SQUARE_LENGTH+HeroPosXDecal (StartY-1)*SQUARE_LENGTH+HeroPosYDecal image:HeroFace anchor:nw handle:HeroHandle)}
+		SX = {CellGet StartX}
+		SY = {CellGet StartY}
+		PokePosition={CustomNewCell pos(x:{IntToFloat SX} y:({IntToFloat SY}-SquareLengthFloat/5.0))}
+		{CanvasHandler create(image (SX)*SQUARE_LENGTH+PosXPokDecal (SY-1)*SQUARE_LENGTH+PosYPokDecal image:PokeFace anchor:nw handle:PokeHandle)}
+		HeroPosition={CustomNewCell pos(x:{IntToFloat SX} y:{IntToFloat SY})}
+		{CanvasHandler create(image (SX)*SQUARE_LENGTH+HeroPosXDecal (SY-1)*SQUARE_LENGTH+HeroPosYDecal image:HeroFace anchor:nw handle:HeroHandle)}
 		HeroHandle
 	end
 	
