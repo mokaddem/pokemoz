@@ -50,14 +50,14 @@ in
 	HeroHandler = {CreateAndDisplayHeroAndFollower}
 	
 	local Num Name Type MvtType in
-		if CheckAutoMove then MvtType={GoTo EndX EndY AllHeroFrames} else MvtType=(proc{$ P} 1=1 end) end
+		if CheckAutoMove then MvtType={GoTo {CellGet EndX} {CellGet EndY} AllHeroFrames} else MvtType=(proc{$ P} 1=1 end) end
 		case Starter
 		of 1 then Num=1 Name="BULBASOZ" Type=grass
 		[]4 then Num=4 Name="CHARMADOZ" Type=fire
 		else Num=7 Name="OZTIRTLE" Type=water
 		end
 		PokemOz = {NewPokemoz state(type:Type num:Num name:Name maxlife:20 currentLife:20 experience:0 level:5)}
-		HeroTrainer = {NewTrainer state(x:StartX y:StartY pokemoz:PokemOz speed:5 movement:MvtType handler:HeroHandler number:1 movementStatus:idle() type:'player')}
+		HeroTrainer = {NewTrainer state(x:{CellGet StartX} y:{CellGet StartY} pokemoz:PokemOz speed:5 movement:MvtType handler:HeroHandler number:1 movementStatus:idle() type:'player')}
 	end
 
 	

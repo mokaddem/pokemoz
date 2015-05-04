@@ -9,6 +9,7 @@ import
 export 
 	Grass_Tile
 	Road_Tile
+	Stone_Tile
 	Tomb
 	Background_Battle_Trainer
 	Background_Battle_Grass
@@ -70,6 +71,10 @@ Grass_Tile = {QTk.newImage photo()}
 Road_Tile_old = {QTk.newImage photo(file:'Images/Ground/dirt-modif.gif')}
 Road_Tile = {QTk.newImage photo()}	
 {Road_Tile copy(Road_Tile_old 'from':o(0 0 16 16) zoom:o(2 2))}
+
+Stone_Tile_old = {QTk.newImage photo(file:'Images/Ground/dirt-modif.gif')}
+Stone_Tile = {QTk.newImage photo()}	
+{Stone_Tile copy(Road_Tile_old 'from':o(0 0 16 16) zoom:o(2 2))}
 
 Tomb = {QTk.newImage photo(file:'Images/Ground/tomb.gif')}
 
