@@ -9,7 +9,7 @@ import
 	MoveHero(movementHandle:MovementHandle randomMove:RandomMove goTo:GoTo)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	PokeChoice(launchTheIntro:LaunchTheIntro)
-	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM dELAY:DELAY wild_Pokemon_proba:Wild_Pokemon_proba pathPokeTotal:PathPokeTotal pathTrainersTotal:PathTrainersTotal starter:Starter autofight:Autofight checkAutoMove:CheckAutoMove)
+	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM dELAY:DELAY wild_Pokemon_proba:Wild_Pokemon_proba pathPokeTotal:PathPokeTotal pathTrainersTotal:PathTrainersTotal starter:Starter autofight:Autofight checkAutoMove:CheckAutoMove checkMap:CheckMap)
 	
 	DisplayMap(heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat fieldType:FieldType
 					createAndDisplayHeroAndFollower:CreateAndDisplayHeroAndFollower createAndDisplayTrainer:CreateAndDisplayTrainer initMap:InitMap mapRecord:MapRecord drawMap:DrawMap
@@ -45,7 +45,7 @@ in
 	IntroFinish = {LaunchTheIntro}
 	{Wait IntroFinish}
 	thread if GameOver then {Show 'GAME OVER'} {CellSet InBattle true} {LaunchGameOver} end end
-	{InitMap}
+	{InitMap {New Open.file init(name:CheckMap flags:[read])}}
 	{DrawMap MapRecord HeroTrainer} %	/!\ Concurrency! {DrawMap} need 'HeroHandler' that need the variables initialated in {DrawMap}
 	HeroHandler = {CreateAndDisplayHeroAndFollower}
 	

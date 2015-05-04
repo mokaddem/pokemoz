@@ -10,6 +10,8 @@ export
 	GRASS_ZOOM
 	POKE_ZOOM
 	
+	CheckMap
+	CustomMap
 	DELAY
 	REAL_SPEED
 	Combat_Speed
@@ -57,7 +59,8 @@ define
 	REAL_SPEED
 	thread REAL_SPEED = ((10-Speed)*DELAY) end
 	Trainer_Move_Proba = 70 % move probability (%)
-	Trainer_Max_Foot_Number = 3
+	Trainer_Max_Foot_Number
+	thread Trainer_Max_Foot_Number = 3 div CheckTrain end
 	
 	HeroPosXDecal=~14
 	HeroPosYDecal=0
@@ -77,14 +80,17 @@ define
 	Autofight	%0=manual 1=autofight 2=autorun
 	CheckAutoMove
 	UnlockAllPok
+	CheckMap
+	CustomMap
+	CheckTrain
 	Starter
 	
-	proc {SaveValue FWild_Pokemon_proba FSpeed FAutofight FUnlockAllPok FCheckAutoMove FCombat_Speed}
+	proc {SaveValue FWild_Pokemon_proba FSpeed FAutofight FUnlockAllPok FCheckMap FCheckTrain FCheckAutoMove FCombat_Speed}
 		Wild_Pokemon_proba = FWild_Pokemon_proba
 		Speed = FSpeed
 		if FAutofight.1 then Autofight=0 elseif FAutofight.2.1 then Autofight=1 else Autofight=2 end
-		{Show FAutofight}
-		{Show Autofight}
+		if FCheckMap then CheckMap='mapX.txt' CustomMap=true else CheckMap='map.txt' CustomMap=false end
+		if FCheckTrain then CheckTrain=1 else CheckTrain=3 end 
 		UnlockAllPok = FUnlockAllPok
 		CheckAutoMove = FCheckAutoMove
 		if FCombat_Speed == 0 then Combat_Speed=100 else Combat_Speed = FCombat_Speed*20 end
