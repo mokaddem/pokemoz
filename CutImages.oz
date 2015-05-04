@@ -13,12 +13,17 @@ export
 	End_Tile
 	Stone_Tile_Grass
 	Stone_Tile_Dirt
+	Tree_Cont
+	Tree_End
+	Tree_Grass
+	HouseAll
 	Tomb
 	Background_Battle_Trainer
 	Background_Battle_Grass
 	
 	HeroFace
 	PokeFace
+	Pokeball
 	
 	AllHeroFrames
 	AllPokeFrames
@@ -87,8 +92,54 @@ Start_Tile = {QTk.newImage photo()}
 {Start_Tile copy(Start_Tile_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))}
 End_Tile = {QTk.newImage photo(file:'Images/Ground/end-tile.gif')}
 
-Tomb = {QTk.newImage photo(file:'Images/Ground/end-tile.gif')}
+Tree_Cont = {QTk.newImage photo(file:'Images/Ground/tree/tree-cont.gif')}
+Tree_End = {QTk.newImage photo(file:'Images/Ground/tree/tree-end.gif')}
+Tree_Grass = {QTk.newImage photo(file:'Images/Ground/tree/tree-grass.gif')}
 
+Tomb = {QTk.newImage photo(file:'Images/Ground/tomb.gif')}
+
+% HOUSE %
+House1_old = {QTk.newImage photo(file:'Images/Ground/house/house2.gif')}
+House2_old = {QTk.newImage photo(file:'Images/Ground/house/house3.gif')}
+House3_old = {QTk.newImage photo(file:'Images/Ground/house/house4.gif')}
+House4_old = {QTk.newImage photo(file:'Images/Ground/house/house5.gif')}
+House5_old = {QTk.newImage photo(file:'Images/Ground/house/house6.gif')}
+House6_old = {QTk.newImage photo(file:'Images/Ground/house/house7.gif')}
+House7_old = {QTk.newImage photo(file:'Images/Ground/house/house8.gif')}
+House8_old = {QTk.newImage photo(file:'Images/Ground/house/house9.gif')}
+House9_old = {QTk.newImage photo(file:'Images/Ground/house/house10.gif')}
+House10_old = {QTk.newImage photo(file:'Images/Ground/house/house11.gif')}
+House11_old = {QTk.newImage photo(file:'Images/Ground/house/house12.gif')}
+House12_old = {QTk.newImage photo(file:'Images/Ground/house/house13.gif')}
+
+House1 = {QTk.newImage photo()}
+House2 = {QTk.newImage photo()}
+House3 = {QTk.newImage photo()}
+House4 = {QTk.newImage photo()}
+House5 = {QTk.newImage photo()}
+House6 = {QTk.newImage photo()}
+House7 = {QTk.newImage photo()}
+House8 = {QTk.newImage photo()}
+House9 = {QTk.newImage photo()}
+House10 = {QTk.newImage photo()}
+House11 = {QTk.newImage photo()}
+House12 = {QTk.newImage photo()}
+
+{House1 copy(House1_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))}
+{House2 copy(House2_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))}
+{House3 copy(House3_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))}
+{House4 copy(House4_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))}
+{House5 copy(House5_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))} 
+{House6 copy(House6_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))} 
+{House7 copy(House7_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))} 
+{House8 copy(House8_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))}
+{House9 copy(House9_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))} 
+{House10 copy(House10_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))} 
+{House11 copy(House11_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))}
+{House12 copy(House12_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))}
+HouseAll = house(House1 House2 House3 House4 House5 House6 House7 House8 House9 House10 House11 House12)
+
+Pokeball = {QTk.newImage photo(file:'Images/Pokemon-sprites-battle/pokeball.gif')}
 %%% Create Trainer Battle Sprites %%%
 AllTrainerBattleFrames_temp = {CustomNewCell trainerbattleframes()}
 for I in 1..4 do

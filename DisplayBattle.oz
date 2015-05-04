@@ -4,7 +4,7 @@ import
 	Open
 
 	Offset_data(op_Offset:Op_Offset mi_Offset:Mi_Offset) at 'Data/Offset_data.ozf'
-	CutImages(heroFace:HeroFace pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile allSprites_B:AllSprites_B allSprites_Op:AllSprites_Op background_Battle_Trainer:Background_Battle_Trainer background_Battle_Grass:Background_Battle_Grass allTrainerBattleFrames:AllTrainerBattleFrames getNewPokeFrames:GetNewPokeFrames getSprite_frame_Op:GetSprite_frame_Op)
+	CutImages(heroFace:HeroFace pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile allSprites_B:AllSprites_B allSprites_Op:AllSprites_Op background_Battle_Trainer:Background_Battle_Trainer background_Battle_Grass:Background_Battle_Grass allTrainerBattleFrames:AllTrainerBattleFrames getNewPokeFrames:GetNewPokeFrames getSprite_frame_Op:GetSprite_frame_Op pokeball:Pokeball)
 	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	QTk at 'x-oz://system/wp/QTk.ozf'
@@ -92,13 +92,13 @@ define
 		/* START UI CONTROL */
 
 				Button_Attack = button(text:"Attack" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} if {OpPoke getHp($)}>=0 then EndBattle=true end end handle:But_Attk_Handler)
-				Button_PokemOz = button(text:"PokemOz" action:proc{$} {Show 'PokemOz'} end handle:But_Poke_Handler)
+				Button_PokemOz = button(text:"PokemOz" action:proc{$} {Show 'PokemOz'} {DialogText set(text:"You have only one PokemOz!")} end handle:But_Poke_Handler)
 			if {Not IsTrainer} then	
 				Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} {CellSet InBattle false} EndBattle = true {Window close} end handle:But_Capt_Handler)
 			else
 				Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} end handle:But_Capt_Handler)
 			end		
-				Button_Capture = button(text:"Capture" action:proc{$} {Show 'Capture'} end handle:But_Fuite_Handler)
+				Button_Capture = button(text:"Capture" action:proc{$} {Show 'Capture'} {ThrowPokeball UICanvasHandler DialogText PokeTagsRecord OpNumber} end handle:But_Fuite_Handler)
 				Button_AutoBattle = button(text:"Auto-Battle" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} if {OpPoke getHp($)}>=0 then EndBattle=true end end handle:But_Auto_Handler)
 				
 
@@ -119,8 +119,8 @@ define
 			else
 				{Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} end)}
 			end
-				{Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
-				{Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
+				{Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} {DialogText set(text:"You have only one PokemOz!")} end)}
+				{Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} {ThrowPokeball UICanvasHandler DialogText PokeTagsRecord OpNumber} end)}
 				{Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} if {OpPoke getHp($)}>=0 then EndBattle=true end end)}
 		
 		elseif Autofight==1 then 
@@ -412,6 +412,28 @@ define
 		{Pok setNum(N+1)}
 		{GetNewPokeFrames N+1}
 		{WindowEvol close}
+	end
+
+	proc {ThrowPokeball Canvas DialogText PokeTagsRecord OpNumber}
+		PokeHandler 
+		CorrectOpSprites = {GetSprite_frame_Op OpNumber}
+		in
+		{Canvas create(image 0 UI_HEIGHT image:Pokeball anchor:ne handle:PokeHandler)}
+		for I in 0.. (OpPokePosX)	do
+			{Delay 1}
+			{PokeHandler move((1) ~(I mod 2))}
+			{Show I}
+		end
+		{PokeTagsRecord.op set(image:CorrectOpSprites.2)}
+		{Delay 110}
+		{PokeTagsRecord.op set(image:CorrectOpSprites.1)}
+		for I in 0.. 200	do
+			{Delay 1}
+			{PokeHandler move((I mod 3) ~(2))}
+			{Show I}
+		end	
+		{DialogText set(text:"You missed!")}
+		{Delay 500}
 	end
 
 end

@@ -17,7 +17,7 @@ import
 	
 	DisplayBattle(prepareBattle:PrepareBattle)
 	Trainer(newTrainer:NewTrainer)
-	Pokemoz(newPokemoz:NewPokemoz)
+	Pokemoz(newPokemoz:NewPokemoz generateRandomPokemon:GenerateRandomPokemon)
 	Battle(runBattle:RunBattle)
 	
 export
@@ -63,53 +63,53 @@ in
 /*trainer 1*/
 	local 
 		Trainer1 TrainerHandle1 TrainerFrames1 TrainerCreation PokeTrainer1
-		TrainerPosX1=1
-		TrainerPosY1=1
+		TrainerPosX1=10
+		TrainerPosY1=9
 	in 
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 1} 
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
 		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE1" maxlife:20 currentLife:20 experience:0 level:5)}
-		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:1 movementStatus:idle() type:'ia')}
+		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:{GenerateRandomPokemon} speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:1 movementStatus:idle() type:'ia')}
 	end
 
 /*trainer 2*/
 	local 
 		Trainer1 TrainerHandle1 TrainerFrames1 TrainerCreation PokeTrainer1
-		TrainerPosX1=2
-		TrainerPosY1=2
+		TrainerPosX1=4
+		TrainerPosY1=7
 	in 
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 2} 
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
 		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE2" maxlife:20 currentLife:20 experience:0 level:5)}
-		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:2 movementStatus:idle() type:'ia')}
+		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:{GenerateRandomPokemon} speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:2 movementStatus:idle() type:'ia')}
 	end
 	
 /*trainer 3*/
 	local 
 		Trainer1 TrainerHandle1 TrainerFrames1 TrainerCreation PokeTrainer1
-		TrainerPosX1=3
-		TrainerPosY1=3
+		TrainerPosX1=11
+		TrainerPosY1=2
 	in 
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 3} 
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
 		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE3" maxlife:20 currentLife:20 experience:0 level:5)}
-		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:3 movementStatus:idle() type:'ia')}
+		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:{GenerateRandomPokemon} speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:3 movementStatus:idle() type:'ia')}
 	end
 
 /*trainer 4*/
 	local 
 		Trainer1 TrainerHandle1 TrainerFrames1 TrainerCreation PokeTrainer1
-		TrainerPosX1=4
-		TrainerPosY1=4
+		TrainerPosX1=16
+		TrainerPosY1=7
 	in 
 		TrainerCreation = {CreateAndDisplayTrainer TrainerPosX1 TrainerPosY1 4} 
 		TrainerHandle1 = TrainerCreation.handle
 		TrainerFrames1 = TrainerCreation.frames
 		PokeTrainer1 = {NewPokemoz state(type:water num:7 name:"OZTIRTLE4" maxlife:20 currentLife:20 experience:0 level:5)}
-		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:PokeTrainer1 speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:4 movementStatus:idle() type:'ia')}
+		Trainer1 = {NewTrainer state(x:TrainerPosX1 y:TrainerPosY1 pokemoz:{GenerateRandomPokemon} speed:5 movement:{RandomMove TrainerFrames1} handler:TrainerHandle1 number:4 movementStatus:idle() type:'ia')}
 	end
 
 end
