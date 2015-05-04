@@ -4,7 +4,7 @@ import
 	OS
 	Util(cellSet:CellSet)
 	PokeConfig(combat_Speed:Combat_Speed)
-	Game(inBattle:InBattle gameOver:GameOver)
+	Game(inBattle:InBattle)
 	DisplayBattle(computeBarLength:ComputeBarLength doTheBarAnimation:DoTheBarAnimation doThePokeAttackAnimation:DoThePokeAttackAnimation doTheXpBarAnimation:DoTheXpBarAnimation doTheFaintAnim:DoTheFaintAnim doTheEvolution:DoTheEvolution)
 	DisplayMap(launchGameOver:LaunchGameOver)
 export
@@ -73,7 +73,6 @@ define
 
 				{Window close} 
 				{CellSet InBattle true}
-				GameOver=true
 				{LaunchGameOver false}
 			end
 		else
