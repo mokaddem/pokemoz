@@ -21,3 +21,6 @@ edit: open
 
 kill:
 	kill -9 $$(pidof /usr/bin/ozwish)
+	
+zip:
+	zip andre-mokaddem *oz -r Images/ Data/*oz makefile README.md mapX.txt map.txt *.pdf
