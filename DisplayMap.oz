@@ -6,7 +6,7 @@ import
 	System(show:Show)
 	Open
 
-	CutImages(heroFace:HeroFace allHeroFrames:AllHeroFrames pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile stone_Tile_Grass:Stone_Tile_Grass stone_Tile_Dirt:Stone_Tile_Dirt createMovementImages:CreateMovementImages)
+	CutImages(heroFace:HeroFace allHeroFrames:AllHeroFrames pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile stone_Tile_Grass:Stone_Tile_Grass stone_Tile_Dirt:Stone_Tile_Dirt start_Tile:Start_Tile end_Tile:End_Tile createMovementImages:CreateMovementImages)
 	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	QTk at 'x-oz://system/wp/QTk.ozf'
@@ -125,11 +125,14 @@ define
 					[]0 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Road_Tile anchor:nw)}
 					[]2 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Stone_Tile_Grass anchor:nw)}
 					[]3 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Stone_Tile_Dirt anchor:nw)}
-					[]e then {Canvas create(rect PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH (PosX+1)*SQUARE_LENGTH (PosY+1)*SQUARE_LENGTH fill:red outline:nil)}
+					[]e then 
+						%{Canvas create(rect PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH (PosX+1)*SQUARE_LENGTH (PosY+1)*SQUARE_LENGTH fill:red outline:nil)}
+						{Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:End_Tile anchor:nw)}
 						{CellSet EndX PosX}
 						{CellSet EndY PosY}
 					[]s then 
-						{Canvas create(rect PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH (PosX+1)*SQUARE_LENGTH (PosY+1)*SQUARE_LENGTH fill:blue outline:nil)}
+						%{Canvas create(rect PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH (PosX+1)*SQUARE_LENGTH (PosY+1)*SQUARE_LENGTH fill:blue outline:nil)}
+						{Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Start_Tile anchor:nw)}
 						{CellSet StartX PosX}
 						{CellSet StartY PosY}
 					[]9 then %9 for game over
@@ -264,6 +267,7 @@ define
 			for M in 1..{Length {Arity MapRecord.N}} do
 				AllowedPlace.N.M = {CustomNewCell MapRecord.N.M}
 				if {CellGet AllowedPlace.N.M} == 2 then {CellSet AllowedPlace.N.M 'occupied'} end
+				if {CellGet AllowedPlace.N.M} == 3 then {CellSet AllowedPlace.N.M 'occupied'} end
 			end
 		end
 		{MapFile close}

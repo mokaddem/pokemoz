@@ -9,6 +9,8 @@ import
 export 
 	Grass_Tile
 	Road_Tile
+	Start_Tile
+	End_Tile
 	Stone_Tile_Grass
 	Stone_Tile_Dirt
 	Tomb
@@ -80,7 +82,12 @@ Stone_Tile_Dirt_old = {QTk.newImage photo(file:'Images/Ground/stone-dirt.gif')}
 Stone_Tile_Dirt = {QTk.newImage photo()}	
 {Stone_Tile_Dirt copy(Stone_Tile_Dirt_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))}
 
-Tomb = {QTk.newImage photo(file:'Images/Ground/tomb.gif')}
+Start_Tile_old = {QTk.newImage photo(file:'Images/Ground/start-tile.gif')}
+Start_Tile = {QTk.newImage photo()}	
+{Start_Tile copy(Start_Tile_old 'from':o(0 0 16 16) zoom:o(GRASS_ZOOM))}
+End_Tile = {QTk.newImage photo(file:'Images/Ground/end-tile.gif')}
+
+Tomb = {QTk.newImage photo(file:'Images/Ground/end-tile.gif')}
 
 %%% Create Trainer Battle Sprites %%%
 AllTrainerBattleFrames_temp = {CustomNewCell trainerbattleframes()}
