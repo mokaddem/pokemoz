@@ -235,8 +235,18 @@ define
 
 	proc {InitMap MapFile}
 		{MapFile read(list:MapParsed size:all)}
-		MapRecord={List.toTuple map {Scan MapParsed}}
-			%Check if CustomMap
+		if (CustomMap) then %Check if CustomMap
+			MapRecord={List.toTuple map {Scan MapParsed}}
+		else
+			local Length Heigth MapRecordTemp MapRecordModif1 MapRecordModif2 in 
+				MapRecordTemp = {List.toTuple map {Scan MapParsed}}
+   			Length = {Width MapRecordTemp.1}
+   			Heigth = {Width MapRecordTemp}
+				MapRecordModif1 = {Record.adjoinAt MapRecordTemp Heigth {Record.adjoinAt MapRecordTemp.Heigth Length s}}
+				MapRecord = {Record.adjoinAt MapRecordModif1 1 {Record.adjoinAt MapRecordModif1.1 Length e}}
+			end
+		end
+		
 		AllowedPlace = {Record.make allowed {Arity MapRecord}}
 		for N in 1..{Length {Arity MapRecord}} do
 			AllowedPlace.N = {Record.make allowed {Arity MapRecord.N}}
