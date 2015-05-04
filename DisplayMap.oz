@@ -10,7 +10,7 @@ import
 	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	QTk at 'x-oz://system/wp/QTk.ozf'
-	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM heroPosYDecal:HeroPosYDecal heroPosXDecal:HeroPosXDecal pathTrainersTotal:PathTrainersTotal pathPokeTotal:PathPokeTotal)
+	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH hERO_SUBSAMPLE:HERO_SUBSAMPLE gRASS_ZOOM:GRASS_ZOOM heroPosYDecal:HeroPosYDecal heroPosXDecal:HeroPosXDecal pathTrainersTotal:PathTrainersTotal pathPokeTotal:PathPokeTotal customMap:CustomMap)
 	Trainer(newTrainer:NewTrainer)
 	Pokemoz(newPokemoz:NewPokemoz)
 	Battle(runBattle:RunBattle)
@@ -243,10 +243,10 @@ define
 	Charmo = {NewPokemoz state(type:fire num:0 name:charmozer maxlife:20 currentLife:20 experience:0 level:5)}
 	{RunBattle Bulba Charmo}*/
 
-	proc {InitMap}
-		MapFile={New Open.file init(name:'map.txt' flags:[read])}
+	proc {InitMap MapFile}
 		{MapFile read(list:MapParsed size:all)}
 		MapRecord={List.toTuple map {Scan MapParsed}}
+			%Check if CustomMap
 		AllowedPlace = {Record.make allowed {Arity MapRecord}}
 		for N in 1..{Length {Arity MapRecord}} do
 			AllowedPlace.N = {Record.make allowed {Arity MapRecord.N}}
