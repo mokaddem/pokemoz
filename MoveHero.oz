@@ -177,23 +177,26 @@ define
 							if {LookAround NextX NextY Type} \= 'false' then 
 								if(IsHero andthen {Not {CellGet InBattle $}}) then
 									{Show 'Battle with Other Trainer !1'}
-									local Pok1 Pok2 N in 
+									local Pok1 Pok2 N Hp in 
 									if IsHero then {{LookAround NextX NextY Type} getNumber(N)} else {TrainerPort getNumber(N)} end
-									{TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok1 Pok2 true N}  end
+									{TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok1 Pok2 true N}
+									if {Pok2 getHp(Hp)} {Wait Hp} Hp == 0 then {{LookAround NextX NextY Type} setDead()} end end
 								elseif {Not {CellGet InBattle $}}  then
 									{Show 'Battle with Other Trainer !2'}
-									local Pok1 Pok2 N in
+									local Pok1 Pok2 N Hp in
 									if IsHero then {{LookAround NextX NextY Type} getNumber(N)} else {TrainerPort getNumber(N)} end
-									{TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok2 Pok1 true N}  end
+									{TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok2 Pok1 true N}
+									if {Pok1 getHp(Hp)} {Wait Hp} Hp == 0 then {TrainerPort setDead()} end end
 								end 
 							end
 						[] 1 then 
 							if(IsHero andthen {Not {CellGet InBattle $}}) then
 								if {LookAround NextX NextY Type} \= 'false' then 
 									{Show 'Battle with Other Trainer !3'}
-									local Pok1 Pok2 N in 
+									local Pok1 Pok2 N Hp in 
 									if IsHero then {{LookAround NextX NextY Type} getNumber(N)} else {TrainerPort getNumber(N)} end
-									{TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok1 Pok2 true N}  end
+									{TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok1 Pok2 true N}
+									if {Pok2 getHp(Hp)} {Wait Hp} Hp == 0 then {{LookAround NextX NextY Type} setDead()} end end
 								elseif(Wild_Pokemon_proba > {OS.rand} mod 100) then
 									local Pok1 Pok2 in
 										local Pok in {TrainerPort getPokemoz(Pok)} {Wait Pok} {PrepareBattle Pok {GenerateRandomPokemon} false 0} end
@@ -202,9 +205,10 @@ define
 							elseif {Not {CellGet InBattle $}} then
 								if {LookAround NextX NextY Type} \= 'false' then 
 									{Show 'Battle with Other Trainer !4'}
-									local Pok1 Pok2 N in 
+									local Pok1 Pok2 N Hp in 
 									if IsHero then {{LookAround NextX NextY Type} getNumber(N)} else {TrainerPort getNumber(N)} end
-									{TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok2 Pok1 true N} end
+									{TrainerPort getPokemoz(Pok1)} {{LookAround NextX NextY Type} getPokemoz(Pok2)} {Wait Pok1} {Wait Pok2} {PrepareBattle Pok2 Pok1 true N}
+									if {Pok1 getHp(Hp)} {Wait Hp} Hp == 0 then {TrainerPort setDead()} end end
 								end
 							end
 						else

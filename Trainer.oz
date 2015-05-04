@@ -9,7 +9,7 @@ define
 	% State = state(x:X y:Y pokemoz:P speed:S movement:M handler:H number:N movementStatus:MovementStatus incombat:IC)
 	fun {NewTrainer Init}
 		proc {Loop S State}
-			if State.type \= 'dead' then case S of Msg|S2 then {Loop S2 {HandleMessage Msg State}} end end
+			case S of Msg|S2 then {Loop S2 {HandleMessage Msg State}} end
 		end
 
 		proc {LoopMovement P}
@@ -37,7 +37,7 @@ define
 				state(x:(State.x + X) y:(State.y + Y) pokemoz:(State.pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:(State.movementStatus) type:(State.type))
 			[] pokemoz(Pokemoz) then state(x:(State.x) y:(State.y) pokemoz:(Pokemoz) speed:(State.speed) movement:(State.movement) handler:(State.handler) 'number':(State.number) movementStatus:(State.movementStatus) type:(State.type))
 			[] state(x y pokemoz speed movement) then {DeplaceAllowedPlace Msg.x Msg.y Msg.x Msg.y proc {$ F} {Send P F} end} Msg
-			[] setDead() then state(x:(State.x) y:(State.y) pokemoz:(State.pokemoz) speed:0 movement:proc {$} 1=1 end handler:(State.handler) 'number':(State.number) movementStatus:moving() type:'dead')
+			[] setDead() then state(x:(State.x) y:(State.y) pokemoz:(State.pokemoz) speed:0 movement:proc {$ T} 1=1 end handler:(State.handler) 'number':(State.number) movementStatus:moving() type:'dead')
 			[] getPosition(x:X y:Y) then X=State.x Y=State.y State
 			[] getPokemoz(P) then P=State.pokemoz State
 			[] getMovement(M) then M=State.movement State
