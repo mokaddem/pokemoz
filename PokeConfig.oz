@@ -77,17 +77,15 @@ define
 	Autofight	%0=manual 1=autofight 2=autorun
 	CheckAutoMove
 	UnlockAllPok
-	PlayerName
 	Starter
 	
-	proc {SaveValue FWild_Pokemon_proba FSpeed FAutofight FUnlockAllPok FPlayerName FCheckAutoMove FCombat_Speed}
+	proc {SaveValue FWild_Pokemon_proba FSpeed FAutofight FUnlockAllPok FCheckAutoMove FCombat_Speed}
 		Wild_Pokemon_proba = FWild_Pokemon_proba
 		Speed = FSpeed
 		if FAutofight.1 then Autofight=0 elseif FAutofight.2.1 then Autofight=1 else Autofight=2 end
 		{Show FAutofight}
 		{Show Autofight}
 		UnlockAllPok = FUnlockAllPok
-		PlayerName = FPlayerName
 		CheckAutoMove = FCheckAutoMove
 		if FCombat_Speed == 0 then Combat_Speed=100 else Combat_Speed = FCombat_Speed*20 end
 	end

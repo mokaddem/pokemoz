@@ -29,20 +29,20 @@ define
 	Button_Pok2 = button(action:proc{$} {Show 'Pok2'} {SaveStarter 4} {Window close} Ok=1 end image:Pok2 handle:But_2_Handler)
 	Button_Pok3 = button(action:proc{$} {Show 'Pok3'} {SaveStarter 7} {Window close} Ok=1 end image:Pok3 handle:But_3_Handler)
 	Button_Prof = button(action:proc{$} {Show 'Ouch!'}
-	local V1 V2 V3 V4 V6 V7 V8 in
+	local V1 V2 V3 V4 V7 V8 in
 		V1= {Num1 get($)}
 		V2= {Num2 get($)}
 		V3= [{Checkfight1 get($)} {Checkfight2 get($)} {Checkfight3 get($)}]
 		V4= {CheckAll get($)}
-		V6= {Name get($)}
 		V7= {CheckAutoMove get($)}
 		V8= {Scale_handler get(firstselection:$)}
-	 	{SaveValue V1 V2 V3 V4 V6 V7 V8}
+	 	{SaveValue V1 V2 V3 V4 V7 V8}
  	end
  	{MakeTheChoice}
  	end image:Prof handle:But_prof_Handler)
 	
-	Grid2 = grid(empty empty  empty newline
+	Grid2 = grid(empty label(image:Prof) empty newline
+					newline
 					Button_Pok1 Button_Pok2 Button_Pok3
 					handle:Grid_Handler2)
 	
@@ -67,8 +67,6 @@ define
 	
 	CheckAutoMove
 	CheckButtonMove = checkbutton(text:"AutoMove" init:false handle:CheckAutoMove action:proc{$} {Show {CheckAutoMove get($)}} end glue:w pady:10 padx:10)
-	Name
-	NameEntry = entry(init:"Enter your name." handle:Name action:proc{$} {Show {String.toAtom {Name get($)}}} end pady:10 padx:10)
 	CheckAll
 	CheckButtonAll = checkbutton(text:"Unlock All POKEMOZ (set them to normal type)" init:false handle:CheckAll action:proc{$} {Show {CheckAll get($)}} end glue:w pady:10 padx:10)
 	
@@ -78,11 +76,11 @@ define
 	
 	Grid1 = grid(newline
 					empty newline
-					label(text:"Wild POKEMOZ probability: [0,100]" font:Font16 glue:w pady:10 padx:10) empty NameEntry newline
+					label(text:"Wild POKEMOZ probability: [0,100]" font:Font16 glue:w pady:10 padx:10) newline
 					NumEntry1 empty empty newline
 					label(text:"Speed of POKEMOZ trainers: [0,10]" font:Font16 glue:w pady:10 padx:10) newline
 					NumEntry2 empty empty newline
-					label(text:"Auto-pilote options:" font:Font16 glue:w pady:10 padx:10) label(text:"Press Here to play -->" font:Font10 glue:e) newline
+					label(text:"Auto-pilote options:" font:Font16 glue:w pady:10 padx:10) newline
 					CheckButtonfight newline
 					CheckButtonMove newline
 					newline
@@ -107,7 +105,7 @@ in
 	%The parameters window
 	  	{Grid_Handler1 configure(label(text:"Hello! Enter your game's parameters below." font:Font22 glue:w) column:1 columnspan:3 row:1 pady:5)}
 		{Grid_Handler1 configure(tdspace(glue:w width:10) column:1 columnspan:3 row:2 pady:10)}
-		{Grid_Handler1 configure(Button_Prof column:3 rowspan:25 row:4 pady:5 padx:5)}
+		{Grid_Handler1 configure(Button_Prof column:3 rowspan:25 row:4 pady:5 padx:15)}
 		{Window show}
 		Ok
 	end
