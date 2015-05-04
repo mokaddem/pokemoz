@@ -34,7 +34,7 @@ define
 		{Pok2 getType(Type2)}
 		{Pok1 getName(Name1)}
 		{Pok2 getName(Name2)}
-		{Pok2 getNum(OpNumber)}
+		{Pok2 getAdjustedNum(OpNumber)}
 		{Pok1 getLevel(Level1)}
 		{Pok2 getLevel(Level2)}
 		Damage = {GetDamage Type1 Type2 Level1 Level2}
