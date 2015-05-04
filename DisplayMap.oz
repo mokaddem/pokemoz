@@ -166,7 +166,7 @@ define
 	end
 	
 	fun {FieldType X Y}
-		if X > {Length {Arity MapRecord}} then null
+		if X > {Length {Arity MapRecord.1}} then null
 		else if X < 1 then null
 		else if Y > {Length {Arity MapRecord}} then null
 		else if Y < 1  then null
@@ -174,7 +174,7 @@ define
 	end
 	
 	fun {PlaceAllowed X Y}
-		if X > {Length {Arity AllowedPlace}} then null
+		if X > {Length {Arity AllowedPlace.1}} then null
 		else if X < 1 then null
 		else if Y > {Length {Arity AllowedPlace}} then null
 		else if Y < 1  then null
@@ -191,7 +191,7 @@ define
 		OtherType T1 T2 T3 T4 in
 		if Type == 'player' then OtherType = 'ia'
 		elseif Type == 'ia' then OtherType = 'player' 
-		elseif Type == 'dead' then OtherType = 'dead' end
+		elseif Type == 'dead' then OtherType = 'dea' end
 		
 		try {{PlaceAllowed X-1 Y} getType(T1)} catch error(1:X debug:D) then T1 = 'false' end
 		try {{PlaceAllowed X Y-1} getType(T2)} catch error(1:X debug:D) then T2 = 'false' end
