@@ -33,6 +33,8 @@ export
 	PathPokeTotal
 	
 	Starter
+	UnlockAllPok
+	MAXPOKENUMBER
 	
 	SaveValue
 	SaveStarter
@@ -46,6 +48,8 @@ define
 	POKE_ZOOM = 3
 	
 	DELAY = 200 % delay between the moves
+	
+	MAXPOKENUMBER = 386 % total number of availbe pokemoz 
 	
 	PokeAttackDelay = DELAY div 2
 	PokeAttackDelayCell = {CustomNewCell (DELAY div 2)}
@@ -73,18 +77,16 @@ define
 	Autofight	%0=manual 1=autofight 2=autorun
 	CheckAutoMove
 	UnlockAllPok
-	NormalTypeActivated
 	PlayerName
 	Starter
 	
-	proc {SaveValue FWild_Pokemon_proba FSpeed FAutofight FUnlockAllPok FNormalTypeActivated FPlayerName FCheckAutoMove FCombat_Speed}
+	proc {SaveValue FWild_Pokemon_proba FSpeed FAutofight FUnlockAllPok FPlayerName FCheckAutoMove FCombat_Speed}
 		Wild_Pokemon_proba = FWild_Pokemon_proba
 		Speed = FSpeed
 		if FAutofight.1 then Autofight=0 elseif FAutofight.2.1 then Autofight=1 else Autofight=2 end
 		{Show FAutofight}
 		{Show Autofight}
 		UnlockAllPok = FUnlockAllPok
-		NormalTypeActivated = FNormalTypeActivated
 		PlayerName = FPlayerName
 		CheckAutoMove = FCheckAutoMove
 		if FCombat_Speed == 0 then Combat_Speed=100 else Combat_Speed = FCombat_Speed*40 end

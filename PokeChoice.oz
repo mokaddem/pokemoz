@@ -29,16 +29,15 @@ define
 	Button_Pok2 = button(action:proc{$} {Show 'Pok2'} {SaveStarter 4} {Window close} Ok=1 end image:Pok2 handle:But_2_Handler)
 	Button_Pok3 = button(action:proc{$} {Show 'Pok3'} {SaveStarter 7} {Window close} Ok=1 end image:Pok3 handle:But_3_Handler)
 	Button_Prof = button(action:proc{$} {Show 'Ouch!'}
-	local V1 V2 V3 V4 V5 V6 V7 V8 in
+	local V1 V2 V3 V4 V6 V7 V8 in
 		V1= {Num1 get($)}
 		V2= {Num2 get($)}
 		V3= [{Checkfight1 get($)} {Checkfight2 get($)} {Checkfight3 get($)}]
 		V4= {CheckAll get($)}
-		V5= {CheckNormal get($)}
 		V6= {Name get($)}
 		V7= {CheckAutoMove get($)}
 		V8= {Scale_handler get(firstselection:$)}
-	 	{SaveValue V1 V2 V3 V4 V5 V6 V7 V8}
+	 	{SaveValue V1 V2 V3 V4 V6 V7 V8}
  	end
  	{MakeTheChoice}
  	end image:Prof handle:But_prof_Handler)
@@ -71,9 +70,7 @@ define
 	Name
 	NameEntry = entry(init:"Enter your name." handle:Name action:proc{$} {Show {String.toAtom {Name get($)}}} end pady:10 padx:10)
 	CheckAll
-	CheckButtonAll = checkbutton(text:"Unlock All POKEMOZ" init:false handle:CheckAll action:proc{$} {Show {CheckAll get($)}} end glue:w pady:10 padx:10)
-	CheckNormal
-	CheckButtonNormal = checkbutton(text:"Set the type of new POKEMOZ to type NORMAL" init:false handle:CheckNormal action:proc{$} {Show {CheckNormal get($)}} end glue:w pady:10 padx:10)
+	CheckButtonAll = checkbutton(text:"Unlock All POKEMOZ (set them to normal type)" init:false handle:CheckAll action:proc{$} {Show {CheckAll get($)}} end glue:w pady:10 padx:10)
 	
 	Scale_handler
 	Scale = listbox(init:[10 9 8 7 6 5 4 3 2 1]
@@ -91,7 +88,6 @@ define
 					newline
 					label(text:"Custom Option" font:Font22 glue:w pady:10 padx:10) newline
 					CheckButtonAll newline
-					CheckButtonNormal newline
 					label(text:"Speed of combat:" font:Font16 glue:w pady:10 padx:10) newline
 					Scale
 					handle:Grid_Handler1)

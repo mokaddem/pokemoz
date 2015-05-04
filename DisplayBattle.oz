@@ -4,7 +4,7 @@ import
 	Open
 
 	Offset_data(op_Offset:Op_Offset mi_Offset:Mi_Offset) at 'Data/Offset_data.ozf'
-	CutImages(heroFace:HeroFace pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile allSprites_B:AllSprites_B allSprites_Op:AllSprites_Op background_Battle_Trainer:Background_Battle_Trainer background_Battle_Grass:Background_Battle_Grass allTrainerBattleFrames:AllTrainerBattleFrames getNewPokeFrames:GetNewPokeFrames)
+	CutImages(heroFace:HeroFace pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile allSprites_B:AllSprites_B allSprites_Op:AllSprites_Op background_Battle_Trainer:Background_Battle_Trainer background_Battle_Grass:Background_Battle_Grass allTrainerBattleFrames:AllTrainerBattleFrames getNewPokeFrames:GetNewPokeFrames getSprite_frame_Op:GetSprite_frame_Op)
 	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	QTk at 'x-oz://system/wp/QTk.ozf'
@@ -125,6 +125,7 @@ define
 		OpPokeTag = {UICanvasHandler newTag($)}
 		MiPokeTag = {UICanvasHandler newTag($)}
 		TrainerTag = {UICanvasHandler newTag($)}
+		CorrectOpSprites = {GetSprite_frame_Op OpNumber}
 	in
 		local Poke_Offset_Op Poke_Offset_Mi D in
 			D=250
@@ -144,19 +145,20 @@ define
 				{DialogText set(text:"A wild POKEMOZ appeared!")}
 			end
 			
-				{UICanvasHandler create(image OpPokePosX OpPokePosY+Poke_Offset_Op image:AllSprites_Op.OpNumber.1 anchor:center tags:OpPokeTag)}
+				%{UICanvasHandler create(image OpPokePosX OpPokePosY+Poke_Offset_Op image:AllSprites_Op.OpNumber.1 anchor:center tags:OpPokeTag)}
+				{UICanvasHandler create(image OpPokePosX OpPokePosY+Poke_Offset_Op image:CorrectOpSprites.1 anchor:center tags:OpPokeTag)}
 				{UICanvasHandler create(image MiPokePosX MiPokePosY+Poke_Offset_Mi image:AllSprites_B.MiNumber anchor:se tags:MiPokeTag)}
 				
 				{Delay 2*D}
-				{OpPokeTag set(image:AllSprites_Op.OpNumber.2)}
+				{OpPokeTag set(image:CorrectOpSprites.2)}
 				{Delay D}
-				{OpPokeTag set(image:AllSprites_Op.OpNumber.1)}
+				{OpPokeTag set(image:CorrectOpSprites.1)}
 				{Delay D}
-				{OpPokeTag set(image:AllSprites_Op.OpNumber.2)}
+				{OpPokeTag set(image:CorrectOpSprites.2)}
 				{Delay D}
-				{OpPokeTag set(image:AllSprites_Op.OpNumber.1)}
+				{OpPokeTag set(image:CorrectOpSprites.1)}
 				{Delay D}
-				{OpPokeTag set(image:AllSprites_Op.OpNumber.1)}
+				{OpPokeTag set(image:CorrectOpSprites.1)}
 				{Delay 3*D}
 			
 		end
@@ -271,6 +273,8 @@ define
 	
 	%Poke Attack anim
 	proc {DoThePokeAttackAnimation PokeTag OpNumber Mibool}
+		CorrectOpSprites = {GetSprite_frame_Op OpNumber}
+		in
 		if (Mibool) then
 			{PokeTag move(30 0)}
 			{Delay Combat_Speed*2}
@@ -278,9 +282,9 @@ define
 		else	
 			{PokeTag move(~30 15)}
 			{Delay Combat_Speed}
-			{PokeTag set(image:AllSprites_Op.OpNumber.2)}
+			{PokeTag set(image:CorrectOpSprites.2)}
 			{Delay Combat_Speed*2}
-			{PokeTag set(image:AllSprites_Op.OpNumber.1)}
+			{PokeTag set(image:CorrectOpSprites.1)}
 			{Delay Combat_Speed}
 			{PokeTag move(30 ~15)}
 		end
@@ -318,18 +322,20 @@ define
 	proc {DoTheEvolution Pok}
 		CanvasEvolHandler 
 		CanvasEvol= canvas(handle:CanvasEvolHandler width:500 height:300 bg:black)
-		WindowEvol PokN1 PokN2 PokE1 PokE2 PokTag SpritesEvo N
+		WindowEvol PokN1 PokN2 PokE1 PokE2 PokTag SpritesEvo N CorrectOpSprites1 CorrectOpSprites2
 	in
 		{Pok getNum(N)}
+		CorrectOpSprites1 = {GetSprite_frame_Op N}
+		CorrectOpSprites2 = {GetSprite_frame_Op N+1}
 		WindowEvol = {QTk.build td(title:'PokemOz evolution!' CanvasEvol)}
 		{WindowEvol show}
 		
 		PokTag = {CanvasEvolHandler newTag($)}
 
-		PokN1=AllSprites_Op.N.1
-		PokN2=AllSprites_Op.N.2
-		PokE1=AllSprites_Op.(N+1).1
-		PokE2=AllSprites_Op.(N+1).2
+		PokN1=CorrectOpSprites1.1
+		PokN2=CorrectOpSprites1.2
+		PokE1=CorrectOpSprites2.1
+		PokE2=CorrectOpSprites2.2
 		SpritesEvo=sprites(PokN1 PokE1)
 
 		{CanvasEvolHandler create(image 250 150 image:PokN1 anchor:center tags:PokTag)}

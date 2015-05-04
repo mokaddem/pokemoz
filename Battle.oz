@@ -108,19 +108,24 @@ define
 				of grass then 2
 				[] fire then 1
 				[] water then 3
+				else 2
 				end
 			[] fire then
 				case DefType
 				of grass then 3
 				[] fire then 2
 				[] water then 1
+				else 2
 				end
 			[] water then
 				case DefType
 				of grass then 1
 				[] fire then 3
 				[] water then 2
+				else 2
 				end
+			else
+				2
 			end
 		end
 	end
