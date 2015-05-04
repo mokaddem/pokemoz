@@ -6,7 +6,7 @@ import
 	System(show:Show)
 	Open
 
-	CutImages(heroFace:HeroFace allHeroFrames:AllHeroFrames pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile createMovementImages:CreateMovementImages)
+	CutImages(heroFace:HeroFace allHeroFrames:AllHeroFrames pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile stone_Tile:Stone_Tile createMovementImages:CreateMovementImages)
 	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	QTk at 'x-oz://system/wp/QTk.ozf'
@@ -123,6 +123,7 @@ define
 					case GroundType
 					of 1 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Grass_Tile anchor:nw)}
 					[]0 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Road_Tile anchor:nw)}
+					[]2 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Stone_Tile anchor:nw)}
 					[]e then {Canvas create(rect PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH (PosX+1)*SQUARE_LENGTH (PosY+1)*SQUARE_LENGTH fill:red outline:nil)}
 						{CellSet EndX PosX}
 						{CellSet EndY PosY}
@@ -251,6 +252,7 @@ define
 			AllowedPlace.N = {Record.make allowed {Arity MapRecord.N}}
 			for M in 1..{Length {Arity MapRecord.N}} do
 				AllowedPlace.N.M = {CustomNewCell MapRecord.N.M}
+				if {CellGet AllowedPlace.N.M} == 2 then {CellSet AllowedPlace.N.M 'occupied'} end
 			end
 		end
 		{MapFile close}
