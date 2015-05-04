@@ -48,6 +48,7 @@ define
 		PokeTagsRecord
 		DialogImg DialogImg_old
 		DialogText
+		EndBattle
 		
 		/* UI CONTROL */
 		UI_Control_Handler
@@ -90,11 +91,11 @@ define
 		
 		/* START UI CONTROL */
 
-				Button_Attack = button(text:"Attack" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} end handle:But_Attk_Handler)
+				Button_Attack = button(text:"Attack" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} if {OpPoke getHp($)}>=0 then EndBattle=true end end handle:But_Attk_Handler)
 				Button_PokemOz = button(text:"PokemOz" action:proc{$} {Show 'PokemOz'} end handle:But_Poke_Handler)
-				Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} {CellSet InBattle false} {Window close} end handle:But_Capt_Handler)
+				Button_Fuite = button(text:"Runaway" action:proc{$} {Show 'Runaway'} {CellSet InBattle false} EndBattle = true {Window close} end handle:But_Capt_Handler)
 				Button_Capture = button(text:"Capture" action:proc{$} {Show 'Capture'} end handle:But_Fuite_Handler)
-				Button_AutoBattle = button(text:"Auto-Battle" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} end handle:But_Auto_Handler)
+				Button_AutoBattle = button(text:"Auto-Battle" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} if {OpPoke getHp($)}>=0 then EndBattle=true end end handle:But_Auto_Handler)
 				
 
                
@@ -108,17 +109,19 @@ define
 			{GridHandler configure(UIControl column:2 row:2)}
 			{UI_Control_Handler configure(But_Attk_Handler But_Poke_Handler But_Fuite_Handler But_Capt_Handler padx:20 pady:10)}	
 		
-				{Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} end)}
-				{Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {CellSet InBattle false} {Window close} end)}
+				{Window bind(event:"<Up>" action:proc{$} {Show 'Attack'} {Attack MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} if {OpPoke getHp($)}>=0 then EndBattle=true end end)}
+				{Window bind(event:"<Down>" action:proc{$} {Show 'Runaway'} {CellSet InBattle false} EndBattle = true {Window close} end)}
 				{Window bind(event:"<Left>" action:proc{$} {Show 'PokemOz'} end)}
 				{Window bind(event:"<Right>" action:proc{$} {Show 'Capture'} end)}
-				{Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} end)}
+				{Window bind(event:"<Return>" action:proc{$} {Show 'Run Auto Battle'} {RunAutoBattle MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText} if {OpPoke getHp($)}>=0 then EndBattle=true end end)}
 		
 		elseif Autofight==1 then
 			{RunAutoBattle MiPoke OpPoke Window HpRecord PokeTagsRecord DialogText}
 		else
-			{CellSet InBattle false} {Window close}
-		end	
+			{CellSet InBattle false} EndBattle = true {Window close}
+		end
+		{Wait EndBattle}
+		{Show endBattle}	
 	end
 	
 	fun {DrawPokemoz OpNumber MiNumber UICanvasHandler DialogText IsTrainer Number}
