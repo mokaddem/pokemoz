@@ -6,7 +6,7 @@ import
 	System(show:Show)
 	Open
 
-	CutImages(heroFace:HeroFace allHeroFrames:AllHeroFrames pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile stone_Tile:Stone_Tile createMovementImages:CreateMovementImages)
+	CutImages(heroFace:HeroFace allHeroFrames:AllHeroFrames pokeFace:PokeFace grass_Tile:Grass_Tile road_Tile:Road_Tile stone_Tile_Grass:Stone_Tile_Grass stone_Tile_Dirt:Stone_Tile_Dirt createMovementImages:CreateMovementImages)
 	MoveHero(movementHandle:MovementHandle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	QTk at 'x-oz://system/wp/QTk.ozf'
@@ -123,7 +123,8 @@ define
 					case GroundType
 					of 1 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Grass_Tile anchor:nw)}
 					[]0 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Road_Tile anchor:nw)}
-					[]2 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Stone_Tile anchor:nw)}
+					[]2 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Stone_Tile_Grass anchor:nw)}
+					[]3 then {Canvas create(image PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH image:Stone_Tile_Dirt anchor:nw)}
 					[]e then {Canvas create(rect PosX*SQUARE_LENGTH PosY*SQUARE_LENGTH (PosX+1)*SQUARE_LENGTH (PosY+1)*SQUARE_LENGTH fill:red outline:nil)}
 						{CellSet EndX PosX}
 						{CellSet EndY PosY}
@@ -245,8 +246,18 @@ define
 
 	proc {InitMap MapFile}
 		{MapFile read(list:MapParsed size:all)}
-		MapRecord={List.toTuple map {Scan MapParsed}}
-			%Check if CustomMap
+		if (CustomMap) then %Check if CustomMap
+			MapRecord={List.toTuple map {Scan MapParsed}}
+		else
+			local Length Heigth MapRecordTemp MapRecordModif1 MapRecordModif2 in 
+				MapRecordTemp = {List.toTuple map {Scan MapParsed}}
+   			Length = {Width MapRecordTemp.1}
+   			Heigth = {Width MapRecordTemp}
+				MapRecordModif1 = {Record.adjoinAt MapRecordTemp Heigth {Record.adjoinAt MapRecordTemp.Heigth Length s}}
+				MapRecord = {Record.adjoinAt MapRecordModif1 1 {Record.adjoinAt MapRecordModif1.1 Length e}}
+			end
+		end
+		
 		AllowedPlace = {Record.make allowed {Arity MapRecord}}
 		for N in 1..{Length {Arity MapRecord}} do
 			AllowedPlace.N = {Record.make allowed {Arity MapRecord.N}}

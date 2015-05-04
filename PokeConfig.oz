@@ -68,7 +68,8 @@ define
 	BAR_WIDTH = 12 % for Hp bars
 	BAR_LENGTH = 200
 	
-	MAX_ENNEMY_EXP = 51
+	MAX_ENNEMY_EXP
+	thread MAX_ENNEMY_EXP = 55-(3-Difficulty)*(54 div 3) end
 	
 	PathTrainersTotal = "Images/Trainers/"
 	PathPokeTotal = "Images/Pokemon-overworld/"
@@ -77,6 +78,7 @@ define
 	Wild_Pokemon_proba % encounter probability (%)
 	Speed
 	Combat_Speed
+	Difficulty
 	Autofight	%0=manual 1=autofight 2=autorun
 	CheckAutoMove
 	UnlockAllPok
@@ -85,7 +87,7 @@ define
 	CheckTrain
 	Starter
 	
-	proc {SaveValue FWild_Pokemon_proba FSpeed FAutofight FUnlockAllPok FCheckMap FCheckTrain FCheckAutoMove FCombat_Speed}
+	proc {SaveValue FWild_Pokemon_proba FSpeed FAutofight FUnlockAllPok FCheckMap FCheckTrain FCheckAutoMove FCombat_Speed FDifficulty}
 		Wild_Pokemon_proba = FWild_Pokemon_proba
 		Speed = FSpeed
 		if FAutofight.1 then Autofight=0 elseif FAutofight.2.1 then Autofight=1 else Autofight=2 end
@@ -94,6 +96,7 @@ define
 		UnlockAllPok = FUnlockAllPok
 		CheckAutoMove = FCheckAutoMove
 		if FCombat_Speed == 0 then Combat_Speed=100 else Combat_Speed = FCombat_Speed*20 end
+		Difficulty = FDifficulty
 	end
 	
 	proc {SaveStarter X}
