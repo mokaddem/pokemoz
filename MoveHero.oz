@@ -212,8 +212,10 @@ define
 								end
 							end
 						[] e then
-							{CellSet InBattle true}
-							{LaunchGameOver true}
+							if IsHero then
+								{CellSet InBattle true}
+								{LaunchGameOver true}
+							end
 						else
 							skip	
 						end
