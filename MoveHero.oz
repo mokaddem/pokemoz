@@ -6,7 +6,7 @@ import
 	OS
 	QTk at 'x-oz://system/wp/QTk.ozf'
 	CutImages(allHeroFrames:AllHeroFrames allPokeFrames:AllPokeFrames)
-	DisplayMap(heroTrainer:HeroTrainer heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat fieldType:FieldType placeAllowed:PlaceAllowed deplaceAllowedPlace:DeplaceAllowedPlace lookAround:LookAround)
+	DisplayMap(heroTrainer:HeroTrainer heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat fieldType:FieldType placeAllowed:PlaceAllowed deplaceAllowedPlace:DeplaceAllowedPlace lookAround:LookAround launchGameOver:LaunchGameOver)
 	DisplayBattle(prepareBattle:PrepareBattle)
 	Util(customNewCell:CustomNewCell cellSet:CellSet cellGet:CellGet)
 	PokeConfig(sQUARE_LENGTH:SQUARE_LENGTH wild_Pokemon_proba:Wild_Pokemon_proba rEAL_SPEED:REAL_SPEED trainer_Max_Foot_Number:Trainer_Max_Foot_Number trainer_Move_Proba:Trainer_Move_Proba)
@@ -211,6 +211,9 @@ define
 									if {Pok1 getHp(Hp)} {Wait Hp} Hp == 0 then {TrainerPort setDead()} end end
 								end
 							end
+						[] e then
+							{CellSet InBattle true}
+							{LaunchGameOver true}
 						else
 							skip	
 						end

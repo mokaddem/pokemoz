@@ -6,6 +6,7 @@ import
 	PokeConfig(combat_Speed:Combat_Speed)
 	Game(inBattle:InBattle gameOver:GameOver)
 	DisplayBattle(drawHpBar:DrawHpBar computeBarLength:ComputeBarLength doTheBarAnimation:DoTheBarAnimation doThePokeAttackAnimation:DoThePokeAttackAnimation doTheXpBarAnimation:DoTheXpBarAnimation doTheFaintAnim:DoTheFaintAnim doTheEvolution:DoTheEvolution)
+	DisplayMap(launchGameOver:LaunchGameOver)
 export
 	RunAutoBattle
 	Attack
@@ -74,8 +75,9 @@ define
 				{DoTheFaintAnim MiPokeTag}
 
 				{Window close} 
-				{CellSet InBattle false}
+				{CellSet InBattle true}
 				GameOver=true
+				{LaunchGameOver false}
 			end
 		else
 			local PBarLen BarLen XpC XpP XpNeeded XpProg1 XpProg2 E1 E2 in 
