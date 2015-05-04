@@ -13,7 +13,7 @@ import
 	
 	DisplayMap(heroPosition:HeroPosition pokeHandle:PokeHandle pokePosition:PokePosition squareLengthFloat:SquareLengthFloat fieldType:FieldType
 					createAndDisplayHeroAndFollower:CreateAndDisplayHeroAndFollower createAndDisplayTrainer:CreateAndDisplayTrainer initMap:InitMap mapRecord:MapRecord drawMap:DrawMap
-					startX:StartX startY:StartY endX:EndX endY:EndY launchGameOver:LaunchGameOver)
+					startX:StartX startY:StartY endX:EndX endY:EndY)
 	
 	DisplayBattle(prepareBattle:PrepareBattle)
 	Trainer(newTrainer:NewTrainer)
@@ -44,7 +44,6 @@ define
 in
 	IntroFinish = {LaunchTheIntro}
 	{Wait IntroFinish}
-	thread if GameOver then {Show 'GAME OVER'} {CellSet InBattle true} {LaunchGameOver} end end
 	{InitMap {New Open.file init(name:CheckMap flags:[read])}}
 	{DrawMap MapRecord HeroTrainer} %	/!\ Concurrency! {DrawMap} need 'HeroHandler' that need the variables initialated in {DrawMap}
 	HeroHandler = {CreateAndDisplayHeroAndFollower}

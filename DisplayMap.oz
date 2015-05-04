@@ -273,15 +273,17 @@ define
 		{MapFile close}
 	end
 	
-	proc {LaunchGameOver}
+	proc {LaunchGameOver V}
+		Text GameOverRecord
 		Font30={QTk.newFont font(size:30)}
 		RowLength = {Length {Arity MapRecord}}
 		ColumnLength = {Length {Arity MapRecord.1}}
-		GameOverRecord in
 		GameOverRecord = {Record.mapInd MapRecord fun {$ I A} {Record.mapInd MapRecord.I fun {$ I A} 9 end} end}
-     {AddMapBlock GameOverRecord CanvasHandler}
-     {Wait 1000}
-     {CanvasHandler create(text(ColumnLength*SQUARE_LENGTH div 2)  (RowLength*SQUARE_LENGTH div 2) fill:white text:"Game Over" font:Font30)}
+	in
+		{AddMapBlock GameOverRecord CanvasHandler}
+		{Wait 1000}
+		if V then Text = "Victory" else Text = "Game Over" end
+		{CanvasHandler create(text(ColumnLength*SQUARE_LENGTH div 2)  (RowLength*SQUARE_LENGTH div 2) fill:white text:Text font:Font30)}
 	end
 
 end
