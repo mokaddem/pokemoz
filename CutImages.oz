@@ -95,29 +95,29 @@ AllTrainerBattleFrames = {CellGet AllTrainerBattleFrames_temp}
 	
 	fun {GetSprite_frame_B Num}
 		Sprite_B_old Sprite_B in
-		Sprite_B_old = {QTk.newImage photo(file:{Append PathPokeBattleSpritesBack {Append Num ".gif"}})}
+		Sprite_B_old = {QTk.newImage photo(file:{Append PathPokeBattleSpritesBack {Append {IntToString Num} ".gif"}})}
 		Sprite_B = {QTk.newImage photo()}
 		{Sprite_B copy(Sprite_B_old zoom:o(POKE_ZOOM))}
 		Sprite_B
 	end
 	
-	AllSprites_B = sprite_b({GetSprite_frame_B "1"} {GetSprite_frame_B "2"} {GetSprite_frame_B "3"} {GetSprite_frame_B "4"} {GetSprite_frame_B "5"} {GetSprite_frame_B "6"} {GetSprite_frame_B "7"} {GetSprite_frame_B "8"} {GetSprite_frame_B "9"}) 
+	AllSprites_B = sprite_b({GetSprite_frame_B 1} {GetSprite_frame_B 2} {GetSprite_frame_B 3} {GetSprite_frame_B 4} {GetSprite_frame_B 5} {GetSprite_frame_B 6} {GetSprite_frame_B 7} {GetSprite_frame_B 8} {GetSprite_frame_B 9}) 
 
 %OpPoke
 	fun {GetSprite_frame_Op Num}
 /*		L=64 Sprites_Op_old Sprites_Op in
 		Sprites_Op_old = {QTk.newImage photo(file:{Append PathPokeBattleSpritesOp {Append Num ".gif"}})}*/
 		Frame1 Frame2 Frame1_old Frame2_old Sprites_Op in 
-		Frame1_old = {QTk.newImage photo(file:{Append PathPokeBattleSpritesOp {Append "frame1/" {Append Num ".png.gif"}}})}
-		Frame2_old = {QTk.newImage photo(file:{Append PathPokeBattleSpritesOp {Append "frame2/" {Append Num ".png.gif"}}})}
+		Frame1_old = {QTk.newImage photo(file:{Append PathPokeBattleSpritesOp {Append "frame1/" {Append {IntToString Num} ".png.gif"}}})}
+		Frame2_old = {QTk.newImage photo(file:{Append PathPokeBattleSpritesOp {Append "frame2/" {Append {IntToString Num} ".png.gif"}}})}
 		Sprites_Op = sprite_op({QTk.newImage photo()} {QTk.newImage photo()})
 		{Sprites_Op.1 copy(Frame1_old 'from':o(0 0 L L)  zoom:o(POKE_ZOOM))}
 		{Sprites_Op.2 copy(Frame2_old 'from':o(0 0 L L)  zoom:o(POKE_ZOOM))}
 		Sprites_Op
 	end
 	
-	AllSprites_Op = all_sprite_op({GetSprite_frame_Op "1"} {GetSprite_frame_Op "2"} {GetSprite_frame_Op "3"} {GetSprite_frame_Op "4"} 
-	{GetSprite_frame_Op "5"} {GetSprite_frame_Op "6"} {GetSprite_frame_Op "7"} {GetSprite_frame_Op "8"} {GetSprite_frame_Op "9"})
+	AllSprites_Op = all_sprite_op({GetSprite_frame_Op 1} {GetSprite_frame_Op 2} {GetSprite_frame_Op 3} {GetSprite_frame_Op 4} 
+	{GetSprite_frame_Op 5} {GetSprite_frame_Op 6} {GetSprite_frame_Op 7} {GetSprite_frame_Op 8} {GetSprite_frame_Op 9})
 		
 end
 
