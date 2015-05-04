@@ -89,7 +89,7 @@ define
 				PBarLen = {ComputeBarLength XpP XpNeeded}
 				BarLen = {ComputeBarLength XpC XpNeeded}
 				{Show PBarLen#BarLen}
-				{DoTheXpBarAnimation BarLen PBarLen HpRecord.expBar}
+				{DoTheXpBarAnimation BarLen PBarLen HpRecord.expBar HpRecord.lvlTxt}
 				if E2>E1 then {DoTheEvolution Pok1} end
 			end
 			{DialogText set(text:{Append "Enemy " {Append Name2 " fainted!"}})}

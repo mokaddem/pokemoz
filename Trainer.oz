@@ -2,6 +2,7 @@ functor
 import
 	PokeConfig(rEAL_SPEED:REAL_SPEED)
 	DisplayMap(deplaceAllowedPlace:DeplaceAllowedPlace)
+	CutImages(tomb:Tomb)
 export
 	NewTrainer
 define
@@ -13,15 +14,18 @@ define
 		end
 
 		proc {LoopMovement P}
-			S M T in
+			S M T H in
 			{P getSpeed(S)}
 			{P getMovement(M)}
 			{P getType(T)}
+			{P getHandler(H)}
 			{Wait S}
 			{Wait M}
 			{Delay REAL_SPEED}
 			{M P}
-			if T \= 'dead' then {LoopMovement P} end
+			if T \= 'dead' then {LoopMovement P} 
+			else {H set(image:Tomb)} {H move(18 15)}
+			end
 		end
 
 		fun {HandleMessage Msg State}

@@ -241,7 +241,7 @@ define
 		{UICanvasHandler create(text OpStartX+(BAR_LENGTH div 2) OpStartY+1 text:Hp2Text font:Font8 anchor:n fill:black handle:OpPokeHPtxtHandler)}
 		
 		
-		hpbar(miBar:MiPvBarTag opBar:OpPvBarTag miTxt:MiPokeHPtxtHandler opTxt:OpPokeHPtxtHandler expBar:XpTag)
+		hpbar(miBar:MiPvBarTag opBar:OpPvBarTag miTxt:MiPokeHPtxtHandler opTxt:OpPokeHPtxtHandler lvlTxt:MiPokeLvlHandler expBar:XpTag)
 		end %local
 	end
 
@@ -294,8 +294,25 @@ define
 		{Delay 3*Combat_Speed}
 	end
 	
-	proc {DoTheXpBarAnimation BarLen PBarLen ExpBarTag}
+	proc {DoTheXpBarAnimation BarLen PBarLen ExpBarTag LvlTxt}
 		{Show 'doTheXpBarAnimation'}
+		proc {Newlevel LvlTxt}
+			Font24 Font22 Font20 Font19 Font18 Lvl Nlvl 
+		in
+			Font24={QTk.newFont font(size:28)} Font22={QTk.newFont font(size:26)} Font20={QTk.newFont font(size:22)} Font19={QTk.newFont font(size:20)} Font18={QTk.newFont font(size:18)}
+			{LvlTxt get(text:Lvl)} {Wait Lvl}
+			Nlvl= {IntToString {StringToInt Lvl}+1}
+			{LvlTxt set(text:Nlvl font:Font24)}
+			{Delay 15}
+			{LvlTxt set(font:Font22)}
+			{Delay 15}
+			{LvlTxt set(font:Font20)}
+			{Delay 15}
+			{LvlTxt set(font:Font19)}
+			{Delay 15}
+			{LvlTxt set(font:Font18)}
+		end
+	in
 		local X1 X2 Xend Y1 Y2 Coord in
 			{ExpBarTag getCoords(1:Coord)}
 			X1 = {FloatToInt {String.toFloat {VirtualString.toString Coord.1}}}
@@ -312,6 +329,7 @@ define
 					{ExpBarTag setCoords(X1 Y1 X2+I Y2)}
 				end
 			end
+			if X2+BarLen-PBarLen > Xend then {Newlevel LvlTxt} end
 		end
 	end
 	
@@ -364,6 +382,10 @@ define
 		{PokTag set(image:PokN1)}
 		{Delay 2000}
 		for I in 0..50 do
+			if I>30 then 
+				if (I mod 2)>0 then {CanvasEvolHandler set(bg:white)}
+				else {CanvasEvolHandler set(bg:black)} end
+			end
 			{PokTag set(image:SpritesEvo.((I mod 2)+1))}	
 			{Delay (50-I)*(7)}
 		end
