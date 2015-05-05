@@ -211,6 +211,11 @@ define
 								{CellSet InBattle true}
 								{LaunchGameOver true}
 							end
+						[] s then
+							if IsHero then
+								{Show 'Your PokemOz was been healed'}
+								{{TrainerPort getPokemoz($)} heal()}
+							end	
 						else
 							skip	
 						end
