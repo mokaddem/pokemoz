@@ -1,5 +1,10 @@
 # pokemoz
 
+Pokemoz is a student project realized during the course LINGI1131 (Computer Language Concepts) given at the Université Catholique de Louvain la Neuve 
+
+![screenshot6](https://github.com/mokaddem/pokemoz/blob/master/Screenshots/screen6.png "Screenshot 6")
+
+
 ## Installation
 
 - [The Mozart Programming System](https://sourceforge.net/projects/mozart-oz/files/v2.0.0-alpha.0/) Runtime and development environment of Oz
@@ -24,3 +29,10 @@ If you want to run it manually after the compilation, write "ozengine Game.ozf" 
 All the parameters of the game are asked at the beginning in a beautiful GUI !
 
 Enjoy !
+
+## Other screenshots
+![screenshot1](https://github.com/mokaddem/pokemoz/blob/master/Screenshots/screen1.png "Screenshot 1")
+![screenshot2](https://github.com/mokaddem/pokemoz/blob/master/Screenshots/screen2.png "Screenshot 2")
+![screenshot3](https://github.com/mokaddem/pokemoz/blob/master/Screenshots/screen3.png "Screenshot 3")
+![screenshot4](https://github.com/mokaddem/pokemoz/blob/master/Screenshots/scrren4.png "Screenshot 4")
+![screenshot5](https://github.com/mokaddem/pokemoz/blob/master/Screenshots/screen5.png "Screenshot 5")
