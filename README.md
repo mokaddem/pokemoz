@@ -1,7 +1,15 @@
 # pokemoz
 
+## Installation
+
+- [The Mozart Programming System](https://sourceforge.net/projects/mozart-oz/files/v2.0.0-alpha.0/) Runtime and development environment of Oz
+- run ```$ make``` and wait (should take ~2min)
+- to start a new game, simply run ```$ make run```
+
+## More info
+
 The makefile helps to compile, run and do other stuff.
-Here are the main commands (do'nt forget to extract all the files) :
+Here are the main commands (don't forget to extract all the files) :
 
 - make all (or make) : Compile then run verbosely the game
 - make compile : Compile every file needed by the program to run
